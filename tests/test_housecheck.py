@@ -475,6 +475,18 @@ Something.
         )
         self.assertNotIn("HS025", self.repo.codes("hard"))
 
+    def test_a_comment_before_the_h1_is_allowed(self):
+        with_comment = "<!-- a note for the reader -->\n\n" + VALID_README
+        self.repo.write("README.md", with_comment)
+        self.assertNotIn("HS011", self.repo.codes("hard"))
+
+    def test_a_reference_style_link_is_checked(self):
+        self.repo.write(
+            "README.md",
+            VALID_README + "\nSee [the notes][n].\n\n[n]: docs/gone.md\n",
+        )
+        self.assertIn("HS030", self.repo.codes("hard"))
+
     # -- runner ------------------------------------------------------------
 
     def test_the_exit_code_is_zero_when_nothing_hard_failed(self):
