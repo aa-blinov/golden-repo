@@ -170,18 +170,19 @@ def main(argv=None):
                 )
                 return 1
 
-            code, output = run(
-                [sys.executable, os.path.join(ROOT, "scripts", "anti_ai.py")]
-                + [os.path.join(".", name) for name in changed if name.endswith(".md")],
-                cwd=target, check=False,
-            )
-            if code != 0:
-                print(output)
-                sys.stderr.write(
-                    "apply_docs: %s has AI writing patterns; not committing\n"
-                    % args.repository
+            prose = [os.path.join(".", name) for name in changed if name.endswith(".md")]
+            if prose:
+                code, output = run(
+                    [sys.executable, os.path.join(ROOT, "scripts", "anti_ai.py")] + prose,
+                    cwd=target, check=False,
                 )
-                return 1
+                if code != 0:
+                    print(output)
+                    sys.stderr.write(
+                        "apply_docs: %s has AI writing patterns; not committing\n"
+                        % args.repository
+                    )
+                    return 1
 
         message = args.message or (
             "Bring the documentation to the house standard\n\n"
