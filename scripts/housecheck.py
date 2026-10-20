@@ -134,6 +134,11 @@ EMOJI_ALLOWED = frozenset({
     0xFE0F,               # Variation selector-16
     0x200D,               # Zero-width joiner
     0x20E3,               # Combining enclosing keycap
+    # Playing cards and chess. These are content rather than decoration: a
+    # game that draws a hand of cards is not a document with emoji in it.
+    0x2660, 0x2661, 0x2662, 0x2663, 0x2664, 0x2665, 0x2666, 0x2667,
+    0x2654, 0x2655, 0x2656, 0x2657, 0x2658, 0x2659, 0x265A, 0x265B,
+    0x265C, 0x265D, 0x265E, 0x265F,
 })
 
 SKIP_DIRS = {
@@ -352,8 +357,32 @@ def strip_html_comments(text):
 
 
 def strip_code_blocks(text):
-    """Remove fenced code blocks. A link inside a fence is an example, not a
-    link, and must not be checked."""
+    """Remove fenced code blocks and inline code spans. A link inside either
+    is an example, not a link, and must not be checked: a document that
+    explains how to write a link holds a broken link as its subject."""
+    out = []
+    fence = None
+    for line in text.split("\n"):
+        match = FENCE_RE.match(line)
+        if fence is None and match:
+            fence = match.group(1)
+            out.append("")
+            continue
+        if fence is not None:
+            if line.strip().startswith(fence):
+                fence = None
+            out.append("")
+            continue
+        out.append(line)
+    return strip_inline_code("\n".join(out))
+
+
+INLINE_CODE_RE = re.compile(r"`+[^`\n]*`+")
+
+
+def strip_inline_code(text):
+    """Remove inline code spans, keeping the code's line structure."""
+    return INLINE_CODE_RE.sub("", text)
     out = []
     fence = None
     for line in text.split("\n"):
@@ -997,7 +1026,10 @@ def check_markdown_hygiene(repo):
         exempt = (not governs_text(rel)
                   or is_test_path(rel)
                   or EMOJI_OPT_OUT in head)
-        char = None if exempt else has_emoji(text)
+        # The body without the code. A glyph inside a code block is part of
+        # an example, and a document that shows a symbol is not a document
+        # that forgot the rule.
+        char = None if exempt else has_emoji(strip_code_blocks(text))
         if char is not None:
             line = next(
                 (i + 1 for i, l in enumerate(text.split("\n")) if char in l),

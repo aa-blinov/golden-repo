@@ -360,6 +360,32 @@ class CheckerTestCase(unittest.TestCase):
         )
         self.assertNotIn("HS040", self.repo.codes("hard"))
 
+    def test_an_emoji_inside_a_code_block_is_an_example(self):
+        """A document that shows a symbol is not a document that forgot the
+        rule. The check was reading the code blocks."""
+        self.repo.write(
+            "docs/layout.md",
+            "```tsx\n"
+            "// \u274c Do not do this\n"
+            "```\n",
+        )
+        self.assertNotIn("HS040", self.repo.codes("hard"))
+
+    def test_a_playing_card_is_not_an_emoji(self):
+        """A game that draws a hand of cards is not a document with emoji."""
+        self.repo.write("docs/rules.md", "Suits: \u2660 \u2665 \u2666 \u2663\n")
+        self.assertNotIn("HS040", self.repo.codes("hard"))
+
+    def test_a_link_inside_inline_code_is_an_example(self):
+        """A document that explains how to write a link holds a broken link
+        as its subject. The checker was reading the example."""
+        self.repo.write(
+            "docs/howto.md",
+            "Use `[link text](URL)` for links.\n"
+            "A real one: [the file](README.md)\n",
+        )
+        self.assertNotIn("HS030", self.repo.codes("hard"))
+
     def test_emoji_in_a_product_is_not_a_finding(self):
         """The standard governs the documents, not a product's interface.
         A bot's button labels are what the user sees."""
