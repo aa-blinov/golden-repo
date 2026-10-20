@@ -351,10 +351,21 @@ visible empty box, and it is often the first thing in the document.
 
 ### HS040 — No emoji
 
-**Hard.** No emoji in any tracked text file, with two exceptions.
+**Hard.** No emoji in the documents the standard governs: every Markdown
+file, and the standard's own file set. The product's own source code is the
+owner's business. The glyphs in a Telegram bot's button labels, in a game's
+playing cards and in a parser's error messages are the product, and the
+standard does not rewrite a product's interface.
+
+Three exemptions inside the documents, all explicit.
 
 A **test file** is exempt: an emoji inside a test value is data, like a
 password with a lock glyph in it, and removing it would weaken the test.
+
+A **copied-in directory** is exempt. A skill, a prompt or a vendored
+library that the owner brought in is somebody else's work: restyling it is
+not the standard's business, and the emoji in it are the upstream author's.
+The checker skips `.agents/`, `.claude/`, `skills/` and `vendor/`.
 
 Playing cards and chess pieces are exempt. They are content rather than
 decoration: a game that draws a hand of cards is not a document with emoji

@@ -141,6 +141,10 @@ SKIP_DIRS = {
     ".venv", "venv", "__pycache__", ".next", ".nuxt", ".output", "coverage",
     "site-packages", ".pytest_cache", ".mypy_cache", ".ruff_cache",
     ".tox", ".gradle", ".idea", ".cache", "third_party", "third-party",
+    # A skill or a prompt the owner copied in. It is somebody else's work:
+    # restyling it is not the standard's business, and the emoji in it are
+    # the upstream author's.
+    ".agents", ".claude", "skills",
 }
 
 
@@ -941,6 +945,25 @@ def check_links(repo):
     return findings
 
 
+def governs_text(rel):
+    """Whether the standard has a say in this file.
+
+    The standard governs the documents it defines and every Markdown file,
+    because those are the ones it writes and the ones a visitor reads. The
+    product's own source code is the owner's business: a bot's button
+    labels, a game's playing cards and a parser's error messages are the
+    product, and the standard does not rewrite them.
+    """
+    if rel.endswith(".md"):
+        return True
+    if rel.endswith((".markdown", ".mdx")):
+        return True
+    return rel.startswith((".github/", ".impeccable/")) or rel in (
+        "LICENSE", "CHANGELOG.md", "CODE_OF_CONDUCT.md", "CONTRIBUTING.md",
+        "DESIGN.md", "SECURITY.md", "README.md", "AGENTS.md", "PRODUCT.md",
+    )
+
+
 def is_test_path(rel):
     """A test file, where a string is a value rather than prose."""
     if re.search(r"(^|/)(test|tests|spec|specs)/", rel):
@@ -960,13 +983,20 @@ def check_markdown_hygiene(repo):
 
         is_markdown = rel.endswith(".md")
 
-        # HS040 — no emoji. Two exemptions, both explicit. A test file: an
-        # emoji inside a test value is data, like a password with a lock
+        # HS040 — no emoji. The rule is about the documents the standard
+        # governs. A product's own source is the owner's: the glyphs in a
+        # Telegram bot's button labels are what the user sees, and the
+        # standard does not rewrite a product's interface.
+        #
+        # Two exemptions inside the documents, both explicit. A test file:
+        # an emoji inside a test value is data, like a password with a lock
         # glyph in it, and removing it would weaken the test. A file that
         # says so: the emoji are the product, and the file says so in the
         # open.
         head = "\n".join(text.split("\n")[:3])
-        exempt = is_test_path(rel) or EMOJI_OPT_OUT in head
+        exempt = (not governs_text(rel)
+                  or is_test_path(rel)
+                  or EMOJI_OPT_OUT in head)
         char = None if exempt else has_emoji(text)
         if char is not None:
             line = next(

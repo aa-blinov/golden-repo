@@ -360,6 +360,21 @@ class CheckerTestCase(unittest.TestCase):
         )
         self.assertNotIn("HS040", self.repo.codes("hard"))
 
+    def test_emoji_in_a_product_is_not_a_finding(self):
+        """The standard governs the documents, not a product's interface.
+        A bot's button labels are what the user sees."""
+        self.repo.write("app/buttons.py", "BUTTON = '\\u2705 done'\n")
+        self.assertNotIn("HS040", self.repo.codes("hard"))
+
+    def test_emoji_in_a_document_is_a_finding(self):
+        self.repo.write("docs/notes.md", "Status: \u2705 done\n")
+        self.assertIn("HS040", self.repo.codes("hard"))
+
+    def test_emoji_in_a_copied_in_skill_is_not_a_finding(self):
+        """A skill the owner brought in is somebody else's work."""
+        self.repo.write(".agents/skills/humanizer/README.md", "Use \u2705 here\n")
+        self.assertNotIn("HS040", self.repo.codes("hard"))
+
     def test_a_workflow_that_only_watches_another_branch_is_a_finding(self):
         """The rule existed and never fired: the pattern let a greedy \\s*
         swallow the line break, so the branch list was never read.
