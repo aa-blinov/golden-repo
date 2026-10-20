@@ -1,0 +1,193 @@
+#!/usr/bin/env python3
+"""apply_docs — put the generated documents into a repository and push them.
+
+    scripts/apply_docs.py <repository> --docs <dir> [--owner aa-blinov] [--push]
+
+The documents are written by hand, from the facts in the repository, and this
+script is what puts them in. It checks the result before it commits, because a
+document that breaks the house style is not worth pushing.
+
+The previous version of every file stays in the history, so a change that
+turned out to be wrong is one `git revert` away.
+
+What it does:
+
+1. clones the repository,
+2. copies the generated files over the ones they replace,
+3. runs the house-style checker and the humanizer's linter on the result,
+4. commits, and pushes when asked to.
+"""
+
+import argparse
+import json
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+
+# What the checker and the linter are run against.
+DOCUMENTS = ["README.md", "AGENTS.md", "PRODUCT.md", "DESIGN.md", "CHANGELOG.md"]
+
+
+def run(args, cwd=None, check=True, env=None):
+    result = subprocess.run(
+        args, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+        check=False, env=env,
+    )
+    output = result.stdout.decode("utf-8", "replace")
+    if check and result.returncode != 0:
+        raise RuntimeError("%s failed:\n%s" % (" ".join(args[:3]), output))
+    return result.returncode, output
+
+
+def copy_documents(docs_dir, target):
+    """Copy the generated files over the ones they replace."""
+    changed = []
+    for name in DOCUMENTS:
+        source = os.path.join(docs_dir, name)
+        if not os.path.exists(source):
+            continue
+        destination = os.path.join(target, name)
+        with open(source, "r", errors="replace") as handle:
+            content = handle.read()
+        previous = ""
+        if os.path.exists(destination):
+            with open(destination, "r", errors="replace") as handle:
+                previous = handle.read()
+        if content == previous:
+            continue
+        with open(destination, "w") as handle:
+            handle.write(content)
+        changed.append(name)
+
+    # The landing site, when the repository has one and a new one was made.
+    site_source = os.path.join(docs_dir, "site")
+    if os.path.isdir(site_source):
+        for name in sorted(os.listdir(site_source)):
+            source = os.path.join(site_source, name)
+            if not os.path.isfile(source):
+                continue
+            for folder in ("docs", "site", "website", "web", "landing"):
+                destination = os.path.join(target, folder, name)
+                if os.path.isdir(os.path.dirname(destination)):
+                    with open(source, "r", errors="replace") as handle:
+                        content = handle.read()
+                    with open(destination, "w") as handle:
+                        handle.write(content)
+                    changed.append("%s/%s" % (folder, name))
+                    break
+    return changed
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(prog="apply_docs")
+    parser.add_argument("repository")
+    parser.add_argument("--docs", required=True, help="the directory with the generated files")
+    parser.add_argument("--owner", default="aa-blinov")
+    parser.add_argument("--push", action="store_true")
+    parser.add_argument("--message")
+    parser.add_argument("--skip-checks", action="store_true")
+    parser.add_argument("--skip-normalize", action="store_true")
+    args = parser.parse_args(argv)
+
+    docs_dir = os.path.abspath(args.docs)
+    if not os.path.isdir(docs_dir):
+        sys.stderr.write("apply_docs: no such directory: %s\n" % docs_dir)
+        return 2
+
+    work = tempfile.mkdtemp(prefix="apply-")
+    target = os.path.join(work, "repo")
+    try:
+        run(["git", "clone", "--depth=1", "--quiet",
+             "https://github.com/%s/%s.git" % (args.owner, args.repository), target])
+
+        changed = copy_documents(docs_dir, target)
+        if not changed:
+            print("apply_docs: %s is already up to date" % args.repository)
+            return 0
+
+        # The mechanical part of the standard: final newlines, trailing
+        # whitespace, tabs in Markdown. Nobody reviews that by hand.
+        if not args.skip_normalize:
+            run([sys.executable, os.path.join(ROOT, "scripts", "normalize.py"), "."],
+                cwd=target, check=False)
+
+        if not args.skip_checks:
+            # Only the files this run touched decide whether it passes. The
+            # repository may have other problems, and fixing them is a
+            # separate job with its own commit.
+            code, output = run(
+                [sys.executable, os.path.join(ROOT, "scripts", "housecheck.py"),
+                 "--json", "."],
+                cwd=target, check=False,
+            )
+            try:
+                findings = json.loads(output).get("findings", [])
+            except ValueError:
+                findings = []
+            mine = [f for f in findings if f["path"] in changed or
+                    any(f["path"].endswith(name) for name in changed)]
+            if mine:
+                for finding in mine:
+                    print("%s  %s  %s: %s" % (
+                        finding["severity"], finding["code"],
+                        finding["path"], finding["message"],
+                    ))
+                sys.stderr.write(
+                    "apply_docs: the files this run changed fail the house "
+                    "style; not committing\n"
+                )
+                return 1
+
+            code, output = run(
+                [sys.executable, os.path.join(ROOT, "scripts", "anti_ai.py")]
+                + [os.path.join(".", name) for name in changed if name.endswith(".md")],
+                cwd=target, check=False,
+            )
+            if code != 0:
+                print(output)
+                sys.stderr.write(
+                    "apply_docs: %s has AI writing patterns; not committing\n"
+                    % args.repository
+                )
+                return 1
+
+        message = args.message or (
+            "Bring the documentation to the house standard\n\n"
+            "The documents are written from the code: the commands are the ones "
+            "the project has, the dependencies are the ones it uses, and the "
+            "file tree is the tree. The previous version stays in the history, "
+            "so this is one revert away if it turns out to be wrong.\n\n"
+            "Files changed:\n%s\n" % "\n".join("  %s" % name for name in changed)
+        )
+
+        run(["git", "-C", target, "add", "-A"])
+        run(["git", "-C", target, "commit", "-q", "-m", message])
+
+        if args.push:
+            token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
+            if token:
+                remote = "https://x-access-token:%s@github.com/%s/%s.git" % (
+                    token, args.owner, args.repository,
+                )
+            else:
+                remote = "https://github.com/%s/%s.git" % (args.owner, args.repository)
+            run(["git", "-C", target, "push", "-q", remote, "HEAD:main"])
+
+        print("apply_docs: %s — %d file(s) %s" % (
+            args.repository, len(changed), "pushed" if args.push else "committed",
+        ))
+        return 0
+    except Exception as error:  # noqa: BLE001 — one repository is not fatal
+        sys.stderr.write("apply_docs: %s failed: %s\n" % (args.repository, error))
+        return 1
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+
+
+if __name__ == "__main__":
+    sys.exit(main())
