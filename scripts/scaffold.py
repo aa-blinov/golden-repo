@@ -59,7 +59,10 @@ def substitute(text, values):
 
 def values_for(target, overrides=None):
     values = dict(TOKENS)
-    slug = os.path.basename(os.path.abspath(target))
+    # The slug is the repository's name. It used to be the name of the
+    # directory the clone landed in, and the clone was called "repo", so
+    # every adopted repository ended up saying "Thanks for looking at repo".
+    slug = (overrides or {}).get("slug") or os.path.basename(os.path.abspath(target))
     values["PROJECT_SLUG"] = slug
     values["PROJECT_NAME"] = overrides.get("name") if overrides and overrides.get("name") else slug
     values["REPO_URL"] = "https://github.com/%s/%s" % (values["REPO_OWNER"], slug)
@@ -135,12 +138,13 @@ def main(argv=None):
     parser.add_argument("target")
     parser.add_argument("--name", help="the display name of the project")
     parser.add_argument("--owner", default="aa-blinov")
+    parser.add_argument("--slug", help="the repository's name, if it is not the target's")
     parser.add_argument("--year", default="2026")
     args = parser.parse_args(argv)
 
     data = manifest()
     target = os.path.abspath(args.target)
-    values = values_for(target, {"name": args.name})
+    values = values_for(target, {"name": args.name, "slug": args.slug})
     values["REPO_OWNER"] = args.owner
     values["PROJECT_YEAR"] = args.year
 

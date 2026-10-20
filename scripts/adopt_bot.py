@@ -81,7 +81,9 @@ def main(argv=None):
             return 0
 
     work = tempfile.mkdtemp(prefix="adopt-%s-" % name)
-    target = os.path.join(work, "repo")
+    # The clone directory is named after the repository, so the scaffolder
+    # does not take "repo" for the project's name.
+    target = os.path.join(work, name)
     branch = "%s-%s" % (args.branch_prefix, name)
 
     try:
@@ -101,7 +103,7 @@ def main(argv=None):
             base = default
 
         # The migrator adds what is missing and overwrites nothing.
-        run(["bash", os.path.join(HERE, "adopt.sh"), target], check=True)
+        run(["bash", os.path.join(HERE, "adopt.sh"), target], check=True)  # noqa: E501
 
         changes = run(["git", "-C", target, "status", "--porcelain", "-uall"])
         if not changes.strip():

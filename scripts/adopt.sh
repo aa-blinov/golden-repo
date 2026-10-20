@@ -32,6 +32,11 @@ TARGET="$1"
 [ -d "$TARGET" ] || { echo "adopt: $TARGET is not a directory" >&2; exit 1; }
 TARGET="$(cd "$TARGET" && pwd)"
 
+# The project's name, for the files the standard hands over. It comes from
+# the directory the repository lives in, which is how the migrator has always
+# been pointed at a clone.
+SLUG="$(basename "$TARGET")"
+
 # A working tree with uncommitted changes means the migration would be mixed
 # with something else. Stop rather than guess.
 if [ -d "$TARGET/.git" ]; then
@@ -45,7 +50,7 @@ fi
 echo "adopt: applying the house standard to $TARGET"
 
 python3 "$STANDARD_DIR/scripts/scaffold.py" adopt "$TARGET" \
-  --owner "$OWNER" --year "$YEAR"
+  --owner "$OWNER" --year "$YEAR" --slug "$SLUG"
 
 # The docs index links to architecture.md, which this repository may not
 # have. Drop the references to files that do not exist rather than

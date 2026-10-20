@@ -170,6 +170,18 @@ class RepoFixture(object):
             handle.write(content)
         return path
 
+    def make_git_repo(self, branch="master"):
+        """Turn the fixture into a real repository on a known branch."""
+        import subprocess
+        for args in (
+            ["git", "init", "-q", "-b", branch],
+            ["git", "config", "user.email", "test@example.com"],
+            ["git", "config", "user.name", "Test"],
+        ):
+            subprocess.run(args, cwd=self.root, check=True,
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return self.root
+
     def mkdir(self, rel):
         path = os.path.join(self.root, rel)
         if not os.path.isdir(path):
@@ -347,6 +359,47 @@ class CheckerTestCase(unittest.TestCase):
             "BUTTONS = {'yes': '\\u2705', 'no': '\\u274c'}\n",
         )
         self.assertNotIn("HS040", self.repo.codes("hard"))
+
+    def test_a_workflow_that_only_watches_another_branch_is_a_finding(self):
+        """The rule existed and never fired: the pattern let a greedy \\s*
+        swallow the line break, so the branch list was never read.
+
+        The rule reads the branch off the repository, so the fixture has to
+        be a real one for the test to mean anything."""
+        self.repo.make_git_repo("master")
+        self.repo.write(
+            ".github/workflows/ci.yml",
+            "name: ci\n"
+            "on:\n"
+            "  push:\n"
+            "    branches: [main]\n"
+            "  pull_request:\n",
+        )
+        self.assertIn("HS100", self.repo.codes(),
+                      "the workflow watches main, and the branch is master")
+
+    def test_a_workflow_without_a_branch_filter_is_not_a_finding(self):
+        self.repo.make_git_repo("master")
+        self.repo.write(
+            ".github/workflows/ci.yml",
+            "name: ci\n"
+            "on:\n"
+            "  push:\n"
+            "  pull_request:\n",
+        )
+        self.assertNotIn("HS100", self.repo.codes())
+
+    def test_a_workflow_that_watches_the_branch_is_not_a_finding(self):
+        self.repo.make_git_repo("master")
+        self.repo.write(
+            ".github/workflows/ci.yml",
+            "name: ci\n"
+            "on:\n"
+            "  push:\n"
+            "    branches: [master, main]\n"
+            "  pull_request:\n",
+        )
+        self.assertNotIn("HS100", self.repo.codes())
 
     def test_a_hash_inside_a_code_block_is_not_a_heading(self):
         """A README that shows a shell script is full of "#" comments.

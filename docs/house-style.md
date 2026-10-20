@@ -356,6 +356,10 @@ visible empty box, and it is often the first thing in the document.
 A **test file** is exempt: an emoji inside a test value is data, like a
 password with a lock glyph in it, and removing it would weaken the test.
 
+Playing cards and chess pieces are exempt. They are content rather than
+decoration: a game that draws a hand of cards is not a document with emoji
+in it.
+
 A file that **says so** is exempt. A Telegram bot whose buttons carry emoji,
 or a message format table, is not a document that forgot the rule: the glyphs
 are what the user sees. The file says so in the open, in its first three

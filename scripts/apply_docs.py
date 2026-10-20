@@ -111,7 +111,10 @@ def main(argv=None):
         return 2
 
     work = tempfile.mkdtemp(prefix="apply-")
-    target = os.path.join(work, "repo")
+    # The clone directory is named after the repository. It used to be called
+    # "repo", and the scaffolder took the repository's name from it, so every
+    # adopted repository said "Thanks for looking at repo".
+    target = os.path.join(work, args.repository)
     try:
         run(["git", "clone", "--depth=1", "--quiet",
              "https://github.com/%s/%s.git" % (args.owner, args.repository), target])
@@ -128,7 +131,7 @@ def main(argv=None):
         # The standard's files first, so that the generated documents land on
         # top of a repository that already carries the rest of the standard.
         run([sys.executable, os.path.join(ROOT, "scripts", "scaffold.py"),
-             "adopt", target], check=False)
+             "adopt", target, "--slug", args.repository], check=False)
 
         changed = copy_documents(docs_dir, target)
         if not changed:

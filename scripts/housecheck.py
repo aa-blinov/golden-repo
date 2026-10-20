@@ -1135,13 +1135,15 @@ def check_default_branch(repo):
         text = repo.read(rel)
         if text is None:
             continue
-        # The branch list under `push:`, if there is one.
-        match = re.search(r"push:\s*(?:\n\s+branches:\s*\[([^\]]*)\])?", text)
+        # The branch list under `push:`, if there is one. The line break
+        # has to be matched explicitly: a greedy \s* eats it, the optional
+        # group matches nothing, and the rule never fires.
+        match = re.search(
+            r"push:[ \t]*\n[ \t]*branches:[ \t]*\[([^\]]*)\]", text
+        )
         if not match:
-            continue
-        listed = match.group(1)
-        if listed is None:
             continue  # no filter: every branch, so the default one is covered
+        listed = match.group(1)
         branches = [b.strip().strip("'\"") for b in listed.split(",") if b.strip()]
         if branches and branch not in branches and "**" not in branches:
             findings.append(soft(
