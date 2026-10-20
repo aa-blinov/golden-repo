@@ -174,6 +174,13 @@ PROJECT_DOCUMENTS = frozenset({
     "SECURITY.md",
 })
 
+# A file may declare that its emoji are a product decision rather than
+# decoration. A Telegram bot whose buttons carry emoji, or a message format
+# table, is not a document that forgot the rule: the glyphs are what the
+# user sees. The marker is visible and it is in the file, so a reader can
+# see that the rule was considered.
+EMOJI_OPT_OUT = "house-style: emoji-ok"
+
 # The documents whose emptiness is a real loss. The community health files
 # are boilerplate and are allowed to be short; a README that says nothing is
 # not a README.
@@ -953,10 +960,14 @@ def check_markdown_hygiene(repo):
 
         is_markdown = rel.endswith(".md")
 
-        # HS040 — no emoji. A test file is exempt: an emoji inside a test
-        # value is data, like a password with a lock glyph in it, and
-        # removing it would weaken the test.
-        char = None if is_test_path(rel) else has_emoji(text)
+        # HS040 — no emoji. Two exemptions, both explicit. A test file: an
+        # emoji inside a test value is data, like a password with a lock
+        # glyph in it, and removing it would weaken the test. A file that
+        # says so: the emoji are the product, and the file says so in the
+        # open.
+        head = "\n".join(text.split("\n")[:3])
+        exempt = is_test_path(rel) or EMOJI_OPT_OUT in head
+        char = None if exempt else has_emoji(text)
         if char is not None:
             line = next(
                 (i + 1 for i, l in enumerate(text.split("\n")) if char in l),

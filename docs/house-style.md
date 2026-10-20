@@ -351,7 +351,22 @@ visible empty box, and it is often the first thing in the document.
 
 ### HS040 — No emoji
 
-**Hard.** No emoji in any tracked text file.
+**Hard.** No emoji in any tracked text file, with two exceptions.
+
+A **test file** is exempt: an emoji inside a test value is data, like a
+password with a lock glyph in it, and removing it would weaken the test.
+
+A file that **says so** is exempt. A Telegram bot whose buttons carry emoji,
+or a message format table, is not a document that forgot the rule: the glyphs
+are what the user sees. The file says so in the open, in its first three
+lines:
+
+```python
+# house-style: emoji-ok
+```
+
+The marker is visible in the file, so a reader can see that the rule was
+considered rather than overlooked.
 
 **Why.** This is the one rule with no exceptions anywhere in the survey. Emoji
 render inconsistently in terminals, in diffs, in issue trackers and in

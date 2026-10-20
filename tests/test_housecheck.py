@@ -338,6 +338,16 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("README.md", "Just some text, no heading.\n" + "x" * 500)
         self.assertIn("HS011", self.repo.codes("hard"))
 
+    def test_a_file_that_says_so_may_keep_its_emoji(self):
+        """A Telegram bot whose buttons carry emoji is not a document that
+        forgot the rule. The file says so in the open."""
+        self.repo.write(
+            "app/buttons.py",
+            "# house-style: emoji-ok\n"
+            "BUTTONS = {'yes': '\\u2705', 'no': '\\u274c'}\n",
+        )
+        self.assertNotIn("HS040", self.repo.codes("hard"))
+
     def test_a_hash_inside_a_code_block_is_not_a_heading(self):
         """A README that shows a shell script is full of "#" comments.
         They are comments, not headings."""
