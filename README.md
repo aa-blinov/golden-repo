@@ -89,6 +89,24 @@ The checker is what makes the standard real. A written standard decays the
 moment it is only prose, because prose fails nothing. A checker fails the
 build, and the build fails before the standard does.
 
+## How a repository depends on it
+
+A repository does not copy the standard. It references the checker as an
+action, at a version:
+
+```yaml
+- uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
+```
+
+Dependabot reads that reference as a dependency and opens the pull request
+that bumps the pin. So the standard is improved in one place, and every
+repository picks the change up on a day you choose, as a diff you read. No
+repository goes red because of a change it did not ask for, and the version a
+repository follows is written in its own workflow file.
+
+This is the same arrangement eslint, ruff and prettier use: a rule set you
+depend on at a version, not one you vendor and forget.
+
 ## The standard in one screen
 
 Every repository carries the same root. Nothing here is optional unless the
@@ -112,7 +130,7 @@ rule says so.
 │   ├── ISSUE_TEMPLATE/  # bug_report.md, feature_request.md, config.yml
 │   ├── PULL_REQUEST_TEMPLATE.md
 │   ├── dependabot.yml
-│   └── workflows/       # ci.yml, release.yml
+│   └── workflows/       # ci.yml, release.yml, house-style.yml
 ├── docs/                # Guides, architecture, screenshots.
 ├── scripts/             # bootstrap, build, release helpers.
 ├── src/                 # Code.

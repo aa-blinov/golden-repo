@@ -137,11 +137,20 @@ The terms, and the text-file conventions. MIT, with the holder named.
 matter more than they look: a form that asks for the environment and the
 expected behaviour turns a bug report into a reproducible one.
 
-The `house-style.yml` workflow checks the standard against the repository. In
-the golden repository it runs the checker from the checkout; in a repository
-that adopts the standard, it runs the checker from
-`aa-blinov/golden-repo`, so that the standard can be updated in one place and
-every repository picks the change up.
+The `house-style.yml` workflow checks the standard against the repository. It
+references the checker as an action at a pinned version:
+
+```yaml
+- uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
+```
+
+Dependabot reads that reference as a dependency, so an improvement to the
+standard arrives in every adopting repository as a pull request that bumps the
+pin. The standard is updated in one place, and no repository goes red because
+of a change it did not ask for.
+
+The version a repository follows is in its workflow file, which is where
+Dependabot can find it.
 
 ### `.impeccable/`
 

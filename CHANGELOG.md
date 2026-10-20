@@ -6,9 +6,16 @@ Entries describe what changed and why it was worth changing. The rules
 themselves live in [docs/house-style.md](docs/house-style.md). This file
 records the changes to the standard.
 
-The standard has a version number. Repositories that adopt it record which
-version they follow in their own `AGENTS.md`, so that a rule change is
-traceable to a point in time.
+The standard has a version number. A repository that adopts it records the
+version it follows in its own workflow file, where the checker is referenced:
+
+```yaml
+- uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
+```
+
+Dependabot reads that reference as a dependency and opens the pull request
+that bumps the pin, so a rule change is traceable to a point in time and
+arrives as a reviewable diff rather than as a red build.
 
 ## 1.0.0 — 2026-10-20
 
@@ -31,6 +38,9 @@ traceable to a point in time.
 - The guides: `docs/house-style.md`, `docs/structure.md`, `docs/writing.md`,
   `docs/migration.md`, `docs/audit.md`.
 - GitHub Actions workflows: `ci.yml`, `release.yml`, `house-style.yml`.
+- The checker as a composite action, `.github/actions/house-style`, so a
+  repository depends on the standard at a pinned version instead of copying
+  it.
 
 ### Notes
 

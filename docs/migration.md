@@ -104,10 +104,20 @@ mkdir -p .github/workflows
 cp ../golden-repo/templates/.github/workflows/house-style.yml .github/workflows/
 ```
 
-The template's workflow checks out the golden repository and runs the
-checker from there, so the standard can be improved in one place and every
-repository picks the change up. A repository that prefers a vendored copy can
-copy `scripts/housecheck.py` instead; it then has to be updated by hand.
+The workflow references the checker at a pinned version:
+
+```yaml
+- uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
+```
+
+That reference is a dependency. Dependabot reads it as one and opens the pull
+request that bumps the pin, so the standard is improved in one place and every
+repository picks the change up as a reviewable diff, on a day you choose. It
+does not arrive as a red build in a repository you did not touch.
+
+A repository that prefers a vendored copy can copy `scripts/housecheck.py`
+instead. It then has to be updated by hand, and it loses the version it
+follows, so the trade is a choice rather than an accident.
 
 The workflow is a hard gate. Every repository that adopts the standard is
 expected to run it on every pull request, because a standard nobody enforces
