@@ -60,6 +60,11 @@ These are the findings to look at first.
 | `wiki-js` | The wiki's pages carry no credentials, but the metadata header is written by the instance, so an edit to it is overwritten on the next sync. |
 | `anki-bot` | The OpenRouter call blocks the event loop, and the quiz session lives in a dict that intercepts every message from the user until the quiz ends. |
 | `petzy` | The rate limits are ten wrong passwords a minute per address, and ten inside fifteen minutes lock that login for fifteen minutes. |
+| `rag` | Two live API keys are committed in the notebooks: a Google GenAI key and an OpenRouter key. Both are in the git history and need rotating. |
+| `flash-bar-delivery` | The Gemini key is inlined into the client bundle by `define` in `vite.config.ts`, so a published build publishes the key. |
+| `the-cuba-times-tgif` | The same, through the same `define` in `vite.config.ts`. |
+| `docs` | The webhook handler in `billing.md` never verifies the Stripe signature: `construct_from` parses the body and nothing else, and the `SignatureVerificationError` branch is dead code. Anyone who can POST to the endpoint can forge `invoice.paid`. |
+| `cbr-currency-bot` | The `httpx.TimeoutException` clause in `app/api/cbr.py` is unreachable, because `TimeoutException` subclasses `RequestError` and the broader clause comes first. |
 
 ## The code is broken
 
@@ -95,6 +100,20 @@ Each of these was reproduced by running it.
 | `my-blog` | `docs/layout-system.md` describes classes the current pages do not use. |
 | `blog` | `docs/layout-system.md` contradicts the current markup, and two version dialogs are imported nowhere. |
 | `roma-stt` | `ConfigStore.Save` drops the configuration keys `AppConfig` does not declare. |
+| `MediaSquash` | The queue deadlocks after the first batch: the lock is held across the run and taken again in the `finally`, and `asyncio.Lock` is not reentrant. |
+| `MediaSquash` | The GPU rewrite runs on every video command with no NVENC check, so on a machine without an NVIDIA card FFmpeg refuses the command and every video job fails. |
+| `MediaSquash` | A cancelled job is recorded as failed, because the terminated process raises into the generic `except`. |
+| `simple-rag` | The indexing button raises `KeyError: 'file'` on the first selected row: the grid's columns were renamed and the code was not. |
+| `simple-rag` | Hybrid search only works in the run that builds the index, because the docstore is empty when the index is loaded from Chroma. |
+| `llm-code-review` | `pyproject.toml` sets `package = false`, so the console script the old README documents is never installed and the documented command fails. |
+| `llm-code-review` | Every error path exits 0, so a failed review and an empty one look the same to a pipeline. |
+| `llm-code-review` | A bad API key produces a report that says nothing was found. |
+| `cli_calendar` | The response body is parsed before the status code is checked, so a non-JSON body escapes the error handler and the CLI prints a traceback. |
+| `cli_calendar` | The process environment is ignored: the configuration comes from the `.env` file only. |
+| `photo-checker` | The exit code is 0 for a failed validation, and the model-download notice goes to stdout in front of the JSON, so piping to `jq` breaks. |
+| `crypto-service` | The exchange endpoint was retired, so both routes answer 503; the parser also never matched the provider's response shape. |
+| `the-cuba-times-tgif` | The application never mounts: `index.html` has no entry point, and a syntax error in a component is masked by that. |
+| `demo-platform` | The Markdown bold never reaches the PDF: the parser hands `**text**` to ReportLab, whose markup is `<b>`. 179 spans print literally. |
 | `roma-stt` | The C# tray rewrites `config.yaml` on every start, with the hotkey it managed to register rather than the one that was asked for. |
 | `gunicorn-stats` | `GUNICORN_WORKERS` defaults to 4 and `GUNICORN_THREADS` to 1; the old table said 2 and 4. |
 | `gunicorn-stats` | The Python floor is 3.8, not 3.6, and `setup-python36.sh` installs Flask 2.3.3 into a 3.6 environment, so pip refuses. |
