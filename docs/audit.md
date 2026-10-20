@@ -1,9 +1,9 @@
 # Audit
 
 Every repository of **aa-blinov** checked against the house standard by
-`scripts/housecheck.py`, the same code that runs in CI. Each
-repository is cloned shallowly and checked as it stands, so a link
-that resolves is a link that resolves.
+`scripts/housecheck.py`, the same code that runs in CI. Each repository is
+cloned shallowly and checked as it stands, so a link that resolves is a link
+that resolves.
 
 | | |
 | --- | --- |
