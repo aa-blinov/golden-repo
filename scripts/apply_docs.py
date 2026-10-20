@@ -206,6 +206,30 @@ def main(argv=None):
             run(["git", "-C", target, "push", "-q", remote,
                  "HEAD:refs/heads/%s" % branch])
 
+        # The adoption pull request, if there is one, is now redundant: the
+        # documents went to the default branch. Leaving it open would invite
+        # a merge that undoes this work.
+        if args.push:
+            existing = run([
+                "gh", "pr", "list", "--repo",
+                "%s/%s" % (args.owner, args.repository),
+                "--state", "open", "--json", "number,title",
+            ], check=False)
+            try:
+                for pull in json.loads(existing):
+                    if pull["title"] == "Adopt the house standard":
+                        run([
+                            "gh", "pr", "close", str(pull["number"]),
+                            "--repo", "%s/%s" % (args.owner, args.repository),
+                            "--comment",
+                            "Closing: the house standard was applied directly "
+                            "to this branch, and the documents were rewritten "
+                            "from the code. This pull request would undo that.",
+                            "--delete-branch",
+                        ], check=False)
+            except ValueError:
+                pass
+
         print("apply_docs: %s — %d file(s) %s" % (
             args.repository, len(changed), "pushed" if args.push else "committed",
         ))
