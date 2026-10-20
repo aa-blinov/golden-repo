@@ -46,34 +46,46 @@ def run(args, cwd=None, check=True, env=None):
 
 
 def copy_documents(docs_dir, target):
-    """Copy the generated files over the ones they replace."""
+    """Copy the generated files over the ones they replace.
+
+    Every file under the collection directory is copied, at the path it
+    has there: a document in docs/ lands in docs/, not in the root. The
+    site folder is left alone, because it has its own rule.
+    """
     changed = []
-    for name in DOCUMENTS:
-        source = os.path.join(docs_dir, name)
-        if not os.path.exists(source):
-            continue
-        destination = os.path.join(target, name)
-        with open(source, "r", errors="replace") as handle:
-            content = handle.read()
-        previous = ""
-        if os.path.exists(destination):
-            with open(destination, "r", errors="replace") as handle:
-                previous = handle.read()
-        if content == previous:
-            continue
-        with open(destination, "w") as handle:
-            handle.write(content)
-        changed.append(name)
+    # The site stays where the repository already keeps it. This is worked
+    # out before anything is copied, because copying a document into docs/
+    # creates that folder, and the repository did not necessarily have one.
+    folders = [
+        folder for folder in ("docs", "site", "website", "web", "landing")
+        if os.path.isdir(os.path.join(target, folder))
+    ]
+    for root, dirs, files in os.walk(docs_dir):
+        dirs[:] = sorted(d for d in dirs if d != "site")
+        for name in sorted(files):
+            source = os.path.join(root, name)
+            relative = os.path.relpath(source, docs_dir)
+            destination = os.path.join(target, relative)
+            with open(source, "r", errors="replace") as handle:
+                content = handle.read()
+            previous = ""
+            if os.path.exists(destination):
+                with open(destination, "r", errors="replace") as handle:
+                    previous = handle.read()
+            if content == previous:
+                continue
+            directory = os.path.dirname(destination)
+            if directory and not os.path.isdir(directory):
+                os.makedirs(directory)
+            with open(destination, "w") as handle:
+                handle.write(content)
+            changed.append(relative.replace(os.sep, "/"))
 
     # The landing site, when the repository has one and a new one was made.
     # The site stays where it is: docs/, site/, website/, web/ or landing/.
     # Moving it would break the link that publishes it.
     site_source = os.path.join(docs_dir, "site")
     if os.path.isdir(site_source):
-        folders = [
-            folder for folder in ("docs", "site", "website", "web", "landing")
-            if os.path.isdir(os.path.join(target, folder))
-        ]
         for name in sorted(os.listdir(site_source)):
             source = os.path.join(site_source, name)
             if not os.path.isfile(source):
