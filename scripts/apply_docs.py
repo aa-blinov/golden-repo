@@ -66,21 +66,31 @@ def copy_documents(docs_dir, target):
         changed.append(name)
 
     # The landing site, when the repository has one and a new one was made.
+    # The site stays where it is: docs/, site/, website/, web/ or landing/.
+    # Moving it would break the link that publishes it.
     site_source = os.path.join(docs_dir, "site")
     if os.path.isdir(site_source):
+        folders = [
+            folder for folder in ("docs", "site", "website", "web", "landing")
+            if os.path.isdir(os.path.join(target, folder))
+        ]
         for name in sorted(os.listdir(site_source)):
             source = os.path.join(site_source, name)
             if not os.path.isfile(source):
                 continue
-            for folder in ("docs", "site", "website", "web", "landing"):
+            with open(source, "r", errors="replace") as handle:
+                content = handle.read()
+            for folder in folders:
                 destination = os.path.join(target, folder, name)
-                if os.path.isdir(os.path.dirname(destination)):
-                    with open(source, "r", errors="replace") as handle:
-                        content = handle.read()
-                    with open(destination, "w") as handle:
-                        handle.write(content)
-                    changed.append("%s/%s" % (folder, name))
-                    break
+                if os.path.exists(destination):
+                    with open(destination, "r", errors="replace") as handle:
+                        previous = handle.read()
+                    if previous == content:
+                        break
+                with open(destination, "w") as handle:
+                    handle.write(content)
+                changed.append("%s/%s" % (folder, name))
+                break
     return changed
 
 

@@ -160,3 +160,115 @@ and fine.
 
 Write the three files into `/tmp/docs/<repository>/` and report what you
 wrote and anything you could not determine from the code.
+
+## The landing site
+
+A repository that publishes a site gets the house site: one `style.css`, one
+`site.js`, and an `index.html` that uses the house class vocabulary.
+
+**Where the site lives.** It is a marketing page, and it is separate from the
+product. In this collection the sites live in `docs/`, `site/`, `website/`,
+`web/` or `landing/`, and each repository keeps the one it has. Do not move a
+site to a different directory.
+
+**What you change.** The HTML: the class names, the section order, the
+structure of the hero. The content: the text, taken from the repository's own
+README and from the code.
+
+**What you do not change.** The images, the fonts, the screenshots. They are
+the repository's own material and they are already right.
+
+**The class vocabulary.** Use these, and no others:
+
+| Class | What it is |
+| --- | --- |
+| `skip-link` | The first element in the body. Goes to `#main`. |
+| `site-header`, `header-inner` | The bar at the top. |
+| `brand`, `brand-mark` | The name, and its mark if it has one. |
+| `site-nav` | The links to the sections. |
+| `header-github` | The link to the repository. |
+| `wrap` | The width limit. Every section is inside one. |
+| `hero`, `hero-copy` | The first section. |
+| `lede` | The paragraph under the `h1`. |
+| `actions`, `button`, `button-ghost` | The calls to action. |
+| `fine` | The small print under the actions. |
+| `section` | Every section after the hero. |
+| `rail` | A row of three or more short items. |
+| `table-wrap`, `shot`, `tag`, `tag-ok`, `tag-warn`, `tag-bad` | Tables, images, status. |
+| `site-footer`, `footer-inner`, `footer-nav` | The bottom. |
+
+A site that invents its own class names is a site that cannot be restyled by
+the next person. If a page genuinely needs a class the vocabulary does not
+have, add it to `style.css` and to this table, so the next site can use it.
+
+**The structure.**
+
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><name>: <the promise></title>
+  <meta name="description" content="<the promise, in a sentence>">
+  <meta name="color-scheme" content="dark light">
+  <meta property="og:title" content="<name>">
+  <meta property="og:description" content="<the promise>">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top"><span><name></span></a>
+      <nav class="site-nav" aria-label="Sections">…</nav>
+      <a class="header-github" href="https://github.com/<owner>/<repo>">GitHub</a>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero wrap" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">…</h1>
+        <p class="lede">…</p>
+        <div class="actions">…</div>
+        <p class="fine">…</p>
+      </div>
+    </section>
+    <section class="section wrap" id="…" aria-labelledby="…-title">
+      <h2 id="…-title">…</h2>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="wrap footer-inner">…</div>
+  </footer>
+  <script src="site.js"></script>
+</body>
+</html>
+```
+
+**The rules.**
+
+- The `h1` is the promise, in one sentence, in the same words as the
+  README's first paragraph. The two pages are the same argument at two
+  lengths.
+- Three to six sections. Each answers a question the reader has.
+- Every `section` has an `id` and an `aria-labelledby` pointing at its own
+  heading. The skip link works.
+- The primary action is a command the reader can paste, not a link to a
+  store page.
+- The footer carries the licence, the source link and the version.
+- The page is in English, like the documents.
+
+**The assets.** `style.css` and `site.js` come from the house template:
+
+- `/Users/justcomex/Documents/pet/golden-repo/templates/site/style.css`
+- `/Users/justcomex/Documents/pet/golden-repo/templates/site/site.js`
+
+Copy them into the site directory as they are, and add to `style.css` only
+the rules the page genuinely needs beyond the vocabulary. Keep those rules
+at the end of the file, under a comment saying what they are for.
+
+**Before you finish.** Open the HTML and check it: every class you used
+exists in `style.css`, every `id` a link points at exists in the page, the
+images resolve, and the page says what the README says.
