@@ -49,21 +49,29 @@ files and template repositories.
 
 ### HS001 — The canonical root file set exists
 
-**Hard.** These files must be present in the root of every repository:
+**Hard.** These files must be present in every repository:
 
+<!-- BEGIN:standard-files -->
 | File | What it carries |
 | --- | --- |
-| `README.md` | The front door. |
-| `AGENTS.md` | Commands, layout, traps, rails. |
-| `PRODUCT.md` | Durable product truth. |
-| `DESIGN.md` | The visual system. |
-| `CHANGELOG.md` | What changed, newest first. |
+| `README.md` | The front door. H1 = product name, then a pitch. |
+| `AGENTS.md` | Commands, layout, traps, rails. For humans and agents alike. |
+| `PRODUCT.md` | Durable product truth. impeccable:product-schema 1. |
+| `DESIGN.md` | Visual system. YAML frontmatter + 8 canonical sections. |
+| `CHANGELOG.md` | Keep a Changelog. Newest first. |
 | `CONTRIBUTING.md` | How to propose a change. |
 | `CODE_OF_CONDUCT.md` | How to behave. |
 | `SECURITY.md` | How to report a vulnerability. |
-| `LICENSE` | The terms. |
-| `.gitignore` | What must not be committed. |
-| `.editorconfig` | How text files are formatted. |
+| `LICENSE` | MIT, © Alexander Blinov. |
+| `.editorconfig` | Charset, indentation, final newline. |
+| `.gitignore` | What must never be committed. |
+| `.github/workflows/ci.yml` | Install, test, build. |
+| `.github/workflows/house-style.yml` | The standard, enforced. |
+| `.github/ISSUE_TEMPLATE/bug_report.md` | What happens, what was expected, how to reproduce. |
+| `.impeccable/config.json` | Workflow settings, e.g. buildPath. |
+| `.impeccable/design.json` | The design sidecar: ramps, motion, components. |
+| `docs/README.md` | Index of the documents. |
+<!-- END:standard-files -->
 
 **Why.** The point of the standard is that a reader who learns one repository
 has learned all of them. The file set is the part of that which can be checked
@@ -78,15 +86,19 @@ a reporter to go. These are GitHub's own mechanisms, and they are free.
 
 **Hard.** These directories must be present:
 
+<!-- BEGIN:standard-directories -->
 | Directory | What goes in it |
 | --- | --- |
+| `.github/` | GitHub's own directory: workflows, forms, templates. |
 | `.github/workflows/` | CI, release, and the house-style check. |
 | `.github/ISSUE_TEMPLATE/` | Issue forms. |
 | `.impeccable/` | The design sidecar and its config. |
 | `docs/` | Guides, architecture, screenshots. |
+| `docs/screenshots/` | Images referenced from the README. |
 | `scripts/` | Everything executable that is not source. |
 | `src/` | The code. |
 | `tests/` | The tests. |
+<!-- END:standard-directories -->
 
 **Why.** Same reason as HS001, for the parts of a repository that are
 directories.

@@ -1,0 +1,121 @@
+{
+  "$comment": "The house standard, as data. This file is the single source of truth for what a repository must contain. The checker reads it, the scaffolder builds from it, the documentation is generated from it, and a test keeps the three in agreement. Where this file and the prose disagree, this file is the standard and the prose is a bug.",
+  "$version_note": "Bump the version when the canonical file set or the meaning of a rule changes. A repository records the version it follows in the tag of the action it references.",
+  "version": "1.0.3",
+
+  "root": {
+    "$comment": "Every file a repository carries. 'required' says whether the checker demands it. The comment is the one line that describes the file in the canonical tree.",
+    "files": [
+      { "path": "README.md", "required": true, "comment": "The front door. H1 = product name, then a pitch." },
+      { "path": "AGENTS.md", "required": true, "comment": "Commands, layout, traps, rails. For humans and agents alike." },
+      { "path": "PRODUCT.md", "required": true, "comment": "Durable product truth. impeccable:product-schema 1." },
+      { "path": "DESIGN.md", "required": true, "comment": "Visual system. YAML frontmatter + 8 canonical sections." },
+      { "path": "CHANGELOG.md", "required": true, "comment": "Keep a Changelog. Newest first." },
+      { "path": "CONTRIBUTING.md", "required": true, "comment": "How to propose a change." },
+      { "path": "CODE_OF_CONDUCT.md", "required": true, "comment": "How to behave." },
+      { "path": "SECURITY.md", "required": true, "comment": "How to report a vulnerability." },
+      { "path": "LICENSE", "required": true, "comment": "MIT, © Alexander Blinov." },
+      { "path": ".editorconfig", "required": true, "comment": "Charset, indentation, final newline." },
+      { "path": ".gitignore", "required": true, "comment": "What must never be committed." },
+      { "path": ".gitattributes", "required": false, "comment": "Line endings, binary files, diff behaviour." },
+
+      { "path": ".github/PULL_REQUEST_TEMPLATE.md", "required": false, "comment": "What a pull request has to say." },
+      { "path": ".github/dependabot.yml", "required": false, "comment": "Dependency updates, grouped." },
+      { "path": ".github/workflows/ci.yml", "required": true, "comment": "Install, test, build." },
+      { "path": ".github/workflows/release.yml", "required": false, "comment": "Tag-triggered release." },
+      { "path": ".github/workflows/house-style.yml", "required": true, "comment": "The standard, enforced." },
+      { "path": ".github/ISSUE_TEMPLATE/bug_report.md", "required": true, "comment": "What happens, what was expected, how to reproduce." },
+      { "path": ".github/ISSUE_TEMPLATE/feature_request.md", "required": false, "comment": "The problem, the outcome, the workflow." },
+      { "path": ".github/ISSUE_TEMPLATE/config.yml", "required": false, "comment": "Blank issues off, contact links on." },
+
+      { "path": ".impeccable/config.json", "required": true, "comment": "Workflow settings, e.g. buildPath." },
+      { "path": ".impeccable/design.json", "required": true, "comment": "The design sidecar: ramps, motion, components." },
+
+      { "path": "docs/README.md", "required": true, "comment": "Index of the documents." },
+      { "path": "docs/architecture.md", "required": false, "comment": "How it is put together, and why." },
+      { "path": "docs/screenshots/README.md", "required": false, "comment": "Images referenced from the README." }
+    ],
+    "directories": [
+      { "path": ".github", "comment": "GitHub's own directory: workflows, forms, templates." },
+      { "path": ".github/workflows", "comment": "CI, release, and the house-style check." },
+      { "path": ".github/ISSUE_TEMPLATE", "comment": "Issue forms." },
+      { "path": ".impeccable", "comment": "The design sidecar and its config." },
+      { "path": "docs", "comment": "Guides, architecture, screenshots." },
+      { "path": "docs/screenshots", "comment": "Images referenced from the README." },
+      { "path": "scripts", "comment": "Everything executable that is not source." },
+      { "path": "src", "comment": "The code." },
+      { "path": "tests", "comment": "The tests." }
+    ]
+  },
+
+  "readme": {
+    "$comment": "The four questions a reader has, in the order they ask them. A heading matches when its normalised text contains one of the keywords. The keywords cover English and Russian, because the section is the point and the wording is the project's.",
+    "sections": [
+      {
+        "key": "install",
+        "label": "install",
+        "comment": "How to run it. The command first, prose after.",
+        "keywords": [
+          "install", "установк", "quick start", "быстрый старт", "getting started",
+          "начать", "первый запуск", "start here", "запуск"
+        ]
+      },
+      {
+        "key": "what it does",
+        "label": "what it does",
+        "comment": "The capabilities, as a list.",
+        "keywords": [
+          "what it does", "what you can do", "что внутри", "что делает", "что умеет",
+          "возможности", "features", "как это работает", "how it works",
+          "интерфейс", "interface", "usage", "использование", "о проекте",
+          "what is", "about"
+        ]
+      },
+      {
+        "key": "development",
+        "label": "development",
+        "comment": "How to work on the code.",
+        "keywords": [
+          "development", "разработка", "contributing", "contribute", "сборка",
+          "build", "from source", "из исходников", "developer", "для разработчиков"
+        ]
+      },
+      {
+        "key": "license",
+        "label": "license",
+        "comment": "The terms, and a link to the file.",
+        "keywords": ["license", "лиценз", "licence"]
+      }
+    ]
+  },
+
+  "product": {
+    "$comment": "The ten questions a product has to answer before it can be designed, built, or handed to someone else. The order is fixed: the later sections depend on the earlier ones.",
+    "sections": [
+      { "key": "platform", "label": "Platform", "comment": "web, ios, android or adaptive." },
+      { "key": "users", "label": "Users", "comment": "Who it is for, and the job they are doing." },
+      { "key": "purpose", "label": "Product Purpose", "comment": "What it does and what success means." },
+      { "key": "positioning", "label": "Positioning", "comment": "What a neighbour could not copy." },
+      { "key": "context", "label": "Operating Context", "comment": "The workflows that are factual parts of using it." },
+      { "key": "constraints", "label": "Capabilities and Constraints", "comment": "What it may not do." },
+      { "key": "brand", "label": "Brand Commitments", "comment": "What has to survive a redesign." },
+      { "key": "evidence", "label": "Evidence on Hand", "comment": "What is real, and what is not." },
+      { "key": "principles", "label": "Product Principles", "comment": "The decisions a later session is measured against." },
+      { "key": "accessibility", "label": "Accessibility & Inclusion", "comment": "The known user needs." }
+    ]
+  },
+
+  "design": {
+    "$comment": "The eight canonical sections of the DESIGN.md format. A section may be omitted; the ones that are present keep this order, because tooling parses these headers by exact name.",
+    "sections": [
+      { "key": "overview", "label": "Overview" },
+      { "key": "colors", "label": "Colors" },
+      { "key": "typography", "label": "Typography" },
+      { "key": "layout", "label": "Layout" },
+      { "key": "elevation", "label": "Elevation & Depth" },
+      { "key": "shapes", "label": "Shapes" },
+      { "key": "components", "label": "Components" },
+      { "key": "dos", "label": "Do's and Don'ts" }
+    ]
+  }
+}

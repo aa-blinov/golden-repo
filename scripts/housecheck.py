@@ -25,84 +25,75 @@ import sys
 # The standard
 # --------------------------------------------------------------------------
 
-# The version of the standard this checker implements. A repository that
-# depends on the standard at a tag gets the checker from that tag, so this
-# value and the tag cannot drift apart.
-STANDARD_VERSION = "1.0.1"
+# The standard, as data. standard.json is the single source of truth for
+# what a repository must contain; the checker reads it rather than repeating
+# it, so a rule is written in one place.
+#
+# A missing or malformed manifest is fatal. A checker that silently skipped
+# the rules it could not read would report a clean repository and be wrong.
 
-REQUIRED_ROOT_FILES = [
-    "README.md",
-    "AGENTS.md",
-    "PRODUCT.md",
-    "DESIGN.md",
-    "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "CODE_OF_CONDUCT.md",
-    "SECURITY.md",
-    "LICENSE",
-    ".gitignore",
-    ".editorconfig",
-]
+def manifest_path():
+    """Where standard.json lives, relative to this script."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    for candidate in (
+        os.path.join(here, "..", "standard.json"),
+        os.path.join(here, "standard.json"),
+    ):
+        if os.path.exists(candidate):
+            return os.path.abspath(candidate)
+    return None
 
-REQUIRED_DIRS = [
-    ".github/workflows",
-    ".github/ISSUE_TEMPLATE",
-    ".impeccable",
-    "docs",
-    "scripts",
-    "src",
-    "tests",
-]
 
-PRODUCT_SECTIONS = [
-    "Platform",
-    "Users",
-    "Product Purpose",
-    "Positioning",
-    "Operating Context",
-    "Capabilities and Constraints",
-    "Brand Commitments",
-    "Evidence on Hand",
-    "Product Principles",
-    "Accessibility & Inclusion",
-]
+def load_manifest():
+    """Read standard.json, or explain why it cannot be read."""
+    path = manifest_path()
+    if path is None:
+        raise RuntimeError(
+            "housecheck: standard.json is missing. It holds the rules this "
+            "checker enforces, and the checker does not guess them. It sits "
+            "next to the standard, in the repository root."
+        )
+    try:
+        with open(path) as handle:
+            manifest = json.load(handle)
+    except ValueError as error:
+        raise RuntimeError(
+            "housecheck: %s is not valid JSON: %s" % (path, error)
+        )
+    except IOError as error:
+        raise RuntimeError("housecheck: cannot read %s: %s" % (path, error))
+    for key in ("root", "readme", "product", "design"):
+        if key not in manifest:
+            raise RuntimeError(
+                "housecheck: %s has no '%s' section." % (path, key)
+            )
+    return manifest
 
-DESIGN_SECTIONS = [
-    "Overview",
-    "Colors",
-    "Typography",
-    "Layout",
-    "Elevation & Depth",
-    "Shapes",
-    "Components",
-    "Do's and Don'ts",
+
+MANIFEST = load_manifest()
+STANDARD_VERSION = MANIFEST.get("version", "unknown")
+
+# Every file the manifest marks as required, at whatever level it sits.
+# The list is one list, so a file cannot be required in the checker and
+# missing from the tree, or the other way round.
+REQUIRED_FILES = [
+    entry["path"] for entry in MANIFEST["root"]["files"]
+    if entry.get("required")
 ]
+# Every file the standard knows about, required or not. The scaffolder builds
+# from this list, and the tests build their fixture from it.
+MANIFEST_FILES = [entry["path"] for entry in MANIFEST["root"]["files"]]
+REQUIRED_DIRS = [entry["path"] for entry in MANIFEST["root"]["directories"]]
+
+PRODUCT_SECTIONS = [entry["label"] for entry in MANIFEST["product"]["sections"]]
+DESIGN_SECTIONS = [entry["label"] for entry in MANIFEST["design"]["sections"]]
 
 # A README must answer these four questions. The keywords are matched against
 # the normalised heading text, so a project in Russian passes with Russian
 # headings. The intent is the section, not the wording.
 README_SECTIONS = [
-    (
-        "install",
-        ["install", "установк", "quick start", "быстрый старт", "getting started",
-         "начать", "первый запуск", "start here", "запуск"],
-    ),
-    (
-        "what it does",
-        ["what it does", "what you can do", "что внутри", "что делает", "что умеет",
-         "возможности", "features", "как это работает", "how it works",
-         "интерфейс", "interface", "usage", "использование", "о проекте",
-         "what is", "about"],
-    ),
-    (
-        "development",
-        ["development", "разработка", "contributing", "contribute", "сборка",
-         "build", "from source", "из исходников", "developer", "для разработчиков"],
-    ),
-    (
-        "license",
-        ["license", "лиценз", "licence"],
-    ),
+    (entry["label"], list(entry["keywords"]))
+    for entry in MANIFEST["readme"]["sections"]
 ]
 
 # Recognisable licence identifiers, matched against the first line of the
@@ -464,9 +455,9 @@ def has_emoji(text):
 
 def check_root_files(repo):
     findings = []
-    for rel in REQUIRED_ROOT_FILES:
+    for rel in REQUIRED_FILES:
         if not repo.exists(rel):
-            findings.append(hard("HS001", rel, "%s is missing from the root" % rel))
+            findings.append(hard("HS001", rel, "%s is missing" % rel))
     return findings
 
 

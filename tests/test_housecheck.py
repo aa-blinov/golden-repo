@@ -135,7 +135,13 @@ Something.
 
 class RepoFixture(object):
     """Builds a repository that passes the checker, so that each test can
-    break exactly one thing and know that the finding is its own."""
+    break exactly one thing and know that the finding is its own.
+
+    The fixture is built from standard.json, not from a list written out
+    here. A rule added to the standard therefore arrives in the tests
+    automatically, and the fixture cannot drift away from the standard
+    without a test failing.
+    """
 
     def __init__(self):
         self.root = tempfile.mkdtemp(prefix="housecheck-test-")
@@ -163,30 +169,50 @@ class RepoFixture(object):
             os.remove(path)
 
     def build_valid(self):
+        # The files whose content a rule actually reads.
         self.write("README.md", VALID_README)
         self.write("AGENTS.md", "# AGENTS\n\n" + ("x" * 300) + "\n")
         self.write("PRODUCT.md", VALID_PRODUCT)
         self.write("DESIGN.md", VALID_DESIGN)
         self.write("CHANGELOG.md", "# Changelog\n\n## 0.1.0 — 2026-01-01\n\n- First.\n")
-        self.write("CONTRIBUTING.md", "# Contributing\n")
-        self.write("CODE_OF_CONDUCT.md", "# Code of Conduct\n")
-        self.write("SECURITY.md", "# Security Policy\n")
         self.write(
             "LICENSE",
             "MIT License\n\nCopyright (c) 2026 Alexander Blinov\n\n"
             "Permission is hereby granted, free of charge...\n",
         )
-        self.write(".gitignore", "node_modules/\n")
-        self.write(".editorconfig", "root = true\n")
-        self.write(".github/workflows/ci.yml", "on:\n  pull_request:\n")
-        self.write(".github/ISSUE_TEMPLATE/bug_report.md", "# Bug\n")
-        self.write(".impeccable/design.json", '{"schemaVersion": 2, "title": "x"}\n')
-        self.write("docs/README.md", "# Docs\n\nSee [architecture](architecture.md).\n")
-        self.write("docs/architecture.md", "# Architecture\n")
-        for directory in (".github/workflows", ".github/ISSUE_TEMPLATE",
-                          ".impeccable", "docs", "scripts", "src", "tests"):
-            self.mkdir(directory)
+
+        # Everything else the standard demands, with the content its rule
+        # needs rather than the content it would really have.
+        for path in housecheck.MANIFEST_FILES:
+            if os.path.exists(os.path.join(self.root, path)):
+                continue
+            self.write(path, self.placeholder_for(path))
+
+        for path in housecheck.REQUIRED_DIRS:
+            self.mkdir(path)
+
         return self
+
+    def placeholder_for(self, path):
+        """The content a placeholder needs for the rules to pass."""
+        if path.endswith(".github/workflows/ci.yml") or \
+                path.endswith(".github/workflows/house-style.yml"):
+            return "on:\n  pull_request:\n"
+        if path.endswith("design.json"):
+            return '{"schemaVersion": 2, "title": "Example"}\n'
+        if path.endswith(".impeccable/config.json"):
+            return '{"buildPath": "code"}\n'
+        if path.endswith("docs/README.md"):
+            return "# Docs\n\nSee [architecture](architecture.md).\n"
+        if path.endswith("docs/architecture.md"):
+            return "# Architecture\n"
+        if path.endswith(".gitignore"):
+            return "node_modules/\n"
+        if path.endswith(".editorconfig"):
+            return "root = true\n"
+        if path.endswith("dependabot.yml"):
+            return "version: 2\nupdates: []\n"
+        return "# %s\n" % os.path.basename(path)
 
     def check(self, **kwargs):
         return housecheck.run(housecheck.Repo(self.root), **kwargs)
@@ -222,11 +248,19 @@ class CheckerTestCase(unittest.TestCase):
         self.assertIn("HS002", self.repo.codes("hard"))
 
     def test_a_missing_ci_workflow_is_reported(self):
+        # The manifest names the workflows a repository carries, so removing
+        # one is a missing file. Removing all of them leaves a repository
+        # whose CI never runs.
         self.repo.remove(".github/workflows/ci.yml")
+        self.assertIn("HS001", self.repo.codes("hard"))
+        self.repo.remove(".github/workflows/house-style.yml")
         self.assertIn("HS005", self.repo.codes("hard"))
 
     def test_an_empty_issue_template_directory_is_reported(self):
         self.repo.remove(".github/ISSUE_TEMPLATE/bug_report.md")
+        self.assertIn("HS001", self.repo.codes("hard"))
+        for name in ("feature_request.md", "config.yml"):
+            self.repo.remove(".github/ISSUE_TEMPLATE/" + name)
         self.assertIn("HS006", self.repo.codes("hard"))
 
     def test_an_empty_gitignore_is_soft(self):

@@ -5,48 +5,43 @@ The canonical tree, and what each file is for.
 Read this when you need to know what a file means, not what the rules are —
 those are in [`house-style.md`](house-style.md).
 
-```
+
 <repo>/
-├── README.md               # The front door. First thing a visitor reads.
-├── AGENTS.md               # Re-entry surface. Commands, layout, traps, rails.
-├── PRODUCT.md              # Durable product truth. What the product is.
-├── DESIGN.md               # The visual system. Tokens, then how to apply them.
-├── CHANGELOG.md            # What changed, newest first, and why it mattered.
-├── CONTRIBUTING.md         # How to propose a change.
-├── CODE_OF_CONDUCT.md     # How to behave.
-├── SECURITY.md             # How to report a vulnerability, privately.
-├── LICENSE                 # MIT, © Alexander Blinov.
-├── .editorconfig           # Charset, indentation, final newline.
-├── .gitignore              # What must never be committed.
-├── .gitattributes          # Line endings, binary files, diff behaviour.
-│
-├── .impeccable/
-│   ├── config.json         # Workflow settings, e.g. buildPath.
-│   └── design.json         # The design sidecar: ramps, motion, components.
-│
-├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   │   ├── bug_report.md   # What happens, what was expected, how to reproduce.
-│   │   ├── feature_request.md
-│   │   └── config.yml      # Blank issues off, contact links on.
-│   ├── PULL_REQUEST_TEMPLATE.md
-│   ├── dependabot.yml
-│   └── workflows/
-│       ├── ci.yml          # Install, test, build.
-│       ├── release.yml     # Tag-triggered release.
-│       └── house-style.yml # The standard, enforced.
-│
-├── docs/
-│   ├── README.md           # Index of the documents.
-│   ├── architecture.md     # How it is put together, and why.
-│   └── screenshots/        # Images referenced from the README.
-│
-├── scripts/                # Everything executable that is not source.
-├── src/                    # The code.
-├── tests/                  # The tests.
-├── assets/                 # Icons, fonts, static files. If the project has any.
-└── ...                     # Whatever else the project needs.
-```
+├── .editorconfig       # Charset, indentation, final newline.
+├── .gitattributes      # Line endings, binary files, diff behaviour.
+├── .gitignore          # What must never be committed.
+├── AGENTS.md           # Commands, layout, traps, rails. For humans and agents alike.
+├── CHANGELOG.md        # Keep a Changelog. Newest first.
+├── CODE_OF_CONDUCT.md  # How to behave.
+├── CONTRIBUTING.md     # How to propose a change.
+├── DESIGN.md           # Visual system. YAML frontmatter + 8 canonical sections.
+├── LICENSE             # MIT, © Alexander Blinov.
+├── PRODUCT.md          # Durable product truth. impeccable:product-schema 1.
+├── README.md           # The front door. H1 = product name, then a pitch.
+├── SECURITY.md         # How to report a vulnerability.
+├── .github/            # GitHub's own directory: workflows, forms, templates.
+│   ├── dependabot.yml            # Dependency updates, grouped.
+│   ├── PULL_REQUEST_TEMPLATE.md  # What a pull request has to say.
+│   ├── ISSUE_TEMPLATE/           # Issue forms.
+│   │   ├── bug_report.md       # What happens, what was expected, how to reproduce.
+│   │   ├── config.yml          # Blank issues off, contact links on.
+│   │   └── feature_request.md  # The problem, the outcome, the workflow.
+│   └── workflows/                # CI, release, and the house-style check.
+│       ├── ci.yml           # Install, test, build.
+│       ├── house-style.yml  # The standard, enforced.
+│       └── release.yml      # Tag-triggered release.
+├── .impeccable/        # The design sidecar and its config.
+│   ├── config.json  # Workflow settings, e.g. buildPath.
+│   └── design.json  # The design sidecar: ramps, motion, components.
+├── docs/               # Guides, architecture, screenshots.
+│   ├── architecture.md  # How it is put together, and why.
+│   ├── README.md        # Index of the documents.
+│   └── screenshots/     # Images referenced from the README.
+│       └── README.md  # Images referenced from the README.
+├── scripts/            # Everything executable that is not source.
+├── src/                # The code.
+└── tests/              # The tests.
+<!-- END:standard-tree -->
 
 ## The root files
 
