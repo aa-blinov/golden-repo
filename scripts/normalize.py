@@ -30,8 +30,11 @@ SKIP_DIRS = {
     ".tox", ".gradle", ".idea", ".cache", "third_party", "third-party",
 }
 
+# An SVG is not in this list: it is XML, it is text, and the checker reads it
+# as text, so the two have to agree. The null-byte check in is_text catches
+# the rare binary one.
 BINARY_EXTENSIONS = {
-    ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".icns", ".svg",
+    ".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".icns",
     ".pdf", ".zip", ".gz", ".bz2", ".xz", ".7z", ".woff", ".woff2", ".ttf",
     ".otf", ".eot", ".mp3", ".mp4", ".mov", ".wav", ".ogg", ".webm",
     ".pyc", ".so", ".dylib", ".dll", ".exe", ".bin", ".db", ".sqlite",
