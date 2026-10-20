@@ -124,6 +124,9 @@ class TemplateAgreementTest(unittest.TestCase):
         """A template the standard does not mention is a file that reaches a
         new repository without anyone having decided it should."""
         known = set(housecheck.MANIFEST_FILES)
+        known.update(
+            entry["path"] for entry in manifest().get("site", {}).get("files", [])
+        )
         for rel in template_files():
             self.assertIn(
                 rel, known,
