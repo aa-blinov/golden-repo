@@ -98,17 +98,24 @@ class CheckerAgreementTest(unittest.TestCase):
 class TemplateAgreementTest(unittest.TestCase):
     def test_every_file_the_standard_demands_has_a_template(self):
         """A repository that adopts the standard gets its starting files
-        from templates/. A file the standard demands with no template behind
-        it is a file the owner has to write from nothing."""
+        from templates/. A file the standard knows with no template behind it
+        is a file the owner has to write from nothing."""
+        for entry in manifest()["root"]["files"]:
+            path = entry["path"]
+            template = os.path.join(TEMPLATES, path)
+            self.assertTrue(
+                os.path.exists(template),
+                "the standard knows %s and templates/%s does not exist"
+                % (path, path),
+            )
+
+    def test_every_required_file_has_a_template(self):
         for entry in manifest()["root"]["files"]:
             if not entry.get("required"):
                 continue
             path = entry["path"]
-            if "/" not in path:
-                continue
-            template = os.path.join(TEMPLATES, path)
             self.assertTrue(
-                os.path.exists(template),
+                os.path.exists(os.path.join(TEMPLATES, path)),
                 "the standard demands %s and templates/%s does not exist"
                 % (path, path),
             )

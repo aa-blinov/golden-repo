@@ -659,8 +659,11 @@ def check_readme_structure(repo):
         findings.append(hard("HS010", "README.md", "README.md is not a readable text file"))
         return findings
 
-    lines = text.split("\n")
+    # The headings are read from the body, not from the raw text. A "#"
+    # comment inside a fenced code block is a comment, and a README that
+    # shows a shell script is full of them.
     body = strip_html_comments(strip_code_blocks(text))
+    lines = body.split("\n")
 
     # HS011 — exactly one H1, and it opens the file.
     h1s = [(i + 1, line) for i, line in enumerate(lines)

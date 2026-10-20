@@ -69,8 +69,9 @@ def values_for(target, overrides=None):
 def file_plan(data):
     """(path, template path) for every file the standard knows about.
 
-    A file with a template comes from it. A file without one is created as
-    an empty placeholder, because a directory cannot survive a clone.
+    A file with a template comes from it. A file without one is created
+    empty: the standard demands the path, and the project writes the
+    content.
     """
     plan = []
     for entry in data["root"]["files"]:
@@ -103,13 +104,8 @@ def apply_plan(data, target, values, only_missing):
             skipped.append(path)
             continue
         if template is None:
-            # A directory the standard requires and git cannot keep empty.
-            if not os.path.exists(full):
-                os.makedirs(full)
-                gitkeep = os.path.join(full, ".gitkeep")
-                with open(gitkeep, "w"):
-                    pass
-                added.append(path)
+            write_file(target, path, "")
+            added.append(path)
             continue
         with open(template) as handle:
             content = substitute(handle.read(), values)
@@ -119,10 +115,18 @@ def apply_plan(data, target, values, only_missing):
 
 
 def ensure_directories(data, target):
+    """Create the directories the standard requires.
+
+    A directory git cannot keep empty needs a file in it, or it disappears
+    from the next clone and the checker reports it missing.
+    """
     for entry in data["root"]["directories"]:
         path = os.path.join(target, entry["path"])
         if not os.path.isdir(path):
             os.makedirs(path)
+        if not os.listdir(path):
+            with open(os.path.join(path, ".gitkeep"), "w"):
+                pass
 
 
 def main(argv=None):

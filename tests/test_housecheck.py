@@ -291,6 +291,24 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("README.md", "Just some text, no heading.\n" + "x" * 500)
         self.assertIn("HS011", self.repo.codes("hard"))
 
+    def test_a_hash_inside_a_code_block_is_not_a_heading(self):
+        """A README that shows a shell script is full of "#" comments.
+        They are comments, not headings."""
+        with_script = (
+            "# Example\n\n"
+            "## Quick start\n\n"
+            "```bash\n"
+            "# install the thing\n"
+            "# then run it\n"
+            "make install\n"
+            "```\n\n"
+            "## What it does\n\n- A thing.\n\n"
+            "## Development\n\n```bash\nmake test\n```\n\n"
+            "## License\n\n[MIT](LICENSE)\n"
+        )
+        self.repo.write("README.md", with_script)
+        self.assertNotIn("HS011", self.repo.codes("hard"))
+
     def test_a_readme_with_two_h1s_is_reported(self):
         self.repo.write("README.md", "# One\n\ntext\n\n# Two\n\ntext\n")
         self.assertIn("HS011", self.repo.codes("hard"))
