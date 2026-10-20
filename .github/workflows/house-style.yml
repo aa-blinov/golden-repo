@@ -3,6 +3,9 @@ name: house style
 # The standard enforced against itself. A rule that the golden repository
 # cannot satisfy is a rule that is wrong, so this workflow is the earliest
 # signal that a change to the standard needs rethinking.
+#
+# It runs the same composite action that every adopting repository uses, so
+# the standard is checked by the mechanism it ships.
 
 on:
   push:
@@ -24,12 +27,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/house-style
         with:
-          python-version: '3.12'
-
-      - name: Check the repository against the standard
-        run: python3 scripts/housecheck.py --strict .
+          report: house-style.json
 
       - name: Unit tests for the checker
         run: python3 -m unittest discover -s tests -v
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: house-style-report
+          path: house-style.json
