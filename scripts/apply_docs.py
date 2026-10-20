@@ -60,6 +60,22 @@ def copy_documents(docs_dir, target):
         folder for folder in ("docs", "site", "website", "web", "landing")
         if os.path.isdir(os.path.join(target, folder))
     ]
+    # A repository can have several of these folders. The landing page is
+    # the one whose index.html is a document, with a doctype and a <html>
+    # element. The index of a documentation folder is a Markdown-ish file
+    # that happens to be called index.html, and the site does not go there.
+    landing = None
+    for folder in folders:
+        index = os.path.join(target, folder, "index.html")
+        if not os.path.exists(index):
+            continue
+        with open(index, "r", errors="replace") as handle:
+            head = handle.read(400).lower()
+        if "<!doctype html" in head or "<html" in head:
+            landing = folder
+            break
+    if landing:
+        folders = [landing]
     for root, dirs, files in os.walk(docs_dir):
         dirs[:] = sorted(d for d in dirs if d != "site")
         for name in sorted(files):
@@ -85,7 +101,7 @@ def copy_documents(docs_dir, target):
     # The site stays where it is: docs/, site/, website/, web/ or landing/.
     # Moving it would break the link that publishes it.
     site_source = os.path.join(docs_dir, "site")
-    if os.path.isdir(site_source):
+    if os.path.isdir(site_source) and folders:
         for name in sorted(os.listdir(site_source)):
             source = os.path.join(site_source, name)
             if not os.path.isfile(source):
