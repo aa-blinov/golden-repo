@@ -15,6 +15,27 @@ that resolves is a link that resolves.
 A hard failure is a rule the repository breaks. A soft finding is a
 preference, reported but not enforced.
 
+## What has been done
+
+Every repository in the collection has an open pull request that
+adopts the standard. The pull request adds the files and touches
+nothing that already existed.
+
+| | |
+| --- | ---: |
+| Repositories with an adoption pull request | 71 |
+| Exempt | 11 |
+
+The exemptions are the standard itself, the test bench, the archived
+fork, and the sync sandboxes. A rule that cannot be applied
+everywhere is not a rule.
+
+The house-style check on those pull requests is red, and that is the
+standard working: `PRODUCT.md` and the other files arrive as
+starting points, and the product truth cannot be defaulted. A
+repository's own CI stays green, because the pull request changes
+nothing that already existed.
+
 ## Which rules are broken most
 
 | Rule | Hard | Soft | Repositories affected |
