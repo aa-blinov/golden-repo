@@ -106,6 +106,25 @@ def copy_documents(docs_dir, target):
     return changed
 
 
+def is_excluded(repository):
+    """Whether the standard must not touch this repository.
+
+    The exclusion list is the owner's decision, and it is a decision about
+    content, not about a name: a repository that holds EORA's work is not
+    the owner's personal project, whatever it is called. The applier
+    refuses them, rather than trusting the caller to remember.
+    """
+    path = os.path.join(ROOT, "adoption-targets.json")
+    if not os.path.exists(path):
+        return False
+    try:
+        with open(path) as handle:
+            targets = json.load(handle)
+    except (IOError, ValueError):
+        return False
+    return repository in targets.get("excluded", {})
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="apply_docs")
     parser.add_argument("repository")
@@ -116,6 +135,11 @@ def main(argv=None):
     parser.add_argument("--skip-checks", action="store_true")
     parser.add_argument("--skip-normalize", action="store_true")
     args = parser.parse_args(argv)
+
+    if is_excluded(args.repository):
+        print("apply_docs: %s is excluded from the standard" % args.repository)
+        print("           The reason is in adoption-targets.json.")
+        return 2
 
     docs_dir = os.path.abspath(args.docs)
     if not os.path.isdir(docs_dir):

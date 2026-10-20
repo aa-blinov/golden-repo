@@ -376,6 +376,15 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("docs/rules.md", "Suits: \u2660 \u2665 \u2666 \u2663\n")
         self.assertNotIn("HS040", self.repo.codes("hard"))
 
+    def test_a_route_in_the_products_own_content_is_not_a_finding(self):
+        """A blog post is a page of the site. A link to a route on that site
+        is what the post is for."""
+        self.repo.write(
+            "src/content/blog/one.md",
+            "See [the other post](/blog/blog/two/).\n",
+        )
+        self.assertNotIn("HS030", self.repo.codes("soft"))
+
     def test_a_footnote_is_not_a_reference_link(self):
         """A footnote definition carries prose, not a destination. A document
         full of footnotes is not a document full of broken links."""

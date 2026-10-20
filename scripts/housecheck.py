@@ -976,11 +976,16 @@ def check_links(repo):
             if resolved is None:
                 continue
             if resolved == "absolute":
-                findings.append(soft(
-                    "HS030", rel,
-                    "link '%s' points outside the repository and will not "
-                    "resolve for anyone else" % target,
-                ))
+                # A link that starts with "/" is a route on the site, and a
+                # route resolves for the site's visitors. It does not resolve
+                # for a reader on GitHub, which is what the rule is about,
+                # and the product's own content is never read there.
+                if not is_site_content(rel):
+                    findings.append(soft(
+                        "HS030", rel,
+                        "link '%s' points outside the repository and will not "
+                        "resolve for anyone else" % target,
+                    ))
                 continue
             if not repo.exists(resolved):
                 if is_image:
@@ -994,6 +999,23 @@ def check_links(repo):
                         "link '%s' does not resolve to a file in the repository" % target,
                     ))
     return findings
+
+
+SITE_CONTENT = (
+    "src/content/", "content/", "src/pages/", "src/routes/", "src/app/",
+    "public/", "static/", "app/pages/", "pages/",
+)
+
+
+def is_site_content(rel):
+    """Whether this file is the product's content rather than documentation.
+
+    A blog post is a page of the site. A link to a route on that site is
+    what the post is for, and the file is never read as Markdown on GitHub,
+    so the rule about a link that resolves only on the site does not apply
+    to it.
+    """
+    return rel.startswith(SITE_CONTENT)
 
 
 def governs_text(rel):
