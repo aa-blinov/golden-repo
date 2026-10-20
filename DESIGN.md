@@ -109,9 +109,9 @@ components:
 
 The house standard is a reference card: a single printed sheet, kept in the
 drawer above the bench, that says exactly how the parts fit together and
-nothing more. It is not a brand. It does not have a logo, a campaign, or a
-personality that it wants to perform. What it has is the authority of a
-correct document — every line is there because something failed without it.
+nothing more. It has no logo, no campaign, and no personality that it wants to
+perform. What it has is the authority of a correct document: every line is
+there because something failed without it.
 
 The visual language follows from that. The reference card is printed on warm
 paper, in ink, in one typewriter face. It is quiet. Nothing glows, nothing
@@ -305,8 +305,8 @@ with no border, and everything else is a text button with no fill.
 ### Navigation
 
 Navigation in a document is a table of contents at the top, built from the
-headings in order. It is a list of links, not a menu, and it is not styled
-differently from the body text except for a slightly brighter tone.
+headings in order. It is a list of links rather than a menu, styled the same
+as the body text except for a slightly brighter tone.
 
 ### Output Blocks
 
@@ -331,7 +331,7 @@ in clay red. The rest is `muted`.
 - **Don't** add a second font, even for code. One face, including code.
 - **Don't** use shadow to create depth. Use tone.
 - **Don't** use pure `#ffffff` or `#000000`.
-- **Don't** colour a thing to make it prettier. Functional colours are
-  functional, and only three of them exist.
+- **Don't** colour a thing to make it prettier. Only three functional
+  colours exist, and each one means something.
 - **Don't** put uppercase in a heading or a sentence.
 - **Don't** make colour the only carrier of a status.

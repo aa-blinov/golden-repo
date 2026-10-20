@@ -9,13 +9,15 @@
   Then badges, then a hero image, then a horizontal rule, then the sections
   in this order:
 
-    1. Quick start / Install   — the command first, prose after
-    2. What it does            — the capabilities, as a list
-    3. Screenshots             — what it looks like
-    4. Configuration           — the options and their defaults
-    5. How it works            — the architecture
-    6. Development             — how to work on the code
-    7. License                 — the terms
+  | Section | What goes in it |
+  | --- | --- |
+  | Quick start / Install | The command first, prose after. |
+  | What it does | The capabilities, as a list. |
+  | Screenshots | What it looks like. |
+  | Configuration | The options and their defaults. |
+  | How it works | The architecture. |
+  | Development | How to work on the code. |
+  | License | The terms. |
 
   Section order is fixed by the house style. Wording is yours.
 -->
@@ -46,7 +48,7 @@
 ## What it does
 
 <!--
-  One bullet per capability. Each bullet says what it does, not what
+  One bullet per capability. Each bullet says what it does, rather than what
   category it belongs to.
 
   - **Hotkey in, text out.** `Ctrl+F2` starts, `Ctrl+F3` stops and
@@ -60,7 +62,7 @@
 
 <!--
   Images live in docs/screenshots/ and are referenced from here. The lines
-  below are examples — delete them, or point them at the real files, and
+  below are examples. Delete them, or point them at the real files, and
   delete this comment.
 
   | Main window | Settings |
@@ -105,4 +107,4 @@ main → module → module → output
 
 ## License
 
-[MIT](LICENSE) — © {{LICENSE_HOLDER}}.
+[MIT](LICENSE), © {{LICENSE_HOLDER}}.

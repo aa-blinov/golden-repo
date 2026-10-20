@@ -1,6 +1,6 @@
 # Documentation
 
-The house standard, in four documents and a checker.
+The house standard, in five documents and a checker.
 
 | Document | What it covers |
 | --- | --- |
@@ -17,7 +17,7 @@ The house standard, in four documents and a checker.
 | `scripts/housecheck.py` | Checks a repository against the standard. Exit code 0 means it passes. |
 | `scripts/new-repo.sh` | Scaffolds a new project from `templates/`. |
 | `scripts/adopt.sh` | Brings an existing repository up to the standard, overwriting nothing. |
-| `scripts/audit.py` | Checks every repository of an owner at once, without cloning any of them. |
+| `scripts/audit.py` | Checks every repository of an owner at once, one shallow clone at a time. |
 
 ## The three layers
 
@@ -39,6 +39,6 @@ New project: [`structure.md`](structure.md), then
 Existing project: [`migration.md`](migration.md), then
 [`audit.md`](audit.md) to see where the repository stands.
 
-Changing the standard: [`house-style.md`](house-style.md), and read
-[`../AGENTS.md`](../AGENTS.md) first — it describes the contract between the
-three layers.
+Changing the standard: read [`../AGENTS.md`](../AGENTS.md) first, since it
+describes the contract between the three layers, then
+[`house-style.md`](house-style.md).

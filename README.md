@@ -1,13 +1,11 @@
 # golden-repo
 
-Canonical shape for every repository I own. One file tree, one README order, one
-voice — so that `koloda`, `puuush`, `petzy` and whatever comes next read as the
-work of one author, not of four strangers.
+Canonical shape for every repository I own: one file tree, one README order,
+one voice. `koloda`, `puuush`, `petzy` and whatever comes next should read as
+the work of one author.
 
-This repository is three things at once: the **standard** itself (the rules live
-in [`docs/house-style.md`](docs/house-style.md)), a **worked example** (every
-file here is a filled-in copy of the template), and a **toolchain** that applies
-the standard to other repositories and proves they still follow it.
+The rules live in [`docs/house-style.md`](docs/house-style.md). The toolchain
+that applies them to other repositories lives in `scripts/`.
 
 [![House style](https://github.com/aa-blinov/golden-repo/actions/workflows/house-style.yml/badge.svg)](https://github.com/aa-blinov/golden-repo/actions/workflows/house-style.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -23,21 +21,14 @@ python3 scripts/housecheck.py --strict .
 ```
 
 That is the whole installation. The checker is plain Python 3 with no
-dependencies, so it runs anywhere Python does — a fresh laptop, a CI
-container, a macOS runner.
-
-Three commands, one contract:
+dependencies, so it runs anywhere Python does: a fresh laptop, a CI container,
+a macOS runner.
 
 | Command | What it does |
 | --- | --- |
 | `scripts/new-repo.sh <name>` | Scaffolds a new project from `templates/` with every standard file in place. |
 | `scripts/adopt.sh <path>` | Brings an **existing** repository up to the standard without touching its code. |
 | `scripts/housecheck.py <path>` | Verifies that a repository follows the standard. Exit code 0 means it does. |
-
-And one that looks at all of them at once:
-
-| Command | What it does |
-| --- | --- |
 | `scripts/audit.py --owner aa-blinov` | Checks every repository of an owner against the standard, one shallow clone at a time. |
 
 ### Start a new project
@@ -50,7 +41,7 @@ cd <name>
 
 `new-repo.sh` copies `templates/`, substitutes the `{{ … }}` tokens, and leaves
 you a repository whose only remaining findings are the ones that ask you to
-fill it in. Fill in `PRODUCT.md` first — everything else depends on it.
+fill it in. Fill in `PRODUCT.md` first, because everything else depends on it.
 
 ### Bring an existing project to the standard
 
@@ -58,11 +49,11 @@ fill it in. Fill in `PRODUCT.md` first — everything else depends on it.
 ../golden-repo/scripts/adopt.sh ~/code/some-project
 ```
 
-`adopt.sh` is deliberately conservative. It **adds** the files that are missing
+`adopt.sh` is deliberately conservative. It adds the files that are missing
 and never overwrites a file that already exists, because a repository that has
-been running for a year has opinions its owner did not write down. What it
-cannot add safely — `PRODUCT.md`, `DESIGN.md` — it creates as a stub with the
-questions to answer marked inline.
+been running for a year has opinions its owner did not write down. `PRODUCT.md`
+and `DESIGN.md` are the exception: it cannot write them safely, so it creates
+a stub with the questions to answer marked inline.
 
 Afterwards, run the checker to see what is left:
 
@@ -83,14 +74,20 @@ every push and pull request.
 
 ## What it does
 
-The standard is three things at once: the **rules** themselves
-([`docs/house-style.md`](docs/house-style.md)), a **worked example** (every
-file in this repository is a filled-in copy of the template), and a
-**toolchain** that applies the standard to other repositories and proves they
-still follow it.
+Three things, in one repository:
 
-The checker is the point. A written standard decays the moment it is only prose;
-a checker fails the build instead, and the build fails before the standard does.
+- **The rules**, as prose in [`docs/house-style.md`](docs/house-style.md) and as
+  code in `scripts/housecheck.py`. The checker is normative: where the prose
+  and the code disagree, the code is the standard and the prose is a bug.
+- **A worked example.** Every file in this repository is a filled-in copy of
+  the template in `templates/`.
+- **A toolchain** that applies the standard elsewhere and proves it still
+  holds: `new-repo.sh` for new projects, `adopt.sh` for existing ones,
+  `audit.py` for all of them at once.
+
+The checker is what makes the standard real. A written standard decays the
+moment it is only prose, because prose fails nothing. A checker fails the
+build, and the build fails before the standard does.
 
 ## The standard in one screen
 
@@ -124,9 +121,9 @@ rule says so.
 
 Three rules explain most of the rest:
 
-1. **The README is ordered.** Quick start, then what it does, then screens, then
-   configuration, then how it works, then development, then license. A visitor
-   should never have to hunt for how to run the thing.
+1. **The README is ordered.** Quick start, then what it does, then screens,
+   then configuration, then how it works, then development, then license. A
+   visitor should never have to hunt for how to run the thing.
 2. **Facts over adjectives.** Sizes, versions and error paths are named
    precisely. "Faster" is not a fact; "97,469,540 B" is.
 3. **No emojis.** Anywhere, in any file. They render inconsistently in
@@ -138,7 +135,7 @@ The full list, with the reasoning behind each rule, is in
 
 ## What the checker enforces
 
-Hard rules — the build fails without them:
+Hard rules, where the build fails without them:
 
 - The root file set exists, and `LICENSE` names a real license and a real holder.
 - `README.md` opens with a single H1 and contains the required sections.
@@ -149,16 +146,16 @@ Hard rules — the build fails without them:
 - No heading level is skipped, no trailing whitespace, every file ends in a newline.
 - No file larger than 50 MB is committed, and nothing above 100 MB at all.
 
-Soft rules — reported, not enforced:
+Soft rules, reported but not enforced:
 
-- `README.md` and `AGENTS.md` are non-trivial, i.e. they are not stubs.
-- The repository description is set and is not the repository name.
+- `README.md` and `AGENTS.md` carry real content rather than stubs.
+- The repository description is set and says more than the repository name.
 - A `docs/` index exists and links to the other guides.
 - The default branch is `main`.
 
-The list of rules and the rationale for each is in
+The rationale for each rule is in
 [`docs/house-style.md`](docs/house-style.md). The checker is the normative
-implementation — if the two disagree, the checker is the standard and the
+implementation: if the two disagree, the checker is the standard and the
 document is the bug.
 
 ## Documentation
@@ -179,9 +176,8 @@ scripts/housecheck.py --strict .   # including soft rules
 python3 -m unittest discover -s tests -v
 ```
 
-The checker is tested in `tests/`, and the tests are what keep the rules
-honest.
+The checker has 51 tests, and they are what keep the rules honest.
 
 ## License
 
-MIT — © Alexander Blinov. See [LICENSE](LICENSE).
+MIT, © Alexander Blinov. See [LICENSE](LICENSE).

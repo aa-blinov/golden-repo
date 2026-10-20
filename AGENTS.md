@@ -46,8 +46,8 @@ disagree only in one direction:
 3. `templates/` — the rules as starting files.
 
 **The checker wins.** If the prose and the checker disagree, the checker is the
-standard and the prose is a bug to be filed. A standard that two people read
-and disagree about is not a standard.
+standard and the prose is a bug to be filed. Two people reading the prose and
+disagreeing about it is exactly the failure this design exists to prevent.
 
 Adding a rule therefore means touching all three:
 
@@ -73,22 +73,21 @@ repository that adopts it.
 - Exit code is `0` when no hard rule failed, `1` otherwise. Soft findings do not
   affect the exit code unless `--strict` is passed.
 
-The golden rule for this file: **a rule that cannot be checked is not a rule,
-it is a preference.** Preferences go in `docs/writing.md`, where they can
-inform a human without blocking a build.
+The golden rule for this file: **a rule that cannot be checked is a
+preference.** Preferences go in `docs/writing.md`, where they can inform a
+human without blocking a build.
 
 ## Style / safety rails
 
-- **No emojis**, in any file, ever. This is the single most consistent trait
-  across the repositories that already look right, and it is the one the
-  checker guards hardest.
+- **No emojis**, in any file, ever. Not one of the repositories that already
+  read correctly contains any, and the checker guards this rule hardest.
 - **Comments explain *why*, never *what*.**
 - **Do not add dependencies.** The checker runs where Python is installed and
   nothing else. A `requirements.txt` here would defeat the entire point.
-- **Do not weaken a rule to make a repository pass.** A repository that violates
-  the standard is a repository that needs fixing, and `adopt.sh` exists for
-  exactly that. If a rule is genuinely wrong, change the rule — deliberately,
-  in the open, with a test — rather than carving out an exception.
+- **Do not weaken a rule to make a repository pass.** A repository that
+  violates the standard needs fixing, and `adopt.sh` exists for exactly that.
+  If a rule is genuinely wrong, change it deliberately, in the open, with a
+  test, rather than carving out an exception.
 - **Prefer adding a rule over adding a convention.** A convention that is only
   written down gets broken silently within a month. A rule that fails CI gets
   fixed in minutes.
@@ -107,7 +106,7 @@ inform a human without blocking a build.
 
 ## Release
 
-The standard changes whenever the rules change. Tag a release when a change
+The standard changes when the rules change. Tag a release when a change
 alters the canonical file set or the meaning of an existing rule; skip the tag
 for prose fixes and new optional checks.
 

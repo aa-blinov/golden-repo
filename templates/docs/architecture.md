@@ -6,7 +6,7 @@ How {{PROJECT_NAME}} is put together.
 
 <!--
   Write this once the shape has settled, and update it when the shape
-  changes. It is for someone who wants to change the project, not for
+  changes. It is for someone who wants to change the project, rather than
   someone who wants to use it.
 
   What belongs here:
@@ -61,6 +61,5 @@ How {{PROJECT_NAME}} is put together.
 
 <!--
   What may not import what. This is the section that keeps a codebase from
-  turning into a ball of mud, and it is worth writing down before it is
-  needed.
+  turning into a ball of mud. Write it before it is needed.
 -->

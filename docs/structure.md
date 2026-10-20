@@ -70,8 +70,8 @@ from rediscovering the project. It contains:
 - **The traps.** The things that cost a rebuild to learn, written down.
 - **The rails.** What may not be changed without asking.
 
-It is not a tutorial and not a design document. It is the notes you would
-otherwise leave in a chat message that will not be found.
+It is the notes you would otherwise leave in a chat message that will not be
+found, rather than a tutorial or a design document.
 
 ### The template marker
 

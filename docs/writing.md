@@ -91,8 +91,8 @@ Extra sections are welcome. The required ones keep their order.
 
 ### The opening
 
-The first paragraph is not an introduction to the problem domain. It is the
-one-sentence version of what the software does, in the words a user would use.
+The first paragraph is the one-sentence version of what the software does,
+in the words a user would use, not an introduction to the problem domain.
 
 > Press a hotkey, speak, paste.
 
@@ -118,8 +118,7 @@ say when they were taken.
 **The README speaks to its audience. The internal documents speak to the
 owner.**
 
-That is the whole policy. It is not "everything in English" and it is not
-"everything in Russian". It is:
+That is the whole policy. The rules below say which language goes where:
 
 | Document | Language |
 | --- | --- |

@@ -314,8 +314,8 @@ checker until it is filled in, which is correct.
 point at a file that exists in the repository.
 
 **Why.** A broken link in a README is a reader who reaches the end of the
-page and finds nothing. This is the single most common rot in a repository
-that is edited over months, and it is trivially checkable.
+page and finds nothing. Broken links are common in a repository that is
+edited over months, and they are trivially checkable.
 
 Absolute URLs to other hosts are not checked — they are not the
 repository's business — but a link to a path inside the repository is.

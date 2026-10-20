@@ -217,8 +217,7 @@ def print_markdown(results, owner):
 
     print("## Where to start")
     print("")
-    print("The order is not by size of the problem. It is by how much the")
-    print("repository is looked at.")
+    print("The order follows how much the repository is looked at.")
     print("")
     for level in (1, 2, 3, 4):
         group = [r for r in results if tier(r) == level]

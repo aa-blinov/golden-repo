@@ -13,8 +13,8 @@ A repository that has been running for a year has opinions its owner never
 wrote down. The migration does not get to decide those opinions. It installs
 the scaffolding around them and leaves the content alone.
 
-This is why `adopt.sh` is not a formatter and not a rewrite. It is a
-copier with a short list of files that are always safe to add.
+This is why `adopt.sh` is a copier with a short list of files that are always
+safe to add, and neither a formatter nor a rewrite.
 
 The exception: two files cannot be added safely, because their content is
 product truth and the migrator cannot invent it.

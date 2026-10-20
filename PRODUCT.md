@@ -16,14 +16,13 @@ someone recommended.
 The owner's situation: dozens of unrelated projects, each started on a different
 day, in a different mood, in a different language. The work is done. The
 problem is that the repositories do not look like they come from the same
-person — different README shapes, different section names, different amounts of
+person: different README shapes, different section names, different amounts of
 documentation, sometimes nothing at all. It reads as a portfolio of strangers
 rather than a body of work.
 
 The visitor's situation: they found a repository and want to know, in about
 thirty seconds, what it does, whether it fits their problem, and how to run
-it. They are not reading the architecture. They are deciding whether to keep
-looking.
+it. They are deciding whether to keep looking, not reading the architecture.
 
 ## Product Purpose
 
@@ -48,8 +47,8 @@ right. Success for a visitor: the README of any repository answers "what, why,
 how" in the same order, in the same tone, so the reader's attention goes to
 the content instead of to the formatting.
 
-Success for the standard itself: it is enforced, not merely documented. A
-repository that violates it fails a check that runs in CI.
+Success for the standard itself: a repository that violates it fails a check
+that runs in CI, so the rules hold in practice rather than only on paper.
 
 ## Positioning
 
@@ -61,19 +60,19 @@ reads a repository and reports every deviation from the standard, with a stable
 code per rule and an exit code CI can gate on. The prose in `docs/` explains
 the rules; the checker is what makes them binding.
 
-The second mechanism is the **migration path**. A standard that only applies to
+The second mechanism is the **migration path**. A standard that applies only to
 projects started after it exists leaves every existing repository untouched,
-which is precisely the problem it was meant to solve. `scripts/adopt.sh` brings
-an existing repository up to the standard without touching its code and without
+which is the problem it was meant to solve. `scripts/adopt.sh` brings an
+existing repository up to the standard without touching its code and without
 overwriting a file the owner has already written. The standard therefore
 reaches backwards as well as forwards.
 
-The third is that the standard is derived, not invented. Every rule traces to
-something observable in the repositories that already look right — the
-`lazy-to-text` README section order, the `PRODUCT.md` section list, the
-`impeccable` design sidecar, the MIT license line, the absolute absence of
-emoji. It is a pattern found in the owner's own best work and written down, not
-a template imported from elsewhere.
+The third is where the rules came from. Every one traces to something
+observable in the repositories that already look right: the `lazy-to-text`
+README section order, the `PRODUCT.md` section list, the `impeccable` design
+sidecar, the MIT license line, the absolute absence of emoji. It is a pattern
+found in the owner's own best work and written down, rather than a template
+imported from elsewhere.
 
 ## Operating Context
 
@@ -132,8 +131,8 @@ Deliberately out of scope, and therefore not enforced:
   "Install" section; it cannot tell whether the install instructions are
   correct. That is a job for review, not for a linter.
 - **The language of a repository.** Russian, English or both is a per-project
-  decision. The standard fixes the *policy* — the README speaks to its
-  audience, the internal documents speak to the owner — and not the choice.
+  decision. The standard fixes the policy: the README speaks to its audience,
+  the internal documents speak to the owner. The choice itself is the owner's.
 - **Stack-specific conventions.** The standard is language-agnostic. A Python
   project and a Go project share the root file set, not their build tooling.
 - **Enforcing the check on repositories that do not want it.** The checker is
@@ -155,13 +154,13 @@ requirement.
   precisely.
 - No emojis, anywhere. They render inconsistently in terminals, diffs and
   issue trackers, and they make a repository look like a brochure.
-- The standard is enforced, not documented. If it is not checkable, it is a
-  preference, and preferences live in `docs/writing.md` where they inform a
-  human without blocking a build.
+- The standard is enforced. A rule that cannot be checked is a preference, and
+  preferences live in `docs/writing.md` where they inform a human without
+  blocking a build.
 
 **Voice of the artefacts themselves:** the template files are written the way
 the standard asks projects to be written. The README of a project that adopts
-the standard should be readable as a document, not as a landing page.
+the standard should read as a document rather than a landing page.
 
 ## Evidence on Hand
 
@@ -198,7 +197,7 @@ Absent, and not to be invented:
    project it did not fit.
 3. **The standard reaches backwards.** A rule that only governs new work
    leaves the existing body of work unchanged, which is the actual problem.
-   `adopt.sh` is therefore part of the product, not an afterthought.
+   `adopt.sh` is therefore part of the product.
 4. **Never overwrite the owner's work.** The migrator adds missing files and
    leaves everything else alone. A repository that has been running for a year
    has opinions its owner never wrote down, and those opinions outrank a
@@ -214,7 +213,7 @@ Absent, and not to be invented:
 The standard governs text documents and GitHub's own rendered surface, so the
 accessibility requirements are mostly about the reader rather than the product.
 
-- **Language is not a decoration.** The repository's audience decides the
+- **Language follows the audience.** The repository's audience decides the
   README's language, and the standard records the decision rather than
   assuming one. A Russian-language tool with a Russian README is not a
   violation.

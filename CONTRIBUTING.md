@@ -5,7 +5,7 @@ change every repository that follows it, so the bar for a change is higher than
 it looks.
 
 Read [AGENTS.md](AGENTS.md) first: it describes how the three layers of this
-standard — the prose, the checker and the templates — are meant to stay in
+standard, the prose, the checker and the templates, are meant to stay in
 agreement.
 
 ## What a change to the standard involves
@@ -13,17 +13,17 @@ agreement.
 A rule is not a rule until something fails because of it. Every change to the
 standard therefore touches three places:
 
-1. **`docs/house-style.md`** — the rule, its rationale, and a passing and a
-   failing example.
-2. **`scripts/housecheck.py`** — the implementation, with a stable rule code
+1. **`docs/house-style.md`**, where the rule, its rationale, and a passing and
+   a failing example live.
+2. **`scripts/housecheck.py`**, the implementation, with a stable rule code
    that is never renumbered.
-3. **`tests/test_housecheck.py`** — a test that fails without the change and
+3. **`tests/test_housecheck.py`**, a test that fails without the change and
    passes with it.
 
 If a change touches the canonical file set, it also touches:
 
-4. **`templates/`** — the placeholder that ships to new projects.
-5. **`docs/structure.md`** — the annotated tree.
+4. **`templates/`**, the placeholder that ships to new projects.
+5. **`docs/structure.md`**, the annotated tree.
 
 ## House rules for the pull request
 

@@ -1,9 +1,9 @@
 # Audit
 
 Every repository of **aa-blinov** checked against the house standard by
-`scripts/housecheck.py`, the same code that runs in CI. Each repository is
-cloned shallowly and checked as it stands, so a link that resolves is a link
-that resolves.
+`scripts/housecheck.py`, the same code that runs in CI. Each
+repository is cloned shallowly and checked as it stands, so a link
+that resolves is a link that resolves.
 
 | | |
 | --- | --- |
@@ -58,8 +58,7 @@ fix and the most visible:
 
 ## Where to start
 
-The order is not by size of the problem. It is by how much the
-repository is looked at.
+The order follows how much the repository is looked at.
 
 ### Tier 1 — looked at, or in active use
 
