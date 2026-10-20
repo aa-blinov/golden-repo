@@ -38,7 +38,7 @@ And one that looks at all of them at once:
 
 | Command | What it does |
 | --- | --- |
-| `scripts/audit.py --owner aa-blinov` | Checks every repository of an owner against the standard, without cloning any of them. |
+| `scripts/audit.py --owner aa-blinov` | Checks every repository of an owner against the standard, one shallow clone at a time. |
 
 ### Start a new project
 
@@ -49,8 +49,8 @@ cd <name>
 ```
 
 `new-repo.sh` copies `templates/`, substitutes the `{{ … }}` tokens, and leaves
-you a repository that already passes `housecheck.py`. Fill in `PRODUCT.md`
-first — everything else depends on it.
+you a repository whose only remaining findings are the ones that ask you to
+fill it in. Fill in `PRODUCT.md` first — everything else depends on it.
 
 ### Bring an existing project to the standard
 
