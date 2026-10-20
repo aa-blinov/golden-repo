@@ -14,8 +14,10 @@ name: house style
 # file.
 
 on:
+  # Every branch, because the default branch of a repository in this
+  # collection is not always main: most are on master, and one is on prod.
+  # A filter on main would mean the check never ran.
   push:
-    branches: [main]
   pull_request:
   workflow_dispatch:
 

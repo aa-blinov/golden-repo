@@ -105,6 +105,20 @@ def main(argv=None):
         run(["git", "clone", "--depth=1", "--quiet",
              "https://github.com/%s/%s.git" % (args.owner, args.repository), target])
 
+        # The default branch is not always main. Two thirds of these
+        # repositories are on master, and one is on prod.
+        code, output = run(
+            ["gh", "api", "repos/%s/%s" % (args.owner, args.repository),
+             "--jq", ".default_branch"],
+            check=False,
+        )
+        branch = output.strip() or "main"
+
+        # The standard's files first, so that the generated documents land on
+        # top of a repository that already carries the rest of the standard.
+        run([sys.executable, os.path.join(ROOT, "scripts", "scaffold.py"),
+             "adopt", target], check=False)
+
         changed = copy_documents(docs_dir, target)
         if not changed:
             print("apply_docs: %s is already up to date" % args.repository)
@@ -129,8 +143,11 @@ def main(argv=None):
                 findings = json.loads(output).get("findings", [])
             except ValueError:
                 findings = []
-            mine = [f for f in findings if f["path"] in changed or
-                    any(f["path"].endswith(name) for name in changed)]
+            mine = [f for f in findings
+                    if f["severity"] == "hard" and (
+                        f["path"] in changed or
+                        any(f["path"].endswith(name) for name in changed)
+                    )]
             if mine:
                 for finding in mine:
                     print("%s  %s  %s: %s" % (
@@ -176,7 +193,8 @@ def main(argv=None):
                 )
             else:
                 remote = "https://github.com/%s/%s.git" % (args.owner, args.repository)
-            run(["git", "-C", target, "push", "-q", remote, "HEAD:main"])
+            run(["git", "-C", target, "push", "-q", remote,
+                 "HEAD:refs/heads/%s" % branch])
 
         print("apply_docs: %s — %d file(s) %s" % (
             args.repository, len(changed), "pushed" if args.push else "committed",

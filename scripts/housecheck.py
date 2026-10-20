@@ -1086,6 +1086,13 @@ def check_docs_index(repo):
 
 
 def check_default_branch(repo):
+    """The CI has to run on the branch the repository actually uses.
+
+    A filter on `main` is a filter that silently does nothing in a
+    repository whose default branch is `master`, and most of the repositories
+    in this collection are on master. The name of the branch is the
+    repository's business; whether the check runs on it is the standard's.
+    """
     try:
         out = subprocess.run(
             ["git", "-C", repo.root, "symbolic-ref", "--short", "HEAD"],
@@ -1096,9 +1103,33 @@ def check_default_branch(repo):
     except (OSError, ValueError):
         return []
     branch = out.stdout.decode("utf-8", "replace").strip()
-    if branch and branch != "main":
-        return [soft("HS100", ".git", "the default branch is '%s', not 'main'" % branch)]
-    return []
+    if not branch:
+        return []
+
+    findings = []
+    workflows = [
+        rel for rel in repo.files()
+        if rel.startswith(".github/workflows/") and rel.endswith((".yml", ".yaml"))
+    ]
+    for rel in workflows:
+        text = repo.read(rel)
+        if text is None:
+            continue
+        # The branch list under `push:`, if there is one.
+        match = re.search(r"push:\s*(?:\n\s+branches:\s*\[([^\]]*)\])?", text)
+        if not match:
+            continue
+        listed = match.group(1)
+        if listed is None:
+            continue  # no filter: every branch, so the default one is covered
+        branches = [b.strip().strip("'\"") for b in listed.split(",") if b.strip()]
+        if branches and branch not in branches and "**" not in branches:
+            findings.append(soft(
+                "HS100", rel,
+                "the workflow listens for %s, and the default branch is '%s', "
+                "so it never runs on it" % (", ".join(branches), branch),
+            ))
+    return findings
 
 
 def check_remote(repo, remote):

@@ -1,3 +1,5 @@
+<!-- house-style: template — fill this file in, then delete this line -->
+
 # Screenshots
 
 Images referenced from the README and the documents.

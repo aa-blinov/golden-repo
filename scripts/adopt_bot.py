@@ -92,6 +92,13 @@ def main(argv=None):
         base = run(
             ["git", "-C", target, "symbolic-ref", "--short", "HEAD"]
         ).strip() or "main"
+        code, output = run(
+            ["gh", "api", "repos/%s/%s" % (args.owner, name), "--jq", ".default_branch"],
+            check=False,
+        )
+        default = output.strip()
+        if default:
+            base = default
 
         # The migrator adds what is missing and overwrites nothing.
         run(["bash", os.path.join(HERE, "adopt.sh"), target], check=True)
