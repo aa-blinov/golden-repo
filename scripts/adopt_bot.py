@@ -58,9 +58,28 @@ def main(argv=None):
     parser.add_argument(
         "--branch-prefix", default="standard/adopt-the-house-standard",
     )
+    parser.add_argument(
+        "--force", action="store_true",
+        help="adopt even a repository the exclusion list names",
+    )
     args = parser.parse_args(argv)
 
+
     name = args.repository
+
+    # The exclusion list is not a formality. A repository on it holds
+    # somebody else's work, and the house style does not apply to it.
+    exclusions_path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "adoption-targets.json",
+    )
+    if not args.force and os.path.exists(exclusions_path):
+        with open(exclusions_path) as handle:
+            excluded = json.load(handle).get("excluded", {})
+        if name in excluded:
+            print("adopt: %s is excluded: %s" % (name, excluded[name]))
+            return 0
+
     work = tempfile.mkdtemp(prefix="adopt-%s-" % name)
     target = os.path.join(work, "repo")
     branch = "%s-%s" % (args.branch_prefix, name)

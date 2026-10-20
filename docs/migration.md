@@ -169,6 +169,28 @@ no reason to spend the effort on a repository that is archived or is a
 throwaway test sandbox. The audit in [`audit.md`](audit.md) marks which
 repositories are worth the effort.
 
+## ## What is not the owner's work
+
+The standard applies to the owner's own work. It does not apply to a
+repository that holds somebody else's work, even when the repository lives in
+the owner's account.
+
+`adoption-targets.json` carries the exclusions, each with a reason. The bot
+refuses a repository on that list, and the reason is written down because
+"we did not touch it" has to mean something.
+
+At the time of writing, six repositories are excluded because they hold EORA's
+work: the organisation's own introduction and plan, the bank's universal
+assistant, the Bitrix24 dashboard mirrored from GitLab, the wiki synchroniser,
+the webhook exporter, and the owner's notes, which carry EORA material under
+`Работа/EORA` by their own convention. The organisation's own repositories on
+GitHub were never in scope: the bot works only inside one account.
+
+Two more kinds of repository are exempt, and for a different reason: the
+archived fork, and the test sandboxes. A rule that cannot be applied
+everywhere is not a rule, and a rule that applies to a throwaway sandbox costs
+effort and buys nothing.
+
 ## The order to do the work in
 
 If the standard has to be applied to a large body of repositories, it is worth

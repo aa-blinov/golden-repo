@@ -174,6 +174,16 @@ PROJECT_DOCUMENTS = frozenset({
     "SECURITY.md",
 })
 
+# The documents whose emptiness is a real loss. The community health files
+# are boilerplate and are allowed to be short; a README that says nothing is
+# not a README.
+WRITTEN_DOCUMENTS = frozenset({
+    "README.md",
+    "AGENTS.md",
+    "PRODUCT.md",
+    "DESIGN.md",
+})
+
 # --------------------------------------------------------------------------
 # Findings
 # --------------------------------------------------------------------------
@@ -469,37 +479,55 @@ def check_required_dirs(repo):
     return findings
 
 
-def prose_lines(text):
-    """The lines of actual prose: not blank, not a heading, not inside an
-    HTML comment. This is what separates a written document from a stub."""
-    count = 0
+# How much prose a document needs before it counts as written. Measured in
+# characters rather than lines: a line is a line, and a short document is
+# short rather than hollow.
+MIN_PROSE_CHARACTERS = 200
+
+
+def prose_length(text):
+    """The characters of actual prose: not blank, not a heading, not inside
+    an HTML comment. This is what separates a written document from a stub."""
+    total = 0
     for line in strip_html_comments(text).split("\n"):
         stripped = line.strip()
         if not stripped:
             continue
         if HEADING_RE.match(stripped):
             continue
-        count += 1
-    return count
+        total += len(stripped)
+    return total
 
 
-def check_product_is_written(repo):
-    """A PRODUCT.md with the right headings and nothing in them is a
-    template, not a product record."""
-    if not repo.exists("PRODUCT.md"):
-        return []
-    text = repo.read("PRODUCT.md")
-    if text is None:
-        return []
+def check_documents_are_written(repo):
+    """A document that no longer carries the template marker has been
+    claimed as finished, and it has to be finished.
 
-    lines = prose_lines(text)
-    if lines < 5:
-        return [hard(
-            "HS026", "PRODUCT.md",
-            "PRODUCT.md has %d line(s) of prose; it is still a stub, and the "
-            "product truth cannot be defaulted" % lines,
-        )]
-    return []
+    The marker is the promise. Leaving it on says "not written yet", which
+    is a state and not a failure. Taking it off says "this is the document",
+    and a hollow document under that claim is the one thing the standard
+    cannot accept.
+    """
+    findings = []
+    for rel in repo.files():
+        if not rel.endswith(".md"):
+            continue
+        if rel not in WRITTEN_DOCUMENTS and not rel.startswith("docs/"):
+            continue
+        text = repo.read(rel)
+        if text is None:
+            continue
+        if TEMPLATE_MARKER in "\n".join(text.split("\n")[:3]):
+            continue  # still a starting point, and HS025 says so
+        length = prose_length(text)
+        if length < MIN_PROSE_CHARACTERS:
+            findings.append(hard(
+                "HS026", rel,
+                "the template marker is gone but the file holds %d character(s) "
+                "of prose; the marker was a promise that this document is "
+                "written" % length,
+            ))
+    return findings
 
 
 def check_placeholders(repo):
@@ -528,18 +556,15 @@ def check_placeholders(repo):
         marked = TEMPLATE_MARKER in head
 
         if marked:
-            if found:
-                findings.append(hard(
-                    "HS025", rel,
-                    "this file is still a template; the placeholders %s are "
-                    "unfilled" % ", ".join("{{%s}}" % token for token in found),
-                ))
-            else:
-                findings.append(hard(
-                    "HS025", rel,
-                    "this file still carries the template marker; delete the "
-                    "line once it is filled in",
-                ))
+            # The marker says the file has not been written yet. That is a
+            # state, not a mistake: the file is a starting point and the
+            # owner will write it when they next work on the project. A
+            # personal collection would spend all its red builds here.
+            findings.append(soft(
+                "HS025", rel,
+                "this file is still a starting point; it carries the template "
+                "marker, and it is not written yet",
+            ))
         elif found and rel in PROJECT_DOCUMENTS:
             findings.append(hard(
                 "HS025", rel,
@@ -1130,7 +1155,7 @@ ALL_RULES = [
     check_product_md,
     check_design_md,
     check_design_sidecar,
-    check_product_is_written,
+    check_documents_are_written,
     check_placeholders,
     check_links,
     check_markdown_hygiene,

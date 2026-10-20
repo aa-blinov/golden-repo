@@ -1,5 +1,5 @@
 {
-  "$comment": "The repositories the adoption workflow opens pull requests for. The list comes from the audit, ordered by how much a repository is looked at: the starred ones first, then the public ones, then the private ones. The test sandboxes and the archived forks are exempt. Regenerate it with scripts/adopt_bot.py --list.",
+  "$comment": "The repositories the adoption workflow opens pull requests for, and the ones it must not. The order of the tiers is by how much a repository is looked at: the starred ones first, because they are the ones a visitor lands on. The exclusions carry a reason, because a rule that cannot be applied everywhere is not a rule, and because 'we did not touch it' has to mean something.",
   "tier1": [
     "aa-blinov",
     "better-ssh",
@@ -89,5 +89,24 @@
     "monos-sync-matrix-1781382440442",
     "monos-sync-matrix-1781382482939",
     "monos-sync-test"
-  ]
+  ],
+  "excluded": {
+    "eora": "The EORA organisation's own introduction and plan. Not the owner's personal work.",
+    "bspb-universal-helper-poc": "An EORA project: the bank's universal assistant.",
+    "projects-exporter": "An EORA project: the Bitrix24 project-management dashboard, mirrored from GitLab.",
+    "outline-workspace": "An EORA tool: synchronisation with the EORA wiki.",
+    "crm-exporter": "An EORA tool: a Bitrix24 webhook exporter.",
+    "my-notes": "The owner's notes, and they hold EORA work under Работа/EORA by their own convention.",
+    "cast-team": "An archived fork.",
+    "monos-conflict-lab": "A test sandbox.",
+    "monos-conflict-test": "A test sandbox.",
+    "monos-notes": "Empty.",
+    "monos-sync-test": "A test sandbox.",
+    "monos-sync-e2e-1781381662822": "A test sandbox.",
+    "monos-sync-e2e-1781381831101": "A test sandbox.",
+    "monos-sync-matrix-1781382370490": "A test sandbox.",
+    "monos-sync-matrix-1781382440442": "A test sandbox.",
+    "monos-sync-matrix-1781382482939": "A test sandbox.",
+    "_template-smoke-test": "The standard's own test bench."
+  }
 }

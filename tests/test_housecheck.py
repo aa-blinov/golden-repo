@@ -32,7 +32,8 @@ make run
 
 ## What it does
 
-- Does a thing.
+- Does a thing, and does it in a way that a reader can check.
+- Does another thing, which exists because the first one needs it.
 
 ## Development
 
@@ -59,31 +60,36 @@ People.
 
 ## Product Purpose
 
-A thing.
+A thing, for a person who needs it, in a situation that comes up often
+enough that the effort of doing it by hand is worth removing.
 
 ## Positioning
 
-Distinctive.
+Distinctive: a neighbour could copy the interface, but not the part where
+the work happens on the machine it happens on.
 
 ## Operating Context
 
-Everyday.
+Everyday use, in a terminal, with the rest of the tools already installed.
 
 ## Capabilities and Constraints
 
-Some.
+The thing works, and it does not work when the network is gone. That limit
+is deliberate and it is recorded here.
 
 ## Brand Commitments
 
-A name.
+A name, and a tone that is plain rather than excited.
 
 ## Evidence on Hand
 
-Files.
+The files in this repository, and the tests that run against them. There
+are no numbers about usage, because nobody has measured them.
 
 ## Product Principles
 
-1. One.
+1. One: the work happens on the reader's machine.
+2. Two: the output is a file the reader can read without this tool.
 
 ## Accessibility & Inclusion
 
@@ -101,35 +107,44 @@ colors:
 
 ## Overview
 
-Something.
+Something that reads as a working surface rather than a showcase, built
+from the tokens below rather than from a picture of a design.
 
 ## Colors
 
-Something.
+One ground, one ink, and three functional colours that are only ever used
+to say something rather than to decorate.
 
 ## Typography
 
-Something.
+One family, used for everything including the code, so that the document
+and the thing it documents look like they came from the same hand.
 
 ## Layout
 
-Something.
+A single column of prose with a fixed rhythm, and tables where the data
+has more than two dimensions.
 
 ## Elevation & Depth
 
-Something.
+Flat. Surfaces are separated by tone, and a shadow appears only when a
+layer is genuinely floating over the content.
 
 ## Shapes
 
-Something.
+One radius, everywhere, and a border that is one step lighter than the
+surface it sits on.
 
 ## Components
 
-Something.
+A button, a field, a tag and a card, and nothing else, because those are
+the four the interface actually needs.
 
 ## Do's and Don'ts
 
-Something.
+Read the colour through the token names, and keep the surface flat at
+rest. Do not introduce a second family, and do not use a shadow to mean
+that something is important.
 """
 
 
@@ -171,7 +186,15 @@ class RepoFixture(object):
     def build_valid(self):
         # The files whose content a rule actually reads.
         self.write("README.md", VALID_README)
-        self.write("AGENTS.md", "# AGENTS\n\n" + ("x" * 300) + "\n")
+        self.write("AGENTS.md", (
+            "# AGENTS\n\n"
+            "The commands to run, test and build this project, and the traps "
+            "that cost a rebuild to learn. Written for a person or an agent "
+            "who opens the repository for the first time, and for one who "
+            "has not opened it in six months.\n\n"
+            "The commands go first, because they are what the reader needs "
+            "before anything else.\n"
+        ))
         self.write("PRODUCT.md", VALID_PRODUCT)
         self.write("DESIGN.md", VALID_DESIGN)
         self.write("CHANGELOG.md", "# Changelog\n\n## 0.1.0 — 2026-01-01\n\n- First.\n")
@@ -203,15 +226,39 @@ class RepoFixture(object):
         if path.endswith(".impeccable/config.json"):
             return '{"buildPath": "code"}\n'
         if path.endswith("docs/README.md"):
-            return "# Docs\n\nSee [architecture](architecture.md).\n"
+            return (
+                "# Docs\n\n"
+                "The documents in this folder, and what each one covers. The "
+                "canonical tree and the contract for every file are in "
+                "[architecture](architecture.md), and the rules the checker "
+                "enforces are in the standard itself.\n\n"
+                "Start here.\n"
+            )
         if path.endswith("docs/architecture.md"):
-            return "# Architecture\n"
+            return (
+                "# Architecture\n\n"
+                "How the project is put together, in a few sentences that a "
+                "reader can follow without reading the code. The modules and "
+                "what each one is responsible for, the main data flow, and the "
+                "decisions that are not obvious from the code alone.\n\n"
+                "The modules and what each one is responsible for.\n"
+            )
         if path.endswith(".gitignore"):
             return "node_modules/\n"
         if path.endswith(".editorconfig"):
             return "root = true\n"
         if path.endswith("dependabot.yml"):
             return "version: 2\nupdates: []\n"
+        if path.endswith("docs/screenshots/README.md"):
+            return (
+                "# Screenshots\n\n"
+                "Images referenced from the README and the documents, kept "
+                "here so that they resolve both on GitHub and in a local "
+                "checkout. Reference them with a relative path, and the "
+                "checker verifies that every reference points at a file that "
+                "exists.\n\n"
+                "No images yet.\n"
+            )
         return "# %s\n" % os.path.basename(path)
 
     def check(self, **kwargs):
@@ -380,19 +427,23 @@ colors:
 
 ## Overview
 
-Something.
+Something that reads as a working surface rather than a showcase, built
+from the tokens below rather than from a picture of a design.
 
 ## Typography
 
-Something.
+One family, used for everything including the code, so that the document
+and the thing it documents look like they came from the same hand.
 
 ## Colors
 
-Something.
+One ground, one ink, and three functional colours that are only ever used
+to say something rather than to decorate.
 
 ## Layout
 
-Something.
+A single column of prose with a fixed rhythm, and tables where the data
+has more than two dimensions.
 """
         self.repo.write("DESIGN.md", broken)
         self.assertIn("HS023", self.repo.codes("hard"))
@@ -513,12 +564,30 @@ Something.
         self.repo.write("templates/README.md", "Run {{INSTALL_COMMAND}}.\n")
         self.assertNotIn("HS025", self.repo.codes("hard"))
 
-    def test_a_template_marker_is_reported(self):
+    def test_a_template_marker_is_soft(self):
+        """A marked file says "not written yet". That is a state, not a
+        mistake, and a personal collection would spend all its red builds
+        on it."""
         self.repo.write(
             "docs/notes.md",
             "<!-- house-style: template — fill this file in -->\n\n# Notes\n",
         )
-        self.assertIn("HS025", self.repo.codes("hard"))
+        self.assertIn("HS025", self.repo.codes("soft"))
+        self.assertNotIn("HS025", self.repo.codes("hard"))
+
+    def test_a_document_without_the_marker_must_have_prose(self):
+        """Taking the marker off is a promise that the document is written.
+        Breaking that promise is the one thing the standard cannot accept."""
+        self.repo.write(
+            "PRODUCT.md",
+            "# Product\n\n<!-- impeccable:product-schema 1 -->\n\n"
+            "## Platform\n\nweb\n",
+        )
+        self.assertIn("HS026", self.repo.codes("hard"))
+
+    def test_a_written_document_passes(self):
+        self.repo.write("PRODUCT.md", VALID_PRODUCT)
+        self.assertNotIn("HS026", self.repo.codes("hard"))
 
     def test_a_document_that_merely_mentions_the_placeholder_syntax_is_not_flagged(self):
         self.repo.write(
