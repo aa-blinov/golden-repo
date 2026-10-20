@@ -8,7 +8,7 @@
   This is a stub. Fill it in before writing any code, and delete every
   comment in this file as you go.
 
-  The most valuable part of this document is the negative one: what is NOT
+  The most valuable part of this document is the negative one: what is not
   true, and what does not exist yet. A later session that knows the
   difference between "measured" and "claimed" will not invent a benchmark,
   a testimonial, a user, or a feature that was never built.
