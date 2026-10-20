@@ -210,7 +210,7 @@ def main(argv=None):
         # documents went to the default branch. Leaving it open would invite
         # a merge that undoes this work.
         if args.push:
-            existing = run([
+            code, existing = run([
                 "gh", "pr", "list", "--repo",
                 "%s/%s" % (args.owner, args.repository),
                 "--state", "open", "--json", "number,title",
