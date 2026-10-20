@@ -1,90 +1,219 @@
 {
-  "$comment": "The state of the rollout: which repositories have an open pull request that adopts the house standard.",
-  "with_pull_request": {
-    "MediaSquash": "https://github.com/aa-blinov/MediaSquash/pull/1",
-    "aa-blinov": "https://github.com/aa-blinov/aa-blinov/pull/1",
-    "alert-bot": "https://github.com/aa-blinov/alert-bot/pull/1",
-    "all-about-all": "https://github.com/aa-blinov/all-about-all/pull/1",
-    "anki-bot": "https://github.com/aa-blinov/anki-bot/pull/10",
-    "anki-service": "https://github.com/aa-blinov/anki-service/pull/1",
-    "better-ssh": "https://github.com/aa-blinov/better-ssh/pull/4",
-    "bitrix-flow": "https://github.com/aa-blinov/bitrix-flow/pull/22",
-    "bitrix-mcp": "https://github.com/aa-blinov/bitrix-mcp/pull/1",
-    "blog": "https://github.com/aa-blinov/blog/pull/1",
-    "cast": "https://github.com/aa-blinov/cast/pull/13",
-    "cbr-currency-bot": "https://github.com/aa-blinov/cbr-currency-bot/pull/1",
-    "claude-gateway": "https://github.com/aa-blinov/claude-gateway/pull/1",
-    "cli_calendar": "https://github.com/aa-blinov/cli_calendar/pull/1",
-    "cloud-cost-dashboard": "https://github.com/aa-blinov/cloud-cost-dashboard/pull/1",
-    "codex-gateway": "https://github.com/aa-blinov/codex-gateway/pull/1",
-    "coop-watcher": "https://github.com/aa-blinov/coop-watcher/pull/1",
-    "course": "https://github.com/aa-blinov/course/pull/3",
-    "cronator": "https://github.com/aa-blinov/cronator/pull/2",
-    "crypto-service": "https://github.com/aa-blinov/crypto-service/pull/1",
-    "demo-platform": "https://github.com/aa-blinov/demo-platform/pull/1",
-    "docs": "https://github.com/aa-blinov/docs/pull/1",
-    "doktor-ryadom": "https://github.com/aa-blinov/doktor-ryadom/pull/1",
-    "flash-bar-delivery": "https://github.com/aa-blinov/flash-bar-delivery/pull/1",
-    "gambling-pack": "https://github.com/aa-blinov/gambling-pack/pull/1",
-    "gchat-sentry-notifier": "https://github.com/aa-blinov/gchat-sentry-notifier/pull/1",
-    "govno": "https://github.com/aa-blinov/govno/pull/1",
-    "gunicorn-stats": "https://github.com/aa-blinov/gunicorn-stats/pull/1",
-    "haven": "https://github.com/aa-blinov/haven/pull/4",
-    "impeccable-mcode": "https://github.com/aa-blinov/impeccable-mcode/pull/1",
-    "koloda": "https://github.com/aa-blinov/koloda/pull/6",
-    "lazy-to-text": "https://github.com/aa-blinov/lazy-to-text/pull/19",
-    "llm-code-review": "https://github.com/aa-blinov/llm-code-review/pull/1",
-    "metronome": "https://github.com/aa-blinov/metronome/pull/1",
-    "monos": "https://github.com/aa-blinov/monos/pull/20",
-    "monos-home": "https://github.com/aa-blinov/monos-home/pull/1",
-    "my-blog": "https://github.com/aa-blinov/my-blog/pull/1",
-    "notes": "https://github.com/aa-blinov/notes/pull/1",
-    "ovh-caddy": "https://github.com/aa-blinov/ovh-caddy/pull/1",
-    "paratrack": "https://github.com/aa-blinov/paratrack/pull/70",
-    "petzy": "https://github.com/aa-blinov/petzy/pull/21",
-    "petzy-ios": "https://github.com/aa-blinov/petzy-ios/pull/1",
-    "photo-checker": "https://github.com/aa-blinov/photo-checker/pull/1",
-    "ponytail-minimax": "https://github.com/aa-blinov/ponytail-minimax/pull/1",
-    "project-setup-tool": "https://github.com/aa-blinov/project-setup-tool/pull/1",
-    "protokol": "https://github.com/aa-blinov/protokol/pull/3",
-    "puuush": "https://github.com/aa-blinov/puuush/pull/1",
-    "qazaq-anki": "https://github.com/aa-blinov/qazaq-anki/pull/1",
-    "rag": "https://github.com/aa-blinov/rag/pull/1",
-    "roma-stt": "https://github.com/aa-blinov/roma-stt/pull/1",
-    "self-hosted-search-agent": "https://github.com/aa-blinov/self-hosted-search-agent/pull/1",
-    "simple-rag": "https://github.com/aa-blinov/simple-rag/pull/1",
-    "simple-scripts-collection": "https://github.com/aa-blinov/simple-scripts-collection/pull/1",
-    "spin-game": "https://github.com/aa-blinov/spin-game/pull/1",
-    "stavki": "https://github.com/aa-blinov/stavki/pull/1",
-    "stt-yandex": "https://github.com/aa-blinov/stt-yandex/pull/1",
-    "templates-mcp": "https://github.com/aa-blinov/templates-mcp/pull/3",
-    "the-cuba-times-tgif": "https://github.com/aa-blinov/the-cuba-times-tgif/pull/1",
-    "titles-forecating": "https://github.com/aa-blinov/titles-forecating/pull/1",
-    "trentini-poc": "https://github.com/aa-blinov/trentini-poc/pull/1",
-    "umnaya-alisa": "https://github.com/aa-blinov/umnaya-alisa/pull/1",
-    "vibe-vpn": "https://github.com/aa-blinov/vibe-vpn/pull/13",
-    "wallpaper-generator": "https://github.com/aa-blinov/wallpaper-generator/pull/1",
-    "whisper-bot": "https://github.com/aa-blinov/whisper-bot/pull/1",
-    "wiki-js": "https://github.com/aa-blinov/wiki-js/pull/1"
+  "$comment": "The state of the rollout. Every repository here was brought under the standard directly: the documents were written from the code and pushed to the default branch, not proposed in a pull request. The exclusion list carries a reason for every entry.",
+  "updated": {
+    "MediaSquash": {
+      "default_branch_branch": "default"
+    },
+    "aa-blinov": {
+      "default_branch_branch": "default"
+    },
+    "alert-bot": {
+      "default_branch_branch": "default"
+    },
+    "all-about-all": {
+      "default_branch_branch": "default"
+    },
+    "anki-bot": {
+      "default_branch_branch": "default"
+    },
+    "anki-service": {
+      "default_branch_branch": "default"
+    },
+    "better-ssh": {
+      "default_branch_branch": "default"
+    },
+    "bitrix-mcp": {
+      "default_branch_branch": "default"
+    },
+    "blog": {
+      "default_branch_branch": "default"
+    },
+    "cast": {
+      "default_branch_branch": "default"
+    },
+    "cbr-currency-bot": {
+      "default_branch_branch": "default"
+    },
+    "claude-gateway": {
+      "default_branch_branch": "default"
+    },
+    "cli_calendar": {
+      "default_branch_branch": "default"
+    },
+    "cloud-cost-dashboard": {
+      "default_branch_branch": "default"
+    },
+    "codex-gateway": {
+      "default_branch_branch": "default"
+    },
+    "coop-watcher": {
+      "default_branch_branch": "default"
+    },
+    "course": {
+      "default_branch_branch": "default"
+    },
+    "cronator": {
+      "default_branch_branch": "default"
+    },
+    "crypto-service": {
+      "default_branch_branch": "default"
+    },
+    "docs": {
+      "default_branch_branch": "default"
+    },
+    "doktor-ryadom": {
+      "default_branch_branch": "default"
+    },
+    "flash-bar-delivery": {
+      "default_branch_branch": "default"
+    },
+    "gambling-pack": {
+      "default_branch_branch": "default"
+    },
+    "gchat-sentry-notifier": {
+      "default_branch_branch": "default"
+    },
+    "govno": {
+      "default_branch_branch": "default"
+    },
+    "gunicorn-stats": {
+      "default_branch_branch": "default"
+    },
+    "haven": {
+      "default_branch_branch": "default"
+    },
+    "impeccable-mcode": {
+      "default_branch_branch": "default"
+    },
+    "koloda": {
+      "default_branch_branch": "default"
+    },
+    "lazy-to-text": {
+      "default_branch_branch": "default"
+    },
+    "llm-code-review": {
+      "default_branch_branch": "default"
+    },
+    "metronome": {
+      "default_branch_branch": "default"
+    },
+    "monos": {
+      "default_branch_branch": "default"
+    },
+    "my-blog": {
+      "default_branch_branch": "default"
+    },
+    "ovh-caddy": {
+      "default_branch_branch": "default"
+    },
+    "paratrack": {
+      "default_branch_branch": "default"
+    },
+    "petzy": {
+      "default_branch_branch": "default"
+    },
+    "petzy-ios": {
+      "default_branch_branch": "default"
+    },
+    "photo-checker": {
+      "default_branch_branch": "default"
+    },
+    "ponytail-minimax": {
+      "default_branch_branch": "default"
+    },
+    "project-setup-tool": {
+      "default_branch_branch": "default"
+    },
+    "protokol": {
+      "default_branch_branch": "default"
+    },
+    "puuush": {
+      "default_branch_branch": "default"
+    },
+    "qazaq-anki": {
+      "default_branch_branch": "default"
+    },
+    "rag": {
+      "default_branch_branch": "default"
+    },
+    "roma-stt": {
+      "default_branch_branch": "default"
+    },
+    "self-hosted-search-agent": {
+      "default_branch_branch": "default"
+    },
+    "simple-rag": {
+      "default_branch_branch": "default"
+    },
+    "simple-scripts-collection": {
+      "default_branch_branch": "default"
+    },
+    "spin-game": {
+      "default_branch_branch": "default"
+    },
+    "stavki": {
+      "default_branch_branch": "default"
+    },
+    "stt-yandex": {
+      "default_branch_branch": "default"
+    },
+    "templates-mcp": {
+      "default_branch_branch": "default"
+    },
+    "the-cuba-times-tgif": {
+      "default_branch_branch": "default"
+    },
+    "titles-forecating": {
+      "default_branch_branch": "default"
+    },
+    "trentini-poc": {
+      "default_branch_branch": "default"
+    },
+    "umnaya-alisa": {
+      "default_branch_branch": "default"
+    },
+    "vibe-vpn": {
+      "default_branch_branch": "default"
+    },
+    "wallpaper-generator": {
+      "default_branch_branch": "default"
+    },
+    "whisper-bot": {
+      "default_branch_branch": "default"
+    }
   },
-  "exempt": [
-    "_template-smoke-test",
-    "bspb-universal-helper-poc",
-    "cast-team",
-    "crm-exporter",
-    "eora",
-    "golden-repo",
-    "monos-conflict-lab",
-    "monos-conflict-test",
-    "monos-notes",
-    "monos-sync-e2e-1781381662822",
-    "monos-sync-e2e-1781381831101",
-    "monos-sync-matrix-1781382370490",
-    "monos-sync-matrix-1781382440442",
-    "monos-sync-matrix-1781382482939",
-    "monos-sync-test",
-    "my-notes",
-    "outline-workspace",
-    "projects-exporter"
-  ]
+  "with_landing_site": {
+    "better-ssh": "docs",
+    "haven": "docs",
+    "lazy-to-text": "docs",
+    "monos": "site",
+    "paratrack": "site",
+    "protokol": "docs",
+    "qazaq-anki": "landing"
+  },
+  "excluded": {
+    "_template-smoke-test": "The standard's own test bench.",
+    "bitrix-flow": "An EORA tool: a Bitrix24 project board, pointed at the eora.bitrix24.ru portal.",
+    "bspb-universal-helper-poc": "An EORA project: the bank's universal assistant.",
+    "cast-team": "An archived fork.",
+    "crm-exporter": "An EORA tool: a Bitrix24 webhook exporter.",
+    "demo-platform": "EORA's HR policy set: thirteen policy documents in Russian and the generator that renders them to PDF.",
+    "eora": "The EORA organisation's own introduction and plan. Not the owner's personal work.",
+    "golden-repo": "The standard itself.",
+    "monos-conflict-lab": "A test sandbox.",
+    "monos-conflict-test": "A test sandbox.",
+    "monos-home": "A home server for EORA's services.",
+    "monos-notes": "Empty.",
+    "monos-sync-e2e-1781381662822": "A test sandbox.",
+    "monos-sync-e2e-1781381831101": "A test sandbox.",
+    "monos-sync-matrix-1781382370490": "A test sandbox.",
+    "monos-sync-matrix-1781382440442": "A test sandbox.",
+    "monos-sync-matrix-1781382482939": "A test sandbox.",
+    "monos-sync-test": "A test sandbox.",
+    "my-notes": "The owner's notes, and they hold EORA work under Работа/EORA by their own convention.",
+    "notes": "The owner's own notes vault. It holds EORA's material, the company's internal notes, and a job application, so it is the owner's private work rather than a project of the collection.",
+    "outline-workspace": "An EORA tool: synchronisation with the EORA wiki.",
+    "projects-exporter": "An EORA project: the Bitrix24 project-management dashboard, mirrored from GitLab.",
+    "wiki-js": "EORA's internal wiki, kept as pages in Git. A Wiki.js instance serves it and writes every edit back."
+  }
 }
