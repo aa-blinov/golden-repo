@@ -5,12 +5,17 @@ Every repository of **aa-blinov** checked against the house standard by
 repository is cloned shallowly and checked as it stands, so a link
 that resolves is a link that resolves.
 
-| | |
-| --- | --- |
-| Repositories checked | 83 |
-| Hard failures | 1385 |
-| Soft findings | 186 |
-| Repositories with no hard failure | 58 |
+| | Collection | The rest |
+| --- | ---: | ---: |
+| Repositories | 60 | 23 |
+| Hard failures | 4 | 1381 |
+| Soft findings | 2 | 184 |
+| Repositories with no hard failure | 56 | 2 |
+
+The collection is the 60 repositories the standard was written for.
+The rest are the repositories that hold somebody else's work, the
+test sandboxes, and the throwaways: the standard was never meant for
+them, and the number in the last column says so.
 
 A hard failure is a rule the repository breaks. A soft finding is a
 preference, reported but not enforced.

@@ -182,12 +182,35 @@ def print_markdown(results, owner):
     print("repository is cloned shallowly and checked as it stands, so a link")
     print("that resolves is a link that resolves.")
     print("")
-    print("| | |")
-    print("| --- | --- |")
-    print("| Repositories checked | %d |" % len(results))
-    print("| Hard failures | %d |" % total_hard)
-    print("| Soft findings | %d |" % total_soft)
-    print("| Repositories with no hard failure | %d |" % len(clean))
+    # The collection and everything else the owner has. The two are told
+    # apart, because a number that mixes them says nothing.
+    targets = set()
+    path = os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+        "adoption-targets.json")
+    if os.path.exists(path):
+        with open(path) as handle:
+            data = json.load(handle)
+        targets = set(data.get("tier1", []) + data.get("tier2", [])
+                      + data.get("tier3", [])) - set(data.get("excluded", {}))
+    mine = [r for r in results if r["name"] in targets]
+    theirs = [r for r in results if r["name"] not in targets]
+
+    print("| | Collection | The rest |")
+    print("| --- | ---: | ---: |")
+    print("| Repositories | %d | %d |" % (len(mine), len(theirs)))
+    print("| Hard failures | %d | %d |" % (
+        sum(r["hard"] for r in mine), sum(r["hard"] for r in theirs)))
+    print("| Soft findings | %d | %d |" % (
+        sum(r["soft"] for r in mine), sum(r["soft"] for r in theirs)))
+    print("| Repositories with no hard failure | %d | %d |" % (
+        len([r for r in mine if r["hard"] == 0]),
+        len([r for r in theirs if r["hard"] == 0])))
+    print("")
+    print("The collection is the %d repositories the standard was written for." % len(mine))
+    print("The rest are the repositories that hold somebody else's work, the")
+    print("test sandboxes, and the throwaways: the standard was never meant for")
+    print("them, and the number in the last column says so.")
     print("")
     print("A hard failure is a rule the repository breaks. A soft finding is a")
     print("preference, reported but not enforced.")
