@@ -53,6 +53,8 @@ These are the findings to look at first.
 | Repository | What happens |
 | --- | --- |
 | `stt-yandex` | `verify=False` on every `requests` call to Speech-to-Text, with `urllib3.disable_warnings` to hide it. The API key and the recording travel over an unverified connection. |
+| `umnaya-alisa` | The Google refresh token file was in neither `.gitignore` nor `.dockerignore`, while the README said it stays out of the repository. Nothing was tracked, so nothing had leaked; the rule is now there. |
+| `monos` | The `docs-freshness.test.js` reads the architecture document by its exact name, so a rename breaks the build. The name is now the standard's, and the test follows it. |
 | `alert-bot` | An empty webhook secret disables the check, and the admin API's default token is `change-me-in-production`. The admin API compares with `!=` and answers 200 to the default token. |
 | `gchat-sentry-notifier` | `traces_sample_rate=1.0` and `profiles_sample_rate=1.0` send the service's own telemetry to the DSN in full. |
 | `gchat-sentry-notifier` | The key is read at import time and a missing one raises `ValueError` there, so the service dies at startup rather than answering. |
@@ -134,6 +136,19 @@ Each of these was reproduced by running it.
 | `self-hosted-search-agent` | The report always holds exactly one synthetic claim, so the CLI's "Claims (1)" is not a decomposition. |
 | `spin-game` | The save keeps the spin summary but not its lines, and `save_run()` does nothing during a spin. |
 | `wiki-js` | Twenty-one pages exist twice, as `.md` and `.html`, and the Markdown file is always the newer one. |
+
+## The two that stay
+
+Two repositories carry a finding on purpose.
+
+`my-blog` says "All Rights Reserved" in its licence, and its README badge says
+the same. The house standard says MIT. Relicensing is the owner's call.
+
+`stavki` says the project is private, that it carries no licence file, and
+that no permission to use, copy, modify or redistribute it is granted. The
+standard's MIT file sat next to that, granting permissions the owner had
+withheld, so it was removed. The checker will keep reporting the missing
+file until there is one to point at.
 
 ## What the code cannot say
 
