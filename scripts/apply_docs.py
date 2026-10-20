@@ -30,7 +30,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 
 # What the checker and the linter are run against.
-DOCUMENTS = ["README.md", "AGENTS.md", "PRODUCT.md", "DESIGN.md", "CHANGELOG.md"]
+DOCUMENTS = ["README.md", "AGENTS.md", "PRODUCT.md", "DESIGN.md",
+              "CHANGELOG.md", "LICENSE"]
 
 
 def run(args, cwd=None, check=True, env=None):

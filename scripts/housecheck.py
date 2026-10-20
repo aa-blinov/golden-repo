@@ -934,6 +934,13 @@ def check_links(repo):
     return findings
 
 
+def is_test_path(rel):
+    """A test file, where a string is a value rather than prose."""
+    if re.search(r"(^|/)(test|tests|spec|specs)/", rel):
+        return True
+    return bool(re.search(r"(^|/)(test_[^/]*|[^/]*_test|[^/]*\.test|[^/]*\.spec)\.[a-z]+$", rel))
+
+
 def check_markdown_hygiene(repo):
     findings = []
     for rel in repo.files():
@@ -946,8 +953,10 @@ def check_markdown_hygiene(repo):
 
         is_markdown = rel.endswith(".md")
 
-        # HS040 — no emoji.
-        char = has_emoji(text)
+        # HS040 — no emoji. A test file is exempt: an emoji inside a test
+        # value is data, like a password with a lock glyph in it, and
+        # removing it would weaken the test.
+        char = None if is_test_path(rel) else has_emoji(text)
         if char is not None:
             line = next(
                 (i + 1 for i, l in enumerate(text.split("\n")) if char in l),
