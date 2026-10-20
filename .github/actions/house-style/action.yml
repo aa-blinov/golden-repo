@@ -1,0 +1,39 @@
+name: House style
+description: Check this repository against the house standard.
+
+# The standard is a dependency, not a copy. A repository that adopts it
+# uses this action at a pinned version, and Dependabot opens the pull
+# request that bumps the pin. The action ships the checker at exactly the
+# version it was tagged with, so "the standard version" and "the checker"
+# can never drift apart.
+
+inputs:
+  path:
+    description: The repository path to check, relative to the workspace.
+    required: false
+    default: "."
+  strict:
+    description: Treat soft findings as failures.
+    required: false
+    default: "true"
+  report:
+    description: Write the findings as JSON to this file.
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Check the repository against the standard
+      shell: bash
+      run: |
+        set -euo pipefail
+        python3 "${{ github.action_path }}/scripts/housecheck.py" \
+          --json "${{ inputs.report }}" \
+          ${{ inputs.strict && '--strict' || '' }} \
+          "${{ inputs.path }}"
+
+    - name: Report the findings
+      if: always() && inputs.report != ''
+      shell: bash
+      run: cat "${{ inputs.report }}" || true
