@@ -26,14 +26,31 @@ runs:
   steps:
     - name: Check the repository against the standard
       shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        TARGET: ${{ inputs.path }}
+        STRICT: ${{ inputs.strict }}
       run: |
         set -euo pipefail
-        python3 "${{ github.action_path }}/scripts/housecheck.py" \
-          --json "${{ inputs.report }}" \
-          ${{ inputs.strict && '--strict' || '' }} \
-          "${{ inputs.path }}"
+        if [ "$STRICT" = "true" ]; then
+          python3 "$ACTION_PATH/scripts/housecheck.py" --strict "$TARGET"
+        else
+          python3 "$ACTION_PATH/scripts/housecheck.py" "$TARGET"
+        fi
 
-    - name: Report the findings
+    - name: Write the findings as JSON
       if: always() && inputs.report != ''
       shell: bash
-      run: cat "${{ inputs.report }}" || true
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        TARGET: ${{ inputs.path }}
+        REPORT: ${{ inputs.report }}
+      run: |
+        python3 "$ACTION_PATH/scripts/housecheck.py" --json "$TARGET" > "$REPORT" || true
+
+    - name: Show the findings
+      if: always() && inputs.report != ''
+      shell: bash
+      env:
+        REPORT: ${{ inputs.report }}
+      run: cat "$REPORT" || true
