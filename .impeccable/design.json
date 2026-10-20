@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-20T17:30:00+05:00",
+  "title": "Design System: golden-repo",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Ground",
+        "canonical": "#1d2021",
+        "tonalRamp": ["#1d2021", "#282828", "#3c3836", "#504945", "#665c54", "#928374", "#a89984", "#ebdbb2"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Card",
+        "canonical": "#282828",
+        "tonalRamp": ["#1d2021", "#282828", "#3c3836", "#504945", "#665c54", "#928374", "#a89984", "#ebdbb2"]
+      },
+      "surface-deep": {
+        "role": "neutral",
+        "displayName": "Deep Card",
+        "canonical": "#3c3836",
+        "tonalRamp": ["#1d2021", "#282828", "#3c3836", "#504945", "#665c54", "#928374", "#a89984", "#ebdbb2"]
+      },
+      "fg": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "#ebdbb2",
+        "tonalRamp": ["#282828", "#504945", "#665c54", "#928374", "#a89984", "#bdae93", "#d5c4a1", "#ebdbb2"]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted Ink",
+        "canonical": "#a89984",
+        "tonalRamp": ["#3c3836", "#504945", "#665c54", "#928374", "#a89984", "#bdae93", "#d5c4a1", "#ebdbb2"]
+      },
+      "faint": {
+        "role": "neutral",
+        "displayName": "Faint Ink",
+        "canonical": "#928374",
+        "tonalRamp": ["#3c3836", "#504945", "#665c54", "#928374", "#a89984", "#bdae93", "#d5c4a1", "#ebdbb2"]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "#504945",
+        "tonalRamp": ["#1d2021", "#282828", "#3c3836", "#504945", "#665c54", "#928374", "#a89984", "#ebdbb2"]
+      },
+      "ok": {
+        "role": "tertiary",
+        "displayName": "Olive",
+        "canonical": "#b8bb26",
+        "tonalRamp": ["#5f5f0e", "#98971a", "#b8bb26"]
+      },
+      "danger": {
+        "role": "tertiary",
+        "displayName": "Clay Red",
+        "canonical": "#ff8a7a",
+        "tonalRamp": ["#cc241d", "#fb4934", "#ff8a7a"]
+      },
+      "info": {
+        "role": "tertiary",
+        "displayName": "Slate Blue",
+        "canonical": "#83a598",
+        "tonalRamp": ["#076678", "#43909c", "#83a598"]
+      },
+      "bg-light": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#fbf1c7",
+        "tonalRamp": ["#fbf1c7", "#f2e5bc", "#ebdbb2", "#d5c4a1", "#bdae93", "#a89984", "#665c54", "#3c3836"]
+      }
+    },
+    "typographyMeta": {
+      "body": { "displayName": "Body", "purpose": "Running prose, list items, table cells. 13px." },
+      "title": { "displayName": "Title", "purpose": "The one H1 on a page. 20px bold." },
+      "label": { "displayName": "Label", "purpose": "Field labels, table headers. Uppercase, 11px, 0.12em." },
+      "hint": { "displayName": "Hint", "purpose": "Secondary explanation under a control or a command. 12px." },
+      "tag": { "displayName": "Tag", "purpose": "Status tags: pass, fail, warn. Uppercase, 11px." }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "state-change",
+        "value": "200ms",
+        "purpose": "Hover and focus transitions on buttons, fields and cards. Disabled under prefers-reduced-motion."
+      }
+    ],
+    "breakpoints": [
+      { "name": "narrow", "value": "720px" }
+    ],
+    "radii": [
+      { "name": "ui", "value": "6px", "purpose": "The only radius: buttons, inputs, cards, tags." },
+      { "name": "pill", "value": "999px", "purpose": "The floating overlay label only." }
+    ],
+    "fontFiles": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one action a document exists for. Solid ink, no border.",
+      "html": "<button class=\"ds-btn-primary\">Install</button>",
+      "css": ".ds-btn-primary { min-height: 34px; padding: 0 20px; background: #ebdbb2; color: #1d2021; border: 0; border-radius: 6px; font: 500 13px/1.55 'JetBrains Mono', ui-monospace, monospace; cursor: pointer; transition: background 200ms; } .ds-btn-primary:hover { background: #fbf1c7; } .ds-btn-primary:focus-visible { outline: 2px solid #ebdbb2; outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Every secondary action. No fill, no border.",
+      "html": "<button class=\"ds-btn-ghost\">Read the docs</button>",
+      "css": ".ds-btn-ghost { min-height: 34px; padding: 0 20px; background: transparent; color: #ebdbb2; border: 0; border-radius: 6px; font: 500 13px/1.55 'JetBrains Mono', ui-monospace, monospace; cursor: pointer; transition: opacity 200ms; } .ds-btn-ghost:hover { opacity: 0.7; } .ds-btn-ghost:focus-visible { outline: 2px solid #ebdbb2; outline-offset: 2px; }"
+    },
+    {
+      "name": "Underline Field",
+      "kind": "input",
+      "refersTo": "field-underline",
+      "description": "A field with a bottom rule only. The rule brightens on focus.",
+      "html": "<input class=\"ds-field\" placeholder=\"scripts/housecheck.py .\">",
+      "css": ".ds-field { height: 34px; width: 100%; padding: 0 12px; background: #282828; color: #ebdbb2; border: 0; border-bottom: 1px solid #928374; border-radius: 6px 6px 0 0; font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; caret-color: #ebdbb2; } .ds-field::placeholder { color: #a89984; } .ds-field:focus-visible { outline: none; border-bottom-color: #ebdbb2; box-shadow: 0 1px 0 0 #ebdbb2; }"
+    },
+    {
+      "name": "Status Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Pass, fail or warn. The word carries the meaning; the colour repeats it.",
+      "html": "<span class=\"ds-tag ds-tag-ok\">pass</span>",
+      "css": ".ds-tag { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border: 1px solid #504945; border-radius: 6px; color: #a89984; font: 500 11px/1.45 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.08em; text-transform: uppercase; } .ds-tag-ok { color: #b8bb26; border-color: #b8bb26; } .ds-tag-bad { color: #ff8a7a; border-color: #ff8a7a; } .ds-tag-warn { color: #83a598; border-color: #83a598; }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "A raised surface. Flat, 6px radius, 1px border.",
+      "html": "<div class=\"ds-card\"><strong>HS001</strong> Missing README.md</div>",
+      "css": ".ds-card { padding: 16px; background: #282828; color: #ebdbb2; border: 1px solid #504945; border-radius: 6px; font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; } .ds-card strong { color: #83a598; font-weight: 500; }"
+    },
+    {
+      "name": "Output Block",
+      "kind": "custom",
+      "refersTo": "output",
+      "description": "Terminal and CI output. One failing line carries the colour.",
+      "html": "<pre class=\"ds-output\">ok  README.md\n<span class=\"ds-bad\">fail  LICENSE is missing</span></pre>",
+      "css": ".ds-output { margin: 0; padding: 12px 16px; background: #282828; color: #a89984; border-radius: 6px; font: 13px/1.55 'JetBrains Mono', ui-monospace, monospace; white-space: pre; } .ds-output .ds-bad { color: #ff8a7a; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Reference Card",
+    "overview": "The house standard is a reference card: a single printed sheet, kept in the drawer above the bench, that says exactly how the parts fit together and nothing more. It is not a brand. It does not have a logo, a campaign, or a personality that it wants to perform. What it has is the authority of a correct document — every line is there because something failed without it.\n\nThe visual language follows from that. The reference card is printed on warm paper, in ink, in one typewriter face. It is quiet. Nothing glows, nothing gradients, nothing is centred for the sake of it. The only thing that stands out is the thing that is wrong: a failed check in red, a rule that was broken in a warning amber, a passing check in olive. A reader scanning a page of output should be able to find the failure without reading the failures.",
+    "keyCharacteristics": [
+      "warm paper and ink; no pure white, no pure black",
+      "one monospaced face for everything, including prose",
+      "status is carried by text and colour together, never by colour alone",
+      "flat surfaces: depth comes from tone, not from shadow",
+      "one radius, one spacing scale, no exceptions"
+    ],
+    "rules": [
+      { "name": "The Warm Ground Rule", "body": "Every background is built warm. #ffffff and #000000 do not appear as surfaces. A pure black background next to a warm palette looks like a hole in the page.", "section": "colors" },
+      { "name": "The Contrast Floor Rule", "body": "Body text is never below 4.5:1 against its background. Borders, underlines and focus rings are never below 3:1 (WCAG 1.4.11).", "section": "colors" },
+      { "name": "The Status Is Doubled Rule", "body": "A status is always carried by a word as well as a colour — pass, fail, warn. Colour is the fast channel, text is the reliable one.", "section": "colors" },
+      { "name": "The One Face Rule", "body": "A document mixes no other face. A second font means a second opinion about the content, and a reference card has one.", "section": "typography" },
+      { "name": "The Uppercase Is A Label Rule", "body": "Uppercase marks a label, never a sentence and never a heading. A heading in all caps reads as a banner, and the standard does not shout.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. A shadow appears only as a response to state, and in this system that state is the hover on a raised overlay.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do read every colour through the token names, never as a literal hex inside a rule or a component.",
+      "Do show status as a word and a colour together.",
+      "Do keep one radius (6px) and one spacing scale.",
+      "Do check the dark ground first and the light one second, when a document has to work in both.",
+      "Do let the ink do the work. The palette is quiet on purpose."
+    ],
+    "donts": [
+      "Don't add a second font, even for code. One face, including code.",
+      "Don't use shadow to create depth. Use tone.",
+      "Don't use pure #ffffff or #000000.",
+      "Don't colour a thing to make it prettier. Functional colours are functional, and only three of them exist.",
+      "Don't put uppercase in a heading or a sentence.",
+      "Don't make colour the only carrier of a status."
+    ]
+  }
+}

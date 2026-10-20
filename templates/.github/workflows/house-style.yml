@@ -1,0 +1,54 @@
+name: house style
+
+# The house standard, enforced.
+#
+# The checker is not vendored into this repository: it is checked out from
+# aa-blinov/golden-repo, so that an improvement to the standard reaches every
+# repository that adopts it without a pull request here.
+#
+# A repository that would rather own its copy can replace the checkout with
+# a copy of scripts/housecheck.py, at the cost of updating it by hand.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: house-style-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  housecheck:
+    name: House style
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out the house standard
+        uses: actions/checkout@v4
+        with:
+          repository: aa-blinov/golden-repo
+          path: .house-standard
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check the repository against the standard
+        run: python3 .house-standard/scripts/housecheck.py --strict .
+
+      - name: Report the findings
+        if: always()
+        run: python3 .house-standard/scripts/housecheck.py --json . > house-style.json || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: house-style-report
+          path: house-style.json

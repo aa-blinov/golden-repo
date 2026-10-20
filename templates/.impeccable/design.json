@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "{{PROJECT_YEAR}}-01-01T00:00:00Z",
+  "title": "Design System: {{PROJECT_NAME}}",
+  "extensions": {
+    "colorMeta": {},
+    "typographyMeta": {},
+    "shadows": [],
+    "motion": [],
+    "breakpoints": []
+  },
+  "components": [],
+  "narrative": {
+    "northStar": "",
+    "overview": "",
+    "keyCharacteristics": [],
+    "rules": [],
+    "dos": [],
+    "donts": []
+  }
+}
