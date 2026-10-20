@@ -13,7 +13,10 @@ scripts/housecheck.py --strict .   # soft rules become failures too
 scripts/housecheck.py --json .     # machine-readable report
 scripts/new-repo.sh <name>         # scaffold a new project from templates/
 scripts/adopt.sh <path>            # bring an existing repository up to the standard
+scripts/adopt_bot.py <repository>   # open the pull request that adopts it
 scripts/audit.py --owner aa-blinov # check every repository of an owner at once
+scripts/bump.py                    # move the pin in every adopting repository
+scripts/render.py                  # regenerate the documents from standard.json
 python3 -m unittest discover -s tests -v
 ```
 
@@ -32,30 +35,33 @@ run on a machine that has nothing but Python 3 installed.
 | `scripts/housecheck.py` | The enforcer. The rules as code. |
 | `scripts/new-repo.sh` | Scaffolder. Reads `templates/`. |
 | `scripts/adopt.sh` | Migrator. Adds what is missing, overwrites nothing. |
+| `scripts/adopt_bot.py` | Opens the pull request that adopts a repository. |
 | `scripts/audit.py` | Checks every repository of an owner at once, over the API. |
 | `scripts/bump.py` | Opens the pull request that moves the pin in every adopting repository. |
+| `scripts/render.py` | Writes the documents from `standard.json`. |
+| `scripts/scaffold.py` | The file work behind the scaffolder and the migrator. |
+| `standard.json` | The standard as data. The single source of truth. |
 | `adopters.json` | The repositories that depend on the standard. |
+| `adoption-targets.json` | The repositories the adoption workflow works through. |
 | `templates/` | Placeholder files with `{{ … }}` markers. |
-| `tests/` | Unit tests for the checker. |
+| `tests/` | Unit tests for the checker and for the standard's own layers. |
 
-## The contract between the three layers
+## The contract between the layers
 
-There are three descriptions of the same standard, and they are allowed to
-disagree only in one direction:
+The standard is described in four places, and they may disagree in one
+direction only:
 
-1. `docs/house-style.md` — the rules as prose.
-2. `scripts/housecheck.py` — the rules as code.
-3. `templates/` — the rules as starting files.
+1. `standard.json` — the rules as data. The single source of truth.
+2. `scripts/housecheck.py` — the rules as code. It reads the manifest.
+3. `templates/` — the rules as starting files. The scaffolder builds from the
+   manifest and fills these in.
+4. `docs/house-style.md` — the rules as prose. The part that explains why.
 
-**The checker wins.** If the prose and the checker disagree, the checker is the
-standard and the prose is a bug to be filed. Two people reading the prose and
-disagreeing about it is exactly the failure this design exists to prevent.
-
-Adding a rule therefore means touching all three:
-
-- write the rule in `docs/house-style.md`,
-- implement it in `scripts/housecheck.py`,
-- add a test in `tests/`.
+**The manifest wins.** If the prose and the manifest disagree, the manifest is
+the standard and the prose is a bug to be filed. The checker and the
+scaffolder both read the manifest, so they cannot disagree with each other
+either. The prose is the only layer that can be wrong, and a test in
+`tests/test_standard.py` fails when it is.
 
 A rule that exists only in the prose will be forgotten, because prose does not
 fail anything.
@@ -96,15 +102,20 @@ human without blocking a build.
 
 ## Adding a rule, end to end
 
-1. Write the rule in `docs/house-style.md` with its rationale and a passing and
-   a failing example.
-2. Implement it in `scripts/housecheck.py`. Give it a stable code
-   (`HS001`-style, never renumbered) so that the audit report stays readable.
-3. Add a test in `tests/test_housecheck.py`. A rule with no test is a rule with
-   a bug in it.
-4. Run `scripts/housecheck.py --strict .` and make sure the golden repository
-   itself passes. If the golden repository cannot satisfy its own rules, the
-   rules are wrong.
+1. Add it to `standard.json`. That is where the file set and the section
+   lists live, and the checker reads them from there.
+2. Write the rule in `docs/house-style.md` with its rationale and a passing
+   and a failing example.
+3. If the rule adds a file, add a template for it in `templates/`. The test
+   in `tests/test_standard.py` fails otherwise.
+4. Implement the check in `scripts/housecheck.py`, if it needs one. Give it a
+   stable code (`HS001`-style, never renumbered) so that the audit report
+   stays readable.
+5. Add a test in `tests/test_housecheck.py`. A rule with no test is a rule
+   with a bug in it.
+6. Run `scripts/render.py` to write the documents from the manifest, then
+   `scripts/housecheck.py --strict .`. The golden repository must still pass.
+   If it cannot satisfy its own rules, the rules are wrong.
 
 ## Release
 
