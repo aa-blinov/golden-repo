@@ -8,9 +8,9 @@ that resolves is a link that resolves.
 | | Collection | The rest |
 | --- | ---: | ---: |
 | Repositories | 60 | 23 |
-| Hard failures | 4 | 1381 |
+| Hard failures | 2 | 1381 |
 | Soft findings | 1 | 184 |
-| Repositories with no hard failure | 57 | 2 |
+| Repositories with no hard failure | 58 | 2 |
 
 The collection is the 60 repositories the standard was written for.
 The rest are the repositories that hold somebody else's work, the
@@ -56,7 +56,7 @@ differs is the content, which is the repository's own.
 | HS015 | 0 | 12 | 12 |
 | HS025 | 0 | 3 | 1 |
 | HS026 | 6 | 0 | 6 |
-| HS030 | 7 | 161 | 6 |
+| HS030 | 5 | 161 | 5 |
 | HS040 | 53 | 0 | 7 |
 | HS041 | 34 | 0 | 2 |
 | HS042 | 282 | 0 | 9 |
@@ -102,7 +102,6 @@ The order follows how much the repository is looked at.
 | Repository | Hard | Soft | Description |
 | --- | ---: | ---: | --- |
 | [bitrix-flow](https://github.com/aa-blinov/bitrix-flow) | 5 | 3 |  |
-| [haven](https://github.com/aa-blinov/haven) | 2 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Te |
 | [my-blog](https://github.com/aa-blinov/my-blog) | 1 | 0 |  |
 | [_template-smoke-test](https://github.com/aa-blinov/_template-smoke-test) | 0 | 0 | Temporary smoke test of aa-blinov/golden-repo. Archived; saf |
 | [bitrix-mcp](https://github.com/aa-blinov/bitrix-mcp) | 0 | 0 |  |
@@ -111,6 +110,7 @@ The order follows how much the repository is looked at.
 | [codex-gateway](https://github.com/aa-blinov/codex-gateway) | 0 | 0 | OpenAI-compatible HTTP wrapper over codex exec |
 | [doktor-ryadom](https://github.com/aa-blinov/doktor-ryadom) | 0 | 0 | Рядом — дневник самочувствия пациента и кабинет врача |
 | [golden-repo](https://github.com/aa-blinov/golden-repo) | 0 | 0 | The canonical house standard for every repository: one file  |
+| [haven](https://github.com/aa-blinov/haven) | 0 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Te |
 | [impeccable-mcode](https://github.com/aa-blinov/impeccable-mcode) | 0 | 0 | Impeccable design skill for MiniMax Code — fork of pbakaus/i |
 | [koloda](https://github.com/aa-blinov/koloda) | 0 | 0 | Единая лента из Telegram-каналов: свой ридер с поиском, филь |
 | [monos](https://github.com/aa-blinov/monos) | 0 | 0 | Local-first desktop notes app with Markdown, wiki links, ful |
@@ -209,7 +209,6 @@ The order follows how much the repository is looked at.
 | [monos-conflict-lab](https://github.com/aa-blinov/monos-conflict-lab) | PRIVATE | 25 | 0 | Monos sync conflict test sandbox |
 | [projects-exporter](https://github.com/aa-blinov/projects-exporter) | PRIVATE | 25 | 2 |  |
 | [bitrix-flow](https://github.com/aa-blinov/bitrix-flow) | PUBLIC | 5 | 3 |  |
-| [haven](https://github.com/aa-blinov/haven) | PUBLIC | 2 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Tech. Discor |
 | [my-blog](https://github.com/aa-blinov/my-blog) | PUBLIC | 1 | 0 |  |
 | [stavki](https://github.com/aa-blinov/stavki) | PRIVATE | 1 | 1 | Доска для бытовых споров: лента, планка, счёт. Деньги не принимает |
 | [MediaSquash](https://github.com/aa-blinov/MediaSquash) | PRIVATE | 0 | 0 |  |
@@ -240,6 +239,7 @@ The order follows how much the repository is looked at.
 | [golden-repo](https://github.com/aa-blinov/golden-repo) | PUBLIC | 0 | 0 | The canonical house standard for every repository: one file tree, one  |
 | [govno](https://github.com/aa-blinov/govno) | PRIVATE | 0 | 0 |  |
 | [gunicorn-stats](https://github.com/aa-blinov/gunicorn-stats) | PRIVATE | 0 | 0 |  |
+| [haven](https://github.com/aa-blinov/haven) | PUBLIC | 0 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Tech. Discor |
 | [impeccable-mcode](https://github.com/aa-blinov/impeccable-mcode) | PUBLIC | 0 | 0 | Impeccable design skill for MiniMax Code — fork of pbakaus/impeccable  |
 | [koloda](https://github.com/aa-blinov/koloda) | PUBLIC | 0 | 0 | Единая лента из Telegram-каналов: свой ридер с поиском, фильтрами и RS |
 | [lazy-to-text](https://github.com/aa-blinov/lazy-to-text) | PUBLIC | 0 | 0 | Local Whisper speech-to-text for Windows: global hotkey, Qt UI, no clo |
