@@ -25,6 +25,11 @@ import sys
 # The standard
 # --------------------------------------------------------------------------
 
+# The version of the standard this checker implements. A repository that
+# depends on the standard at a tag gets the checker from that tag, so this
+# value and the tag cannot drift apart.
+STANDARD_VERSION = "1.0.1"
+
 REQUIRED_ROOT_FILES = [
     "README.md",
     "AGENTS.md",
@@ -1214,6 +1219,7 @@ def main(argv=None):
 
     if args.as_json:
         payload = {
+            "standard": STANDARD_VERSION,
             "repository": repo.root,
             "findings": [f.as_dict() for f in findings],
             "hard": len([f for f in findings if f.severity == "hard"]),
