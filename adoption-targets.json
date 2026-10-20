@@ -1,5 +1,5 @@
 {
-  "$comment": "The repositories the adoption workflow opens pull requests for, and the ones it must not. The order of the tiers is by how much a repository is looked at: the starred ones first, because they are the ones a visitor lands on. The exclusions carry a reason, because a rule that cannot be applied everywhere is not a rule, and because 'we did not touch it' has to mean something.",
+  "$comment": "The repositories the adoption workflow opens pull requests for, and the ones it must not. The order of the tiers is by how much a repository is looked at: the starred ones first, because they are the ones a visitor lands on. The exclusions carry a reason, and a repository is excluded because of what it holds, not because of what it is called: a repository that hardcodes an EORA portal or serves EORA's pages is EORA's work, whatever the name says.",
   "tier1": [
     "aa-blinov",
     "better-ssh",
@@ -108,6 +108,9 @@
     "monos-sync-matrix-1781382440442": "A test sandbox.",
     "monos-sync-matrix-1781382482939": "A test sandbox.",
     "_template-smoke-test": "The standard's own test bench.",
-    "golden-repo": "The standard itself."
+    "golden-repo": "The standard itself.",
+    "bitrix-flow": "An EORA tool: a Bitrix24 project board, pointed at the eora.bitrix24.ru portal.",
+    "monos-home": "A home server for EORA's services.",
+    "wiki-js": "EORA's internal wiki, kept as pages in Git. A Wiki.js instance serves it and writes every edit back."
   }
 }

@@ -179,12 +179,27 @@ the owner's account.
 refuses a repository on that list, and the reason is written down because
 "we did not touch it" has to mean something.
 
-At the time of writing, six repositories are excluded because they hold EORA's
-work: the organisation's own introduction and plan, the bank's universal
-assistant, the Bitrix24 dashboard mirrored from GitLab, the wiki synchroniser,
-the webhook exporter, and the owner's notes, which carry EORA material under
-`Работа/EORA` by their own convention. The organisation's own repositories on
-GitHub were never in scope: the bot works only inside one account.
+At the time of writing, nine repositories are excluded because they hold
+EORA's work: the organisation's own introduction and plan, the bank's
+universal assistant, the Bitrix24 project board, the Bitrix24 dashboard
+mirrored from GitLab, the wiki synchroniser, the webhook exporter, the
+organisation's internal wiki, the home server, and the owner's notes, which
+carry EORA material under `Работа/EORA` by their own convention. The
+organisation's own repositories on GitHub were never in scope: the bot works
+only inside one account.
+
+**A repository is excluded because of what it holds, not because of what it
+is called.** The list was not written by reading the names. It came from
+searching the collection for the things that identify EORA's work: the
+`eora.bitrix24.ru` portal, the `outline.eora.ru` wiki, the
+`gitlab.com/eora` groups, and the `eora.ru` domain. A repository that
+hardcodes one of those is EORA's, whatever the name says, and a repository
+that merely mentions EORA as an employer is the owner's.
+
+Two repositories were applied to by mistake before the search was done, and
+both were reverted. The method is in `adoption-targets.json`, and the
+exclusion carries a reason, because "we did not touch it" has to mean
+something.
 
 Two more kinds of repository are exempt, and for a different reason: the
 archived fork, and the test sandboxes. A rule that cannot be applied
