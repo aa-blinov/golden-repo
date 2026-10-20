@@ -100,7 +100,18 @@ def main(argv=None):
             "Adopt the house standard\n\n"
             "Adds the files every repository in this collection carries, and "
             "nothing else. No file that already existed was changed.\n\n"
-            "Files added:\n%s\n" % "\n".join("  %s" % p for p in sorted(added))
+            "Files added:\n%s\n\n"
+            "## The house-style check is red until the stubs are written\n\n"
+            "`PRODUCT.md`, `DESIGN.md`, `AGENTS.md` and the two files in "
+            "`docs/` arrive as starting points, not as finished documents. The "
+            "check fails on them, and that is the standard working: the "
+            "product truth cannot be defaulted, and a file that has not been "
+            "written yet should not pass for one that has.\n\n"
+            "Fill in the stubs, delete the `house-style: template` line from "
+            "each, and the check goes green. The rules are in "
+            "[docs/house-style.md]"
+            "(https://github.com/aa-blinov/golden-repo/blob/main/docs/house-style.md).\n"
+            % "\n".join("  %s" % p for p in sorted(added))
         )
         run(["git", "-C", target, "commit", "-q", "-m", message])
 
