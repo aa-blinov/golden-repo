@@ -111,6 +111,7 @@
     "golden-repo": "The standard itself.",
     "bitrix-flow": "An EORA tool: a Bitrix24 project board, pointed at the eora.bitrix24.ru portal.",
     "monos-home": "A home server for EORA's services.",
-    "wiki-js": "EORA's internal wiki, kept as pages in Git. A Wiki.js instance serves it and writes every edit back."
+    "wiki-js": "EORA's internal wiki, kept as pages in Git. A Wiki.js instance serves it and writes every edit back.",
+    "notes": "The owner's own notes vault. It holds EORA's material, the company's internal notes, and a job application, so it is the owner's private work rather than a project of the collection."
   }
 }

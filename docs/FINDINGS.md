@@ -46,6 +46,21 @@ the truth, and the code was not touched.
 | `codex-gateway` | `CODEX_CHAT_WRAPPER_MODELS` overrides the config discovery | It prepends to what the file holds. |
 | `haven` | The theme count is 25 | The sidebar has 28 buttons. |
 
+## Security
+
+These are the findings to look at first.
+
+| Repository | What happens |
+| --- | --- |
+| `stt-yandex` | `verify=False` on every `requests` call to Speech-to-Text, with `urllib3.disable_warnings` to hide it. The API key and the recording travel over an unverified connection. |
+| `alert-bot` | An empty webhook secret disables the check, and the admin API's default token is `change-me-in-production`. The admin API compares with `!=` and answers 200 to the default token. |
+| `gchat-sentry-notifier` | `traces_sample_rate=1.0` and `profiles_sample_rate=1.0` send the service's own telemetry to the DSN in full. |
+| `gchat-sentry-notifier` | The key is read at import time and a missing one raises `ValueError` there, so the service dies at startup rather than answering. |
+| `better-ssh` | The password is written back in plaintext when the SSH key is gone: `save_servers` swallows the `RuntimeError` and then saves. |
+| `wiki-js` | The wiki's pages carry no credentials, but the metadata header is written by the instance, so an edit to it is overwritten on the next sync. |
+| `anki-bot` | The OpenRouter call blocks the event loop, and the quiz session lives in a dict that intercepts every message from the user until the quiz ends. |
+| `petzy` | The rate limits are ten wrong passwords a minute per address, and ten inside fifteen minutes lock that login for fifteen minutes. |
+
 ## The code is broken
 
 Each of these was reproduced by running it.
