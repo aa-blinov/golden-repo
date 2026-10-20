@@ -7,8 +7,8 @@ that resolves is a link that resolves.
 
 | | |
 | --- | --- |
-| Repositories checked | 81 |
-| Hard failures | 3312 |
+| Repositories checked | 82 |
+| Hard failures | 3315 |
 | Soft findings | 433 |
 | Repositories with no hard failure | 0 |
 
@@ -20,7 +20,7 @@ preference, reported but not enforced.
 | Rule | Hard | Soft | Repositories affected |
 | --- | ---: | ---: | ---: |
 | HS001 | 683 | 0 | 81 |
-| HS002 | 444 | 0 | 81 |
+| HS002 | 445 | 0 | 82 |
 | HS003 | 1 | 0 | 1 |
 | HS005 | 4 | 0 | 4 |
 | HS007 | 1 | 0 | 1 |
@@ -33,7 +33,7 @@ preference, reported but not enforced.
 | HS021 | 9 | 0 | 5 |
 | HS022 | 1 | 0 | 1 |
 | HS024 | 2 | 0 | 2 |
-| HS030 | 46 | 285 | 15 |
+| HS030 | 48 | 285 | 16 |
 | HS031 | 6 | 0 | 5 |
 | HS040 | 320 | 0 | 46 |
 | HS041 | 35 | 0 | 3 |
@@ -90,9 +90,9 @@ repository is looked at.
 | [titles-forecating](https://github.com/aa-blinov/titles-forecating) | 35 | 1 | Forecasting titles |
 | [impeccable-mcode](https://github.com/aa-blinov/impeccable-mcode) | 31 | 1 | Impeccable design skill for MiniMax Code — fork of pbakaus/i |
 | [petzy-ios](https://github.com/aa-blinov/petzy-ios) | 29 | 3 | Petzy для iOS: нативный SwiftUI-клиент дневника здоровья пит |
+| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | 29 | 0 | Reference template for building production-grade MCP servers |
 | [koloda](https://github.com/aa-blinov/koloda) | 28 | 3 | Единая лента из Telegram-каналов: свой ридер с поиском, филь |
 | [puuush](https://github.com/aa-blinov/puuush) | 27 | 2 | Скриншот области экрана, загрузка, ссылка в буфере обмена. E |
-| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | 27 | 0 | Reference template for building production-grade MCP servers |
 | [wallpaper-generator](https://github.com/aa-blinov/wallpaper-generator) | 27 | 3 | 120 abstract-wallpaper generators running live in the browse |
 | [cbr-currency-bot](https://github.com/aa-blinov/cbr-currency-bot) | 25 | 2 |  |
 | [simple-scripts-collection](https://github.com/aa-blinov/simple-scripts-collection) | 22 | 2 |  |
@@ -105,6 +105,7 @@ repository is looked at.
 | [codex-gateway](https://github.com/aa-blinov/codex-gateway) | 18 | 2 | OpenAI-compatible HTTP wrapper over codex exec |
 | [vibe-vpn](https://github.com/aa-blinov/vibe-vpn) | 18 | 2 |  |
 | [bitrix-flow](https://github.com/aa-blinov/bitrix-flow) | 16 | 2 |  |
+| [golden-repo](https://github.com/aa-blinov/golden-repo) | 1 | 0 | The canonical house standard for every repository: one file  |
 
 ### Tier 3 — private
 
@@ -195,13 +196,13 @@ repository is looked at.
 | [blog](https://github.com/aa-blinov/blog) | PRIVATE | 30 | 3 |  |
 | [demo-platform](https://github.com/aa-blinov/demo-platform) | PRIVATE | 30 | 1 |  |
 | [petzy-ios](https://github.com/aa-blinov/petzy-ios) | PUBLIC | 29 | 3 | Petzy для iOS: нативный SwiftUI-клиент дневника здоровья питомца, тот  |
+| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | PUBLIC | 29 | 0 | Reference template for building production-grade MCP servers for Bitri |
 | [MediaSquash](https://github.com/aa-blinov/MediaSquash) | PRIVATE | 28 | 2 |  |
 | [koloda](https://github.com/aa-blinov/koloda) | PUBLIC | 28 | 3 | Единая лента из Telegram-каналов: свой ридер с поиском, фильтрами и RS |
 | [umnaya-alisa](https://github.com/aa-blinov/umnaya-alisa) | PRIVATE | 28 | 1 | Приватный навык Алисы: чат с MiniMax |
 | [anki-service](https://github.com/aa-blinov/anki-service) | PRIVATE | 27 | 7 |  |
 | [gchat-sentry-notifier](https://github.com/aa-blinov/gchat-sentry-notifier) | PUBLIC | 27 | 2 |  |
 | [puuush](https://github.com/aa-blinov/puuush) | PUBLIC | 27 | 2 | Скриншот области экрана, загрузка, ссылка в буфере обмена. Electron-кл |
-| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | PUBLIC | 27 | 0 | Reference template for building production-grade MCP servers for Bitri |
 | [wallpaper-generator](https://github.com/aa-blinov/wallpaper-generator) | PUBLIC | 27 | 3 | 120 abstract-wallpaper generators running live in the browser — vanill |
 | [cbr-currency-bot](https://github.com/aa-blinov/cbr-currency-bot) | PUBLIC | 25 | 2 |  |
 | [crm-exporter](https://github.com/aa-blinov/crm-exporter) | PRIVATE | 25 | 3 |  |
@@ -247,6 +248,7 @@ repository is looked at.
 | [project-setup-tool](https://github.com/aa-blinov/project-setup-tool) | PUBLIC | 16 | 1 |  |
 | [trentini-poc](https://github.com/aa-blinov/trentini-poc) | PRIVATE | 16 | 17 |  |
 | [better-ssh](https://github.com/aa-blinov/better-ssh) | PUBLIC | 11 | 2 | A friendlier layer over OpenSSH: interactive picker, encrypted passwor |
+| [golden-repo](https://github.com/aa-blinov/golden-repo) | PUBLIC | 1 | 0 | The canonical house standard for every repository: one file tree, one  |
 
 ## The rules behind the codes
 
