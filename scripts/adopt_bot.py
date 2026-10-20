@@ -127,8 +127,10 @@ def main(argv=None):
         else:
             remote = "https://github.com/%s/%s.git" % (args.owner, name)
 
-        run(["git", "-C", target, "push", "-q", remote, "HEAD:refs/heads/%s" % branch],
-            env=env)
+        # The branch belongs to the bot, and a fresh clone produces a commit
+        # with a different hash, so the push has to replace it.
+        run(["git", "-C", target, "push", "-q", "--force",
+             remote, "HEAD:refs/heads/%s" % branch], env=env)
 
         # Reuse an open pull request for this branch, if there is one.
         existing = gh([
