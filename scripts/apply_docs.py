@@ -144,11 +144,10 @@ def main(argv=None):
                 findings = json.loads(output).get("findings", [])
             except ValueError:
                 findings = []
+            # An exact path. A loose suffix match would catch
+            # docs/qa/README.md when README.md is the file that changed.
             mine = [f for f in findings
-                    if f["severity"] == "hard" and (
-                        f["path"] in changed or
-                        any(f["path"].endswith(name) for name in changed)
-                    )]
+                    if f["severity"] == "hard" and f["path"] in changed]
             if mine:
                 for finding in mine:
                     print("%s  %s  %s: %s" % (
