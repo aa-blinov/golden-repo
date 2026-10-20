@@ -70,6 +70,8 @@ Each of these was reproduced by running it.
 | `codex-gateway` | `Makefile` sets `-X main.version=$(VERSION)`, and there is no `version` variable in `main.go`, so the linker ignores it and the binary reports no version. |
 | `codex-gateway` | `main_test.go` is not gofmt-clean, so a formatting check in CI fails on that file alone. |
 | `self-hosted-search-agent` | `CLAUDE.md` describes a pipeline that is not in the tree: `application/use_cases.py`, `application/legacy_steps.py` and `infrastructure/wikipedia_api.py` are all gone. The orchestrator is `application/unified_runner.py`. |
+| `alert-bot` | The access-token check compares a naive SQLite timestamp with an aware one, so every message raises `TypeError` and the webhook answers 500. |
+| `alert-bot` | The callback URL is registered as `http://…` even behind TLS termination, because uvicorn runs without `--proxy-headers`. |
 | `simple-scripts-collection` | `simple-dns-lookup.py` claims NS, TXT and CNAME lookups; `--type` accepts only A, AAAA, MX, PTR and ALL. |
 | `simple-scripts-collection` | `simple-password-generator.py` claims a guaranteed mix of character types; it samples from the union and can return a password with no digit. |
 | `qazaq-anki` | `server/server.js` and `server/db.js` are stale copies that nothing runs. The live API is at the repository root. |
@@ -79,6 +81,25 @@ Each of these was reproduced by running it.
 | `blog` | `docs/layout-system.md` contradicts the current markup, and two version dialogs are imported nowhere. |
 | `roma-stt` | `ConfigStore.Save` drops the configuration keys `AppConfig` does not declare. |
 | `roma-stt` | The C# tray rewrites `config.yaml` on every start, with the hotkey it managed to register rather than the one that was asked for. |
+| `gunicorn-stats` | `GUNICORN_WORKERS` defaults to 4 and `GUNICORN_THREADS` to 1; the old table said 2 and 4. |
+| `gunicorn-stats` | The Python floor is 3.8, not 3.6, and `setup-python36.sh` installs Flask 2.3.3 into a 3.6 environment, so pip refuses. |
+| `gunicorn-stats` | The systemd unit sets `HTTP_HOST=0.0.0.0` while the services README says the page is localhost-only. |
+| `all-about-all` | The per-agent token limits never reach the API: the code passes `max_output_tokens` and the locked pydantic-ai reads `max_tokens`. |
+| `all-about-all` | `HTTP_TIMEOUT_SECONDS` and `MAX_CONCURRENT_REQUESTS` are read and ignored; the pipeline is sequential. |
+| `all-about-all` | A critique that lists any weakness triggers a second writer call even when the verdict is `approve`. |
+| `titles-forecating` | `requirements.txt` is behind `pyproject.toml`, so `import scraper` fails after installing it. |
+| `titles-forecating` | Two test files import functions that `scraper.py` replaced, and both raise `ImportError` before a line runs. |
+| `titles-forecating` | `save_raw` opens the raw CSV in mode `w`, so every scrape replaces the corpus. |
+| `titles-forecating` | A missing API key makes `semantic_similarity` return `0.0`, so an unmeasured metric reaches the report as a score of zero. |
+| `anki-bot` | There is no spaced repetition: two statuses, no interval, no due date, no scheduling. |
+| `anki-bot` | The card is written to MongoDB before the user confirms it, and cancelling leaves it there. |
+| `anki-bot` | `make test` fails without three environment variables, because the settings are built at import time. |
+| `metronome` | `expo-asset` is imported but not in `package.json`; it resolves only because it is nested under `expo`. |
+| `metronome` | The app declares the microphone permissions and the iOS background audio mode, and uses neither. |
+| `self-hosted-search-agent` | The `[N]` citation numbers are positional, and sorting inside `intelligence.py` repoints every citation. |
+| `self-hosted-search-agent` | The report always holds exactly one synthetic claim, so the CLI's "Claims (1)" is not a decomposition. |
+| `spin-game` | The save keeps the spin summary but not its lines, and `save_run()` does nothing during a spin. |
+| `wiki-js` | Twenty-one pages exist twice, as `.md` and `.html`, and the Markdown file is always the newer one. |
 
 ## What the code cannot say
 
