@@ -302,6 +302,18 @@ class Repo(object):
     def is_dir(self, rel):
         return os.path.isdir(self.path(rel))
 
+    def in_lfs(self, rel):
+        """Whether git tracks this file through the LFS filter."""
+        try:
+            out = subprocess.run(
+                ["git", "-C", self.root, "check-attr", "filter", "--", rel],
+                stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, check=False)
+        except (OSError, ValueError):
+            return False
+        if out.returncode != 0:
+            return False
+        return out.stdout.decode("utf-8", "replace").rstrip().endswith(": lfs")
+
     def read(self, rel):
         """Text content of a file, or None if it is missing or binary."""
         if rel in self._cache:
@@ -346,7 +358,11 @@ class Repo(object):
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*#*\s*$")
 INLINE_LINK_RE = re.compile(r"(!?)\[([^\]]*)\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
-REF_DEF_RE = re.compile(r"^\s{0,3}\[([^\]]+)\]:\s*(\S+)", re.MULTILINE)
+# A reference link definition. A footnote definition is not one: the text
+# after "[^label]:" is prose, not a destination, and a document full of
+# footnotes is not a document full of broken links.
+REF_DEF_RE = re.compile(
+    r"^\s{0,3}\[(?!\^)([^\]]+)\]:\s*(\S+)", re.MULTILINE)
 HTML_COMMENT_RE = re.compile(r"<!--.*?-->", re.DOTALL)
 
 
@@ -701,6 +717,12 @@ def check_file_sizes(repo):
     findings = []
     for rel in repo.files():
         size = repo.size(rel)
+        if size > WARN_FILE_BYTES and repo.in_lfs(rel):
+            # The file is in Git LFS. The repository does not carry it; the
+            # object store does, and a clone pulls it only when it is
+            # needed. The size of the working copy is not the size of the
+            # repository.
+            continue
         if size > MAX_FILE_BYTES:
             findings.append(hard(
                 "HS008", rel,

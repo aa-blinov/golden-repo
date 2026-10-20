@@ -76,7 +76,24 @@ def main():
 
             # A negation for each, so the repository keeps its own rule for
             # the file it meant and gets the standard's file as well.
+            #
+            # Git cannot bring a file back from a directory that is
+            # excluded, so a rule that excludes the whole directory has to
+            # be narrowed to its contents first: `.impeccable/` becomes
+            # `.impeccable/*`, and the negation can then do its work.
             gitignore = os.path.join(target, ".gitignore")
+            with open(gitignore, encoding="utf-8") as handle:
+                rules = handle.read().split("\n")
+            for path, _ in planned:
+                parent = path.rsplit("/", 1)[0] if "/" in path else ""
+                if not parent:
+                    continue
+                directory_rule = parent + "/"
+                for index, rule in enumerate(rules):
+                    if rule.strip() == directory_rule:
+                        rules[index] = parent + "/*"
+            with open(gitignore, "w", encoding="utf-8") as handle:
+                handle.write("\n".join(rules))
             with open(gitignore, "a", encoding="utf-8") as handle:
                 handle.write("\n# The house standard's own files. The rule above\n")
                 handle.write("# was meant for the repository's config, not for these.\n")

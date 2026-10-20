@@ -1,0 +1,83 @@
+{
+  "_comment": "What to do with the emoji in a repository's own documents. 'mark' means the emoji are a vocabulary the document defines and the file says so. 'remove' means they are decoration and go; the replacements are the words that take their place where the prose needs one.",
+
+  "petzy": {
+    "docs/qa/README.md": "mark",
+    "docs/qa/01-вход-и-аккаунт.md": "mark",
+    "docs/qa/02-питомцы-и-доступ.md": "mark",
+    "docs/qa/03-записи-и-лента.md": "mark",
+    "docs/qa/04-лекарства.md": "mark",
+    "docs/qa/05-документы.md": "mark",
+    "docs/qa/06-медкарта.md": "mark",
+    "docs/qa/07-настройки-и-справка.md": "mark",
+    "docs/qa/08-навигация-и-экран.md": "mark",
+    "docs/qa/09-уведомления-и-без-сети.md": "mark",
+    "docs/qa/10-администрирование.md": "mark"
+  },
+
+  "templates-mcp": {
+    "docs/MANUAL-TEST-PHRASES.md": "mark",
+    "CHANGELOG.md": {"replace": {"- **⚠ BREAKING": "- **BREAKING"}},
+    "PROJECT-BRIEF.md": {"replace": {"✅": "done"}},
+    "docs/DEPLOYMENT.md": {"replace": {"> ⚠️ **No native health gate": "> **No native health gate"}},
+    "docs/OAUTH-DESIGN.md": {"replace": {"⚠️": "Note:"}},
+    "mcp-stdio/README.md": {"replace": {"- 🇷🇺 [": "- ["}}
+  },
+
+  "cast": {
+    "docs/eval-methodology.md": "mark",
+    "docs/changelog.md": {"replace": {"👨": ""}}
+  },
+
+  "self-hosted-search-agent": {
+    "CLAUDE.md": "mark"
+  },
+
+  "impeccable-mcode": {
+    "reference/critique.md": "mark",
+    "reference/harden.md": "mark",
+    "reference/optimize.md": "mark",
+    "reference/overdrive.md": "mark"
+  },
+
+  "qazaq-anki": {
+    "docs/concepts.md": "mark"
+  },
+
+  "my-blog": {
+    "src/content/blog/projects/better-ssh.md": "mark",
+    "src/content/pages/main.md": {"replace": {"за значком  сверху": "за значком меню сверху"}},
+    ".impeccable/critique/2026-09-25T07-43-56Z__blinov-monster.md": {"replace": {"за  латинские папки": "за значком меню латинские папки"}}
+  },
+
+  "haven": {
+    "GUIDE.md": {"replace": {"# ⬡ Haven": "# Haven"}},
+    "CHANGELOG.md": {"replace": {"🔑": ""}},
+    "desktop-directive.md": {"replace": {"(🎵 button": "(the music button"}},
+    "docs/CROSS-PLATFORM-GAMEPLAN.md": {"replace": {"Already Solved ✅": "Already Solved"}}
+  },
+
+  "stavki": {
+    "docs/разработка.md": {"replace": {"⚠️ Не делай": "Не делай"}}
+  },
+
+  "cronator": {
+    "docs/ARTIFACTS_GUIDE.md": {"replace": {"- ✅ Save files": "- Save files"}}
+  },
+
+  "paratrack": {
+    "CHANGELOG.md": {"replace": {"⏸": ""}}
+  },
+
+  "protokol": {
+    "DESIGN.md": {"replace": {"✎": ""}}
+  },
+
+  "blog": {
+    "docs/layout-system.md": {"replace": {"// ❌ Do not do this": "// Do not do this"}}
+  },
+
+  "gambling-pack": {
+    ".github/copilot-instructions.md": "mark"
+  }
+}

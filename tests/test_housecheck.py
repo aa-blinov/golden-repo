@@ -376,6 +376,16 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("docs/rules.md", "Suits: \u2660 \u2665 \u2666 \u2663\n")
         self.assertNotIn("HS040", self.repo.codes("hard"))
 
+    def test_a_footnote_is_not_a_reference_link(self):
+        """A footnote definition carries prose, not a destination. A document
+        full of footnotes is not a document full of broken links."""
+        self.repo.write(
+            "docs/SECURITY.md",
+            "Rotate the token [^pat].\n\n"
+            "[^pat]: All transports use the same name.\n",
+        )
+        self.assertNotIn("HS030", self.repo.codes("hard"))
+
     def test_a_link_inside_inline_code_is_an_example(self):
         """A document that explains how to write a link holds a broken link
         as its subject. The checker was reading the example."""
