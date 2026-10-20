@@ -144,13 +144,14 @@ references the checker as an action at a pinned version:
 - uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
 ```
 
-Dependabot reads that reference as a dependency, so an improvement to the
-standard arrives in every adopting repository as a pull request that bumps the
-pin. The standard is updated in one place, and no repository goes red because
-of a change it did not ask for.
+Dependabot reads that reference as a dependency, but it does not propose a
+bump for a standard published in the same repository as its own tooling. The
+bump workflow in the standard does it instead: `scripts/bump.py` opens the
+pull request that moves the pin in every repository listed in
+`adopters.json`. The standard is updated in one place, and no repository goes
+red because of a change it did not ask for.
 
-The version a repository follows is in its workflow file, which is where
-Dependabot can find it.
+The version a repository follows is in its workflow file.
 
 ### `.impeccable/`
 

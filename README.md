@@ -98,11 +98,12 @@ action, at a version:
 - uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
 ```
 
-Dependabot reads that reference as a dependency and opens the pull request
-that bumps the pin. So the standard is improved in one place, and every
-repository picks the change up on a day you choose, as a diff you read. No
-repository goes red because of a change it did not ask for, and the version a
-repository follows is written in its own workflow file.
+When a new version of the standard is published, `scripts/bump.py` opens a
+pull request in every repository listed in `adopters.json` that moves the
+pin. So the standard is improved in one place, and every repository picks
+the change up on a day you choose, as a diff you read. No repository goes
+red because of a change it did not ask for, and the version a repository
+follows is written in its own workflow file.
 
 This is the same arrangement eslint, ruff and prettier use: a rule set you
 depend on at a version, not one you vendor and forget.

@@ -1,0 +1,50 @@
+name: bump
+
+# Move the pin in every repository that depends on the standard.
+#
+# A repository references the checker at a version:
+#
+#     uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
+#
+# When the standard is published as a new version, this workflow opens a pull
+# request in each dependent repository that moves the pin. The change arrives
+# as a diff to read, on a day chosen by whoever reviews it, instead of a red
+# build in a repository nobody touched.
+#
+# The token needs write access to the repositories in adopters.json. Store a
+# personal access token with the `repo` scope as the GH_TOKEN secret of this
+# repository.
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+    inputs:
+      only:
+        description: Check only this repository. Leave empty for all of them.
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  bump:
+    name: Bump the pins
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Open the pull requests
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          if [ -n "${{ inputs.only }}" ]; then
+            python3 scripts/bump.py --only "${{ inputs.only }}"
+          else
+            python3 scripts/bump.py
+          fi

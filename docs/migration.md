@@ -110,10 +110,20 @@ The workflow references the checker at a pinned version:
 - uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0
 ```
 
-That reference is a dependency. Dependabot reads it as one and opens the pull
-request that bumps the pin, so the standard is improved in one place and every
-repository picks the change up as a reviewable diff, on a day you choose. It
-does not arrive as a red build in a repository you did not touch.
+That reference is a dependency. The bump workflow in `aa-blinov/golden-repo`
+opens the pull request that moves the pin, so the standard is improved in one
+place and every repository picks the change up as a reviewable diff, on a day
+you choose. It does not arrive as a red build in a repository you did not
+touch.
+
+To join the list of repositories that get the bump, add the repository to
+`adopters.json` in the standard:
+
+```json
+{
+  "repositories": ["some-project", "another-project"]
+}
+```
 
 A repository that prefers a vendored copy can copy `scripts/housecheck.py`
 instead. It then has to be updated by hand, and it loses the version it

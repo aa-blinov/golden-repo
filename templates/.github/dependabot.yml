@@ -10,7 +10,12 @@ updates:
     labels: [dependencies, ci]
     groups:
       actions:
-        patterns: ['*']
+        # The house standard is excluded on purpose. Dependabot reads the
+        # reference to it as a dependency, but it does not propose a bump for
+        # a standard published in the same repository as its own tooling.
+        # The bump workflow in aa-blinov/golden-repo opens that pull request
+        # instead, and it arrives on its own.
+        patterns: ['*', '!aa-blinov/golden-repo']
 
   - package-ecosystem: pip
     directory: /

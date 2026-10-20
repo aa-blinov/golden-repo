@@ -33,6 +33,8 @@ run on a machine that has nothing but Python 3 installed.
 | `scripts/new-repo.sh` | Scaffolder. Reads `templates/`. |
 | `scripts/adopt.sh` | Migrator. Adds what is missing, overwrites nothing. |
 | `scripts/audit.py` | Checks every repository of an owner at once, over the API. |
+| `scripts/bump.py` | Opens the pull request that moves the pin in every adopting repository. |
+| `adopters.json` | The repositories that depend on the standard. |
 | `templates/` | Placeholder files with `{{ … }}` markers. |
 | `tests/` | Unit tests for the checker. |
 

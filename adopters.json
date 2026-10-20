@@ -1,0 +1,6 @@
+{
+  "comment": "Repositories that depend on the house standard. The bump workflow reads this list and opens a pull request that moves the pin in each one. A repository joins the list by referencing the standard at a version: uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.0",
+  "repositories": [
+    "_template-smoke-test"
+  ]
+}
