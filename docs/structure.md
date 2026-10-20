@@ -159,8 +159,10 @@ is a folder nobody opens.
 
 Everything executable that is not source goes in `scripts/`. The code goes in
 `src/`, the tests in `tests/`. A project whose stack does not use `src/` —
-a Go project with packages at the root, a single-file script — keeps its
-layout and says so in its `AGENTS.md`.
+a Go project with packages at the root, a single-file script — still has the
+directory, with a short `README.md` in it saying what the project does
+instead. An empty directory does not survive a clone, so the directory has
+to carry a file, and the file says why it is there.
 
 ## What a project may add
 
@@ -174,3 +176,8 @@ What a project may not do is remove one of the root files, or reorder the
 README's required sections, without saying so in its own `AGENTS.md`. An
 exception that is written down is an exception. One that is not is an
 accident.
+
+One more thing a project may do: keep a directory the standard requires and
+fill it with a note instead of code. The golden repository's own `src/`
+contains a `README.md` and no product code, because the product here is the
+standard and it lives in `scripts/`, `docs/` and `templates/`.

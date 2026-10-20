@@ -89,9 +89,17 @@ a reporter to go. These are GitHub's own mechanisms, and they are free.
 | `tests/` | The tests. |
 
 **Why.** Same reason as HS001, for the parts of a repository that are
-directories. A stack that does not use `src/` — a Go project with packages at
-the root, a single-file script — is an exception, and the exception is
-recorded in the repository's own `AGENTS.md` rather than silently tolerated.
+directories.
+
+A stack that does not use `src/` — a Go project with packages at the root, a
+single-file script — still has the directory, with a short `README.md` in it
+saying what the project does instead. The point is that a reader, and an
+agent, knows where to look without being told. The exception is written down
+in the place a reader will find it, rather than being tolerated silently.
+
+An empty directory does not survive a git clone, so the directory has to
+carry a file. That is the whole reason the golden repository's `src/`
+contains a README and no code.
 
 ### HS003 — `LICENSE` names a real license
 
