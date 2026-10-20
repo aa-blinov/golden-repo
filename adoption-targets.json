@@ -107,6 +107,7 @@
     "monos-sync-matrix-1781382370490": "A test sandbox.",
     "monos-sync-matrix-1781382440442": "A test sandbox.",
     "monos-sync-matrix-1781382482939": "A test sandbox.",
-    "_template-smoke-test": "The standard's own test bench."
+    "_template-smoke-test": "The standard's own test bench.",
+    "golden-repo": "The standard itself."
   }
 }

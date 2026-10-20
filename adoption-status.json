@@ -1,5 +1,5 @@
 {
-  "$comment": "The state of the rollout: which repositories have an open pull request that adopts the house standard. Generated from the live pull requests.",
+  "$comment": "The state of the rollout: which repositories have an open pull request that adopts the house standard.",
   "with_pull_request": {
     "MediaSquash": "https://github.com/aa-blinov/MediaSquash/pull/1",
     "aa-blinov": "https://github.com/aa-blinov/aa-blinov/pull/1",
@@ -11,7 +11,6 @@
     "bitrix-flow": "https://github.com/aa-blinov/bitrix-flow/pull/22",
     "bitrix-mcp": "https://github.com/aa-blinov/bitrix-mcp/pull/1",
     "blog": "https://github.com/aa-blinov/blog/pull/1",
-    "bspb-universal-helper-poc": "https://github.com/aa-blinov/bspb-universal-helper-poc/pull/1",
     "cast": "https://github.com/aa-blinov/cast/pull/13",
     "cbr-currency-bot": "https://github.com/aa-blinov/cbr-currency-bot/pull/1",
     "claude-gateway": "https://github.com/aa-blinov/claude-gateway/pull/1",
@@ -20,13 +19,11 @@
     "codex-gateway": "https://github.com/aa-blinov/codex-gateway/pull/1",
     "coop-watcher": "https://github.com/aa-blinov/coop-watcher/pull/1",
     "course": "https://github.com/aa-blinov/course/pull/3",
-    "crm-exporter": "https://github.com/aa-blinov/crm-exporter/pull/1",
     "cronator": "https://github.com/aa-blinov/cronator/pull/2",
     "crypto-service": "https://github.com/aa-blinov/crypto-service/pull/1",
     "demo-platform": "https://github.com/aa-blinov/demo-platform/pull/1",
     "docs": "https://github.com/aa-blinov/docs/pull/1",
     "doktor-ryadom": "https://github.com/aa-blinov/doktor-ryadom/pull/1",
-    "eora": "https://github.com/aa-blinov/eora/pull/1",
     "flash-bar-delivery": "https://github.com/aa-blinov/flash-bar-delivery/pull/1",
     "gambling-pack": "https://github.com/aa-blinov/gambling-pack/pull/1",
     "gchat-sentry-notifier": "https://github.com/aa-blinov/gchat-sentry-notifier/pull/1",
@@ -41,9 +38,7 @@
     "monos": "https://github.com/aa-blinov/monos/pull/20",
     "monos-home": "https://github.com/aa-blinov/monos-home/pull/1",
     "my-blog": "https://github.com/aa-blinov/my-blog/pull/1",
-    "my-notes": "https://github.com/aa-blinov/my-notes/pull/1",
     "notes": "https://github.com/aa-blinov/notes/pull/1",
-    "outline-workspace": "https://github.com/aa-blinov/outline-workspace/pull/1",
     "ovh-caddy": "https://github.com/aa-blinov/ovh-caddy/pull/1",
     "paratrack": "https://github.com/aa-blinov/paratrack/pull/70",
     "petzy": "https://github.com/aa-blinov/petzy/pull/21",
@@ -51,7 +46,6 @@
     "photo-checker": "https://github.com/aa-blinov/photo-checker/pull/1",
     "ponytail-minimax": "https://github.com/aa-blinov/ponytail-minimax/pull/1",
     "project-setup-tool": "https://github.com/aa-blinov/project-setup-tool/pull/1",
-    "projects-exporter": "https://github.com/aa-blinov/projects-exporter/pull/1",
     "protokol": "https://github.com/aa-blinov/protokol/pull/3",
     "puuush": "https://github.com/aa-blinov/puuush/pull/1",
     "qazaq-anki": "https://github.com/aa-blinov/qazaq-anki/pull/1",
@@ -75,7 +69,11 @@
   },
   "exempt": [
     "_template-smoke-test",
+    "bspb-universal-helper-poc",
     "cast-team",
+    "crm-exporter",
+    "eora",
+    "golden-repo",
     "monos-conflict-lab",
     "monos-conflict-test",
     "monos-notes",
@@ -84,6 +82,9 @@
     "monos-sync-matrix-1781382370490",
     "monos-sync-matrix-1781382440442",
     "monos-sync-matrix-1781382482939",
-    "monos-sync-test"
+    "monos-sync-test",
+    "my-notes",
+    "outline-workspace",
+    "projects-exporter"
   ]
 }

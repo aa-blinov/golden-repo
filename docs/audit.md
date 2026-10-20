@@ -23,8 +23,8 @@ nothing that already existed.
 
 | | |
 | --- | ---: |
-| Repositories with an adoption pull request | 71 |
-| Exempt | 11 |
+| Repositories with an adoption pull request | 65 |
+| Exempt | 18 |
 
 The exemptions are the standard itself, the test bench, the archived
 fork, and the sync sandboxes. A rule that cannot be applied
