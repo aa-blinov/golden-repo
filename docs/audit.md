@@ -9,8 +9,8 @@ that resolves is a link that resolves.
 | --- | ---: | ---: |
 | Repositories | 60 | 23 |
 | Hard failures | 4 | 1381 |
-| Soft findings | 2 | 184 |
-| Repositories with no hard failure | 56 | 2 |
+| Soft findings | 1 | 184 |
+| Repositories with no hard failure | 57 | 2 |
 
 The collection is the 60 repositories the standard was written for.
 The rest are the repositories that hold somebody else's work, the
@@ -53,10 +53,10 @@ differs is the content, which is the repository's own.
 | HS011 | 1 | 0 | 1 |
 | HS012 | 41 | 0 | 12 |
 | HS014 | 0 | 6 | 6 |
-| HS015 | 0 | 13 | 13 |
+| HS015 | 0 | 12 | 12 |
 | HS025 | 0 | 3 | 1 |
 | HS026 | 6 | 0 | 6 |
-| HS030 | 7 | 161 | 7 |
+| HS030 | 7 | 161 | 6 |
 | HS040 | 53 | 0 | 7 |
 | HS041 | 34 | 0 | 2 |
 | HS042 | 282 | 0 | 9 |
@@ -102,9 +102,8 @@ The order follows how much the repository is looked at.
 | Repository | Hard | Soft | Description |
 | --- | ---: | ---: | --- |
 | [bitrix-flow](https://github.com/aa-blinov/bitrix-flow) | 5 | 3 |  |
-| [monos](https://github.com/aa-blinov/monos) | 1 | 0 | Local-first desktop notes app with Markdown, wiki links, ful |
+| [haven](https://github.com/aa-blinov/haven) | 2 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Te |
 | [my-blog](https://github.com/aa-blinov/my-blog) | 1 | 0 |  |
-| [paratrack](https://github.com/aa-blinov/paratrack) | 1 | 0 |  |
 | [_template-smoke-test](https://github.com/aa-blinov/_template-smoke-test) | 0 | 0 | Temporary smoke test of aa-blinov/golden-repo. Archived; saf |
 | [bitrix-mcp](https://github.com/aa-blinov/bitrix-mcp) | 0 | 0 |  |
 | [cbr-currency-bot](https://github.com/aa-blinov/cbr-currency-bot) | 0 | 0 |  |
@@ -112,13 +111,14 @@ The order follows how much the repository is looked at.
 | [codex-gateway](https://github.com/aa-blinov/codex-gateway) | 0 | 0 | OpenAI-compatible HTTP wrapper over codex exec |
 | [doktor-ryadom](https://github.com/aa-blinov/doktor-ryadom) | 0 | 0 | Рядом — дневник самочувствия пациента и кабинет врача |
 | [golden-repo](https://github.com/aa-blinov/golden-repo) | 0 | 0 | The canonical house standard for every repository: one file  |
-| [haven](https://github.com/aa-blinov/haven) | 0 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Te |
 | [impeccable-mcode](https://github.com/aa-blinov/impeccable-mcode) | 0 | 0 | Impeccable design skill for MiniMax Code — fork of pbakaus/i |
 | [koloda](https://github.com/aa-blinov/koloda) | 0 | 0 | Единая лента из Telegram-каналов: свой ридер с поиском, филь |
+| [monos](https://github.com/aa-blinov/monos) | 0 | 0 | Local-first desktop notes app with Markdown, wiki links, ful |
+| [paratrack](https://github.com/aa-blinov/paratrack) | 0 | 0 |  |
 | [petzy-ios](https://github.com/aa-blinov/petzy-ios) | 0 | 0 | Petzy для iOS: нативный SwiftUI-клиент дневника здоровья пит |
 | [photo-checker](https://github.com/aa-blinov/photo-checker) | 0 | 0 |  |
 | [puuush](https://github.com/aa-blinov/puuush) | 0 | 0 | Скриншот области экрана, загрузка, ссылка в буфере обмена. E |
-| [qazaq-anki](https://github.com/aa-blinov/qazaq-anki) | 0 | 1 | Spaced-repetition flashcards for learning Kazakh (CEFR A1–C1 |
+| [qazaq-anki](https://github.com/aa-blinov/qazaq-anki) | 0 | 0 | Spaced-repetition flashcards for learning Kazakh (CEFR A1–C1 |
 | [self-hosted-search-agent](https://github.com/aa-blinov/self-hosted-search-agent) | 0 | 0 |  |
 | [simple-rag](https://github.com/aa-blinov/simple-rag) | 0 | 0 |  |
 | [simple-scripts-collection](https://github.com/aa-blinov/simple-scripts-collection) | 0 | 0 |  |
@@ -209,9 +209,8 @@ The order follows how much the repository is looked at.
 | [monos-conflict-lab](https://github.com/aa-blinov/monos-conflict-lab) | PRIVATE | 25 | 0 | Monos sync conflict test sandbox |
 | [projects-exporter](https://github.com/aa-blinov/projects-exporter) | PRIVATE | 25 | 2 |  |
 | [bitrix-flow](https://github.com/aa-blinov/bitrix-flow) | PUBLIC | 5 | 3 |  |
-| [monos](https://github.com/aa-blinov/monos) | PUBLIC | 1 | 0 | Local-first desktop notes app with Markdown, wiki links, full-text sea |
+| [haven](https://github.com/aa-blinov/haven) | PUBLIC | 2 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Tech. Discor |
 | [my-blog](https://github.com/aa-blinov/my-blog) | PUBLIC | 1 | 0 |  |
-| [paratrack](https://github.com/aa-blinov/paratrack) | PUBLIC | 1 | 0 |  |
 | [stavki](https://github.com/aa-blinov/stavki) | PRIVATE | 1 | 1 | Доска для бытовых споров: лента, планка, счёт. Деньги не принимает |
 | [MediaSquash](https://github.com/aa-blinov/MediaSquash) | PRIVATE | 0 | 0 |  |
 | [_template-smoke-test](https://github.com/aa-blinov/_template-smoke-test) | PUBLIC | 0 | 0 | Temporary smoke test of aa-blinov/golden-repo. Archived; safe to delet |
@@ -241,13 +240,14 @@ The order follows how much the repository is looked at.
 | [golden-repo](https://github.com/aa-blinov/golden-repo) | PUBLIC | 0 | 0 | The canonical house standard for every repository: one file tree, one  |
 | [govno](https://github.com/aa-blinov/govno) | PRIVATE | 0 | 0 |  |
 | [gunicorn-stats](https://github.com/aa-blinov/gunicorn-stats) | PRIVATE | 0 | 0 |  |
-| [haven](https://github.com/aa-blinov/haven) | PUBLIC | 0 | 0 | Self-hosted private chat — No cloud, no telemetry, no Big Tech. Discor |
 | [impeccable-mcode](https://github.com/aa-blinov/impeccable-mcode) | PUBLIC | 0 | 0 | Impeccable design skill for MiniMax Code — fork of pbakaus/impeccable  |
 | [koloda](https://github.com/aa-blinov/koloda) | PUBLIC | 0 | 0 | Единая лента из Telegram-каналов: свой ридер с поиском, фильтрами и RS |
 | [lazy-to-text](https://github.com/aa-blinov/lazy-to-text) | PUBLIC | 0 | 0 | Local Whisper speech-to-text for Windows: global hotkey, Qt UI, no clo |
 | [llm-code-review](https://github.com/aa-blinov/llm-code-review) | PRIVATE | 0 | 0 |  |
 | [metronome](https://github.com/aa-blinov/metronome) | PRIVATE | 0 | 0 |  |
+| [monos](https://github.com/aa-blinov/monos) | PUBLIC | 0 | 0 | Local-first desktop notes app with Markdown, wiki links, full-text sea |
 | [ovh-caddy](https://github.com/aa-blinov/ovh-caddy) | PRIVATE | 0 | 0 | Машинный Caddy на VPS: все проекты за одним прокси |
+| [paratrack](https://github.com/aa-blinov/paratrack) | PUBLIC | 0 | 0 |  |
 | [petzy](https://github.com/aa-blinov/petzy) | PUBLIC | 0 | 0 |  |
 | [petzy-ios](https://github.com/aa-blinov/petzy-ios) | PUBLIC | 0 | 0 | Petzy для iOS: нативный SwiftUI-клиент дневника здоровья питомца, тот  |
 | [photo-checker](https://github.com/aa-blinov/photo-checker) | PUBLIC | 0 | 0 |  |
@@ -255,7 +255,7 @@ The order follows how much the repository is looked at.
 | [project-setup-tool](https://github.com/aa-blinov/project-setup-tool) | PUBLIC | 0 | 0 |  |
 | [protokol](https://github.com/aa-blinov/protokol) | PRIVATE | 0 | 0 | Протокол — приватная расшифровка встреч. Аудио → транскрипт → маскиров |
 | [puuush](https://github.com/aa-blinov/puuush) | PUBLIC | 0 | 0 | Скриншот области экрана, загрузка, ссылка в буфере обмена. Electron-кл |
-| [qazaq-anki](https://github.com/aa-blinov/qazaq-anki) | PUBLIC | 0 | 1 | Spaced-repetition flashcards for learning Kazakh (CEFR A1–C1). SM-2 al |
+| [qazaq-anki](https://github.com/aa-blinov/qazaq-anki) | PUBLIC | 0 | 0 | Spaced-repetition flashcards for learning Kazakh (CEFR A1–C1). SM-2 al |
 | [rag](https://github.com/aa-blinov/rag) | PRIVATE | 0 | 0 |  |
 | [roma-stt](https://github.com/aa-blinov/roma-stt) | PRIVATE | 0 | 0 |  |
 | [self-hosted-search-agent](https://github.com/aa-blinov/self-hosted-search-agent) | PUBLIC | 0 | 0 |  |

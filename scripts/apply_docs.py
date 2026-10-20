@@ -71,7 +71,15 @@ def copy_documents(docs_dir, target):
             continue
         with open(index, "r", errors="replace") as handle:
             head = handle.read(400).lower()
-        if "<!doctype html" in head or "<html" in head:
+        if "<!doctype html" not in head and "<html" not in head:
+            continue
+        # A landing page brings its stylesheet and its script with it. A
+        # documentation index is a file that happens to be called index.html
+        # and has neither.
+        companions = ("style.css", "styles.css", "site.js", "assets",
+                      "_config.yml")
+        if any(os.path.exists(os.path.join(target, folder, name))
+               for name in companions):
             landing = folder
             break
     if landing:
