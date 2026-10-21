@@ -137,18 +137,16 @@ Each of these was reproduced by running it.
 | `spin-game` | The save keeps the spin summary but not its lines, and `save_run()` does nothing during a spin. |
 | `wiki-js` | Twenty-one pages exist twice, as `.md` and `.html`, and the Markdown file is always the newer one. |
 
-## The two that stay
+## The licences, in the end
 
-Two repositories carry a finding on purpose.
+Two repositories said "All Rights Reserved" while the other fifty-eight were
+MIT. The checker reported both, correctly, and the owner decided to align
+them rather than live with two exceptions: `my-blog` and `stavki` are MIT now,
+with a licence file and a README that says so.
 
-`my-blog` says "All Rights Reserved" in its licence, and its README badge says
-the same. The house standard says MIT. Relicensing is the owner's call.
-
-`stavki` says the project is private, that it carries no licence file, and
-that no permission to use, copy, modify or redistribute it is granted. The
-standard's MIT file sat next to that, granting permissions the owner had
-withheld, so it was removed. The checker will keep reporting the missing
-file until there is one to point at.
+`stavki` keeps its terms of use in `public/terms.html`, and those are about
+the running board rather than about the code. The two are different documents
+and the README now says which is which.
 
 ## What the code cannot say
 
