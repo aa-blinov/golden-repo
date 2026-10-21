@@ -8,9 +8,9 @@ that resolves is a link that resolves.
 | | Collection | The rest |
 | --- | ---: | ---: |
 | Repositories | 60 | 23 |
-| Hard failures | 2 | 1381 |
-| Soft findings | 1 | 184 |
-| Repositories with no hard failure | 58 | 2 |
+| Hard failures | 5 | 1381 |
+| Soft findings | 0 | 184 |
+| Repositories with no hard failure | 59 | 2 |
 
 The collection is the 60 repositories the standard was written for.
 The rest are the repositories that hold somebody else's work, the
@@ -47,16 +47,15 @@ differs is the content, which is the repository's own.
 
 | Rule | Hard | Soft | Repositories affected |
 | --- | ---: | ---: | ---: |
-| HS001 | 313 | 0 | 21 |
+| HS001 | 312 | 0 | 20 |
 | HS002 | 166 | 0 | 20 |
-| HS003 | 1 | 0 | 1 |
 | HS011 | 1 | 0 | 1 |
 | HS012 | 41 | 0 | 12 |
 | HS014 | 0 | 6 | 6 |
-| HS015 | 0 | 12 | 12 |
+| HS015 | 0 | 11 | 11 |
 | HS025 | 0 | 3 | 1 |
 | HS026 | 6 | 0 | 6 |
-| HS030 | 5 | 161 | 5 |
+| HS030 | 10 | 161 | 6 |
 | HS040 | 53 | 0 | 7 |
 | HS041 | 34 | 0 | 2 |
 | HS042 | 282 | 0 | 9 |
@@ -102,7 +101,7 @@ The order follows how much the repository is looked at.
 | Repository | Hard | Soft | Description |
 | --- | ---: | ---: | --- |
 | [bitrix-flow](https://github.com/aa-blinov/bitrix-flow) | 5 | 3 |  |
-| [my-blog](https://github.com/aa-blinov/my-blog) | 1 | 0 |  |
+| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | 5 | 0 | Reference template for building production-grade MCP servers |
 | [_template-smoke-test](https://github.com/aa-blinov/_template-smoke-test) | 0 | 0 | Temporary smoke test of aa-blinov/golden-repo. Archived; saf |
 | [bitrix-mcp](https://github.com/aa-blinov/bitrix-mcp) | 0 | 0 |  |
 | [cbr-currency-bot](https://github.com/aa-blinov/cbr-currency-bot) | 0 | 0 |  |
@@ -114,6 +113,7 @@ The order follows how much the repository is looked at.
 | [impeccable-mcode](https://github.com/aa-blinov/impeccable-mcode) | 0 | 0 | Impeccable design skill for MiniMax Code — fork of pbakaus/i |
 | [koloda](https://github.com/aa-blinov/koloda) | 0 | 0 | Единая лента из Telegram-каналов: свой ридер с поиском, филь |
 | [monos](https://github.com/aa-blinov/monos) | 0 | 0 | Local-first desktop notes app with Markdown, wiki links, ful |
+| [my-blog](https://github.com/aa-blinov/my-blog) | 0 | 0 |  |
 | [paratrack](https://github.com/aa-blinov/paratrack) | 0 | 0 |  |
 | [petzy-ios](https://github.com/aa-blinov/petzy-ios) | 0 | 0 | Petzy для iOS: нативный SwiftUI-клиент дневника здоровья пит |
 | [photo-checker](https://github.com/aa-blinov/photo-checker) | 0 | 0 |  |
@@ -123,7 +123,6 @@ The order follows how much the repository is looked at.
 | [simple-rag](https://github.com/aa-blinov/simple-rag) | 0 | 0 |  |
 | [simple-scripts-collection](https://github.com/aa-blinov/simple-scripts-collection) | 0 | 0 |  |
 | [stt-yandex](https://github.com/aa-blinov/stt-yandex) | 0 | 0 |  |
-| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | 0 | 0 | Reference template for building production-grade MCP servers |
 | [titles-forecating](https://github.com/aa-blinov/titles-forecating) | 0 | 0 | Forecasting titles |
 | [vibe-vpn](https://github.com/aa-blinov/vibe-vpn) | 0 | 0 |  |
 | [wallpaper-generator](https://github.com/aa-blinov/wallpaper-generator) | 0 | 0 | 120 abstract-wallpaper generators running live in the browse |
@@ -142,7 +141,6 @@ The order follows how much the repository is looked at.
 | [bspb-universal-helper-poc](https://github.com/aa-blinov/bspb-universal-helper-poc) | 27 | 15 |  |
 | [eora](https://github.com/aa-blinov/eora) | 26 | 0 |  |
 | [projects-exporter](https://github.com/aa-blinov/projects-exporter) | 25 | 2 |  |
-| [stavki](https://github.com/aa-blinov/stavki) | 1 | 1 | Доска для бытовых споров: лента, планка, счёт. Деньги не при |
 | [MediaSquash](https://github.com/aa-blinov/MediaSquash) | 0 | 0 |  |
 | [alert-bot](https://github.com/aa-blinov/alert-bot) | 0 | 0 |  |
 | [all-about-all](https://github.com/aa-blinov/all-about-all) | 0 | 0 |  |
@@ -165,6 +163,7 @@ The order follows how much the repository is looked at.
 | [rag](https://github.com/aa-blinov/rag) | 0 | 0 |  |
 | [roma-stt](https://github.com/aa-blinov/roma-stt) | 0 | 0 |  |
 | [spin-game](https://github.com/aa-blinov/spin-game) | 0 | 0 |  |
+| [stavki](https://github.com/aa-blinov/stavki) | 0 | 0 | Доска для бытовых споров: лента, планка, счёт. Деньги не при |
 | [the-cuba-times-tgif](https://github.com/aa-blinov/the-cuba-times-tgif) | 0 | 0 | Simple landing for sunny Cuba |
 | [trentini-poc](https://github.com/aa-blinov/trentini-poc) | 0 | 0 |  |
 | [umnaya-alisa](https://github.com/aa-blinov/umnaya-alisa) | 0 | 0 | Приватный навык Алисы: чат с MiniMax |
@@ -209,8 +208,7 @@ The order follows how much the repository is looked at.
 | [monos-conflict-lab](https://github.com/aa-blinov/monos-conflict-lab) | PRIVATE | 25 | 0 | Monos sync conflict test sandbox |
 | [projects-exporter](https://github.com/aa-blinov/projects-exporter) | PRIVATE | 25 | 2 |  |
 | [bitrix-flow](https://github.com/aa-blinov/bitrix-flow) | PUBLIC | 5 | 3 |  |
-| [my-blog](https://github.com/aa-blinov/my-blog) | PUBLIC | 1 | 0 |  |
-| [stavki](https://github.com/aa-blinov/stavki) | PRIVATE | 1 | 1 | Доска для бытовых споров: лента, планка, счёт. Деньги не принимает |
+| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | PUBLIC | 5 | 0 | Reference template for building production-grade MCP servers for Bitri |
 | [MediaSquash](https://github.com/aa-blinov/MediaSquash) | PRIVATE | 0 | 0 |  |
 | [_template-smoke-test](https://github.com/aa-blinov/_template-smoke-test) | PUBLIC | 0 | 0 | Temporary smoke test of aa-blinov/golden-repo. Archived; safe to delet |
 | [aa-blinov](https://github.com/aa-blinov/aa-blinov) | PUBLIC | 0 | 0 | Config files for my GitHub profile. |
@@ -246,6 +244,7 @@ The order follows how much the repository is looked at.
 | [llm-code-review](https://github.com/aa-blinov/llm-code-review) | PRIVATE | 0 | 0 |  |
 | [metronome](https://github.com/aa-blinov/metronome) | PRIVATE | 0 | 0 |  |
 | [monos](https://github.com/aa-blinov/monos) | PUBLIC | 0 | 0 | Local-first desktop notes app with Markdown, wiki links, full-text sea |
+| [my-blog](https://github.com/aa-blinov/my-blog) | PUBLIC | 0 | 0 |  |
 | [ovh-caddy](https://github.com/aa-blinov/ovh-caddy) | PRIVATE | 0 | 0 | Машинный Caddy на VPS: все проекты за одним прокси |
 | [paratrack](https://github.com/aa-blinov/paratrack) | PUBLIC | 0 | 0 |  |
 | [petzy](https://github.com/aa-blinov/petzy) | PUBLIC | 0 | 0 |  |
@@ -262,8 +261,8 @@ The order follows how much the repository is looked at.
 | [simple-rag](https://github.com/aa-blinov/simple-rag) | PUBLIC | 0 | 0 |  |
 | [simple-scripts-collection](https://github.com/aa-blinov/simple-scripts-collection) | PUBLIC | 0 | 0 |  |
 | [spin-game](https://github.com/aa-blinov/spin-game) | PRIVATE | 0 | 0 |  |
+| [stavki](https://github.com/aa-blinov/stavki) | PRIVATE | 0 | 0 | Доска для бытовых споров: лента, планка, счёт. Деньги не принимает |
 | [stt-yandex](https://github.com/aa-blinov/stt-yandex) | PUBLIC | 0 | 0 |  |
-| [templates-mcp](https://github.com/aa-blinov/templates-mcp) | PUBLIC | 0 | 0 | Reference template for building production-grade MCP servers for Bitri |
 | [the-cuba-times-tgif](https://github.com/aa-blinov/the-cuba-times-tgif) | PRIVATE | 0 | 0 | Simple landing for sunny Cuba |
 | [titles-forecating](https://github.com/aa-blinov/titles-forecating) | PUBLIC | 0 | 0 | Forecasting titles |
 | [trentini-poc](https://github.com/aa-blinov/trentini-poc) | PRIVATE | 0 | 0 |  |

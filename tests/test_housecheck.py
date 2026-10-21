@@ -387,6 +387,14 @@ class CheckerTestCase(unittest.TestCase):
         )
         self.assertNotIn("HS030", self.repo.codes("hard"))
 
+    def test_a_tracked_path_is_exact_whatever_the_file_system_says(self):
+        """Git holds both names; the worktree may hold one. The repository
+        is what a reader clones, so the index is what decides."""
+        self.repo.make_git_repo("master")
+        self.repo.write("docs/architecture.md", "The shape.\n" * 40)
+        self.repo.write("README.md", "# x\n\n[the shape](docs/architecture.md)\n")
+        self.assertNotIn("HS030", self.repo.codes("hard"))
+
     def test_a_link_written_for_the_published_page_resolves(self):
         """A document can be the source of a page, and its link resolves
         against the page rather than against the folder it sits in."""

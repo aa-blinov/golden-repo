@@ -1,7 +1,7 @@
 {
   "$comment": "The house standard, as data. This file is the single source of truth for what a repository must contain. The checker reads it, the scaffolder builds from it, the documentation is generated from it, and a test keeps the three in agreement. Where this file and the prose disagree, this file is the standard and the prose is a bug.",
   "$version_note": "Bump the version when the canonical file set or the meaning of a rule changes. A repository records the version it follows in the tag of the action it references.",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "root": {
     "$comment": "Every file a repository carries. 'required' says whether the checker demands it. The comment is the one line that describes the file in the canonical tree.",
     "files": [

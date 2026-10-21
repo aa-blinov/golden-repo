@@ -315,6 +315,14 @@ class Repo(object):
         return self._case_exact(rel)
 
     def _case_exact(self, rel):
+        rel = rel.replace("\\", "/")
+        # Git knows the exact names it tracks, and its idea of them does not
+        # depend on the file system. A worktree that cannot hold two paths
+        # differing only in case still has both of them in the index, and
+        # the repository is what a reader clones, not this machine.
+        tracked = self.files()
+        if tracked and rel in tracked:
+            return True
         if self._listing is None:
             self._listing = {}
         parts = [part for part in rel.replace("\\", "/").split("/") if part]
