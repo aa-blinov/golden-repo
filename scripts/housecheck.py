@@ -1289,6 +1289,51 @@ def check_docs_index(repo):
     )]
 
 
+def _git(root, args, timeout=None):
+    try:
+        out = subprocess.run(
+            ["git", "-C", root] + args,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            check=False,
+            timeout=timeout,
+        )
+    except (OSError, ValueError, subprocess.SubprocessError):
+        return ""
+    return out.stdout.decode("utf-8", "replace").strip()
+
+
+def default_branch(repo):
+    """The branch the repository calls its default, or "" when unknowable.
+
+    Inside a pull request the checkout sits on the pull request's own branch,
+    and asking git for the current branch answers a different question. That
+    answer made this rule report every pull request red while the default
+    branch itself stayed green.
+
+    ``origin/HEAD`` is the answer when a clone carries it, which is the local
+    case and the one that costs nothing. When it is missing, the remote is
+    asked once, and a failure there degrades to the old behaviour rather than
+    to a wrong finding.
+    """
+    head = _git(repo.root, ["symbolic-ref", "--short", "refs/remotes/origin/HEAD"])
+    if head:
+        return head.split("/", 1)[1] if "/" in head else head
+
+    remote = _git(repo.root, ["ls-remote", "--symref", "origin", "HEAD"], timeout=3)
+    for line in remote.splitlines():
+        if line.startswith("ref:") and line.endswith("HEAD"):
+            ref = line.split()[1]
+            if ref.startswith("refs/heads/"):
+                return ref[len("refs/heads/"):]
+
+    # No remote at all: a local repository whose current branch is the only
+    # branch there is to ask about.
+    if not _git(repo.root, ["for-each-ref", "refs/remotes"]):
+        return _git(repo.root, ["symbolic-ref", "--short", "HEAD"])
+    return ""
+
+
 def check_default_branch(repo):
     """The CI has to run on the branch the repository actually uses.
 
@@ -1297,16 +1342,7 @@ def check_default_branch(repo):
     in this collection are on master. The name of the branch is the
     repository's business; whether the check runs on it is the standard's.
     """
-    try:
-        out = subprocess.run(
-            ["git", "-C", repo.root, "symbolic-ref", "--short", "HEAD"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL,
-            check=False,
-        )
-    except (OSError, ValueError):
-        return []
-    branch = out.stdout.decode("utf-8", "replace").strip()
+    branch = default_branch(repo)
     if not branch:
         return []
 

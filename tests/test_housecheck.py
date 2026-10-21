@@ -13,6 +13,7 @@ import os
 import shutil
 import sys
 import tempfile
+import subprocess
 import unittest
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
@@ -401,6 +402,33 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("site/openapi/v1.json", "{}")
         self.repo.write("docs/api.md", "The spec: [JSON](openapi/v1.json).\n" * 6)
         self.assertNotIn("HS030", self.repo.codes("hard"))
+
+    def test_the_default_branch_is_the_remotes_and_not_the_current_one(self):
+        """A pull request is checked out on its own branch, and the workflow
+        runs on the default branch. Asking for the current branch made every
+        pull request red while the default branch stayed green."""
+        self.repo.make_git_repo("master")
+        self.repo.write(".github/workflows/ci.yml",
+                        "on:\n"
+                        "  push:\n"
+                        "    branches: [master]\n"
+                        "  pull_request:\n")
+        self.repo.write("README.md", "# the project\n")
+        subprocess.run(["git", "-C", self.repo.root, "add", "-A"], check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["git", "-C", self.repo.root, "commit", "-q", "-m", "x"],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # The remote says the default is master; the checkout is elsewhere.
+        subprocess.run(["git", "-C", self.repo.root, "update-ref",
+                        "refs/remotes/origin/master", "HEAD"], check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["git", "-C", self.repo.root, "symbolic-ref",
+                        "refs/remotes/origin/HEAD", "refs/remotes/origin/master"],
+                       check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(["git", "-C", self.repo.root, "checkout", "-q", "-b",
+                        "dependabot/actions-abc"], check=True,
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        self.assertNotIn("HS100", self.repo.codes("soft"))
 
     def test_a_link_that_differs_only_in_case_is_a_finding(self):
         """A file system that ignores case finds the file anyway, so the
