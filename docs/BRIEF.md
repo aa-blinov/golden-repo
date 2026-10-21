@@ -200,6 +200,8 @@ the repository's own material and they are already right.
 | `cards`, `card` | A fixed grid of items, when the grid should not reflow. |
 | `compare`, `compare-arrow` | Two columns with an arrow between them. |
 | `shell`, `prompt`, `cmt`, `out` | A terminal transcript, and its parts. |
+| `gallery` | A grid of screenshots. |
+| `phones` | A row of phone-sized pictures. |
 
 A site that invents its own class names is a site that cannot be restyled by
 the next person. If a page genuinely needs a class the vocabulary does not

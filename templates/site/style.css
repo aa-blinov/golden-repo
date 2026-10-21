@@ -512,3 +512,135 @@ figcaption {
 .footer-nav a:hover {
   color: var(--fg);
 }
+
+/* -- shared page furniture ------------------------------------------- */
+/* The pieces a landing page reaches for again and again: a command the
+   reader can paste, a terminal transcript, two columns to compare, a
+   grid of cards. They live here so that a site does not write them
+   again, and so that two sites built from the template look the same. */
+
+/* A command the reader can paste, with the copy button beside it. */
+.command {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 38px;
+  padding: 0 var(--gap-md);
+  font-size: 0.86rem;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+/* Two columns to compare, with an arrow between them. */
+.compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: var(--gap-md);
+  align-items: start;
+}
+
+.compare h3 {
+  margin: 0 0 var(--gap-sm);
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.compare-arrow {
+  align-self: center;
+  color: var(--faint);
+  font-size: 1.5rem;
+  user-select: none;
+}
+
+/* A terminal transcript. The colours are house tokens, so they follow the
+   light scheme as well. */
+.shell {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.shell .prompt {
+  color: var(--info);
+  user-select: none;
+  margin-right: 0.3em;
+}
+
+.shell .cmt {
+  color: var(--faint);
+  font-style: italic;
+}
+
+.shell .out {
+  color: var(--muted);
+}
+
+/* A grid of cards. The shared .rail is auto-fit, which would leave a
+   single card alone on the last row; a fixed three does not. */
+.cards {
+  display: grid;
+  gap: var(--gap-md);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.card {
+  padding: var(--gap-md);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.card h3 {
+  margin: 0 0 var(--gap-sm);
+  font-size: 1rem;
+}
+
+.card p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+/* A gallery of screenshots: two columns, so a full-desktop picture is
+   still legible. */
+.gallery {
+  display: grid;
+  gap: var(--gap-md);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* A row of phone-sized pictures. */
+.phones {
+  display: grid;
+  gap: var(--gap-md);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 860px) {
+  .cards,
+  .gallery,
+  .phones {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .compare {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .compare-arrow {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 560px) {
+  .cards,
+  .gallery,
+  .phones {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
