@@ -376,6 +376,17 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("docs/rules.md", "Suits: \u2660 \u2665 \u2666 \u2663\n")
         self.assertNotIn("HS040", self.repo.codes("hard"))
 
+    def test_a_document_that_says_its_links_are_built_is_left_alone(self):
+        """A specification page links to the specification the site
+        publishes beside it, and the build writes the file."""
+        self.repo.write(
+            "docs/api.md",
+            "<!-- house-style: links-after-build -->\n"
+            "<!-- The page is built into the site, where the spec sits beside it. -->\n"
+            "\n# API\n\n[the spec](openapi/v1.json)\n" + "Prose.\n" * 30,
+        )
+        self.assertNotIn("HS030", self.repo.codes("hard"))
+
     def test_a_link_written_for_the_published_page_resolves(self):
         """A document can be the source of a page, and its link resolves
         against the page rather than against the folder it sits in."""

@@ -190,6 +190,12 @@ PROJECT_DOCUMENTS = frozenset({
 # see that the rule was considered.
 EMOJI_OPT_OUT = "house-style: emoji-ok"
 
+# A document may declare that its relative links resolve against a page the
+# build produces, not against the folder the source sits in. A specification
+# page links to the specification the site publishes beside it, and the file
+# is not in the repository because the build writes it.
+LINKS_AFTER_BUILD = "house-style: links-after-build"
+
 # The documents whose emptiness is a real loss. The community health files
 # are boilerplate and are allowed to be short; a README that says nothing is
 # not a README.
@@ -996,6 +1002,9 @@ def check_links(repo):
         if text is None:
             continue
 
+        head = "\n".join(text.split("\n")[:3])
+        after_build = LINKS_AFTER_BUILD in head
+
         for target, is_image in markdown_links(text):
             resolved = resolve_target(target, rel, repo)
             if resolved is None:
@@ -1011,6 +1020,8 @@ def check_links(repo):
                         "link '%s' points outside the repository and will not "
                         "resolve for anyone else" % target,
                     ))
+                continue
+            if after_build:
                 continue
             if not repo.exists(resolved) and published_next_to(rel, target, repo):
                 continue
