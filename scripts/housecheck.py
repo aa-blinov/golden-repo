@@ -1012,6 +1012,8 @@ def check_links(repo):
                         "resolve for anyone else" % target,
                     ))
                 continue
+            if not repo.exists(resolved) and published_next_to(rel, target, repo):
+                continue
             if not repo.exists(resolved):
                 if is_image:
                     findings.append(hard(
@@ -1041,6 +1043,38 @@ def is_site_content(rel):
     to it.
     """
     return rel.startswith(SITE_CONTENT)
+
+
+SITE_FOLDERS = ("site", "docs", "public", "static", "website", "web", "landing")
+
+
+def published_next_to(rel_path, target, repo):
+    """Whether the link resolves where the document is published.
+
+    A document can be the source of a page on the site. The page is built
+    into one of the site folders, keeping the document's place under it,
+    and a relative link in the document resolves against that page. The
+    folder the source sits in is not where the link is read, so checking it
+    there reports a break that no visitor sees.
+    """
+    document = rel_path.replace("\\", "/").split("/")
+    if len(document) < 2:
+        return False
+    inner = "/".join(document[1:-1])
+    target = target.split("#", 1)[0].split("?", 1)[0]
+    for folder in SITE_FOLDERS:
+        parts = [folder]
+        if inner:
+            parts.append(inner)
+        parts.append(target)
+        candidate = "/".join(parts)
+        while "/./" in candidate:
+            candidate = candidate.replace("/./", "/")
+        if ".." in candidate.split("/"):
+            continue
+        if repo.exists(candidate):
+            return True
+    return False
 
 
 def governs_text(rel):

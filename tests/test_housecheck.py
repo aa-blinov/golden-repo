@@ -376,6 +376,13 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("docs/rules.md", "Suits: \u2660 \u2665 \u2666 \u2663\n")
         self.assertNotIn("HS040", self.repo.codes("hard"))
 
+    def test_a_link_written_for_the_published_page_resolves(self):
+        """A document can be the source of a page, and its link resolves
+        against the page rather than against the folder it sits in."""
+        self.repo.write("site/openapi/v1.json", "{}")
+        self.repo.write("docs/api.md", "The spec: [JSON](openapi/v1.json).\n" * 6)
+        self.assertNotIn("HS030", self.repo.codes("hard"))
+
     def test_a_link_that_differs_only_in_case_is_a_finding(self):
         """A file system that ignores case finds the file anyway, so the
         author never sees the break that everybody else sees."""
