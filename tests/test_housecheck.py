@@ -376,6 +376,13 @@ class CheckerTestCase(unittest.TestCase):
         self.repo.write("docs/rules.md", "Suits: \u2660 \u2665 \u2666 \u2663\n")
         self.assertNotIn("HS040", self.repo.codes("hard"))
 
+    def test_a_link_that_differs_only_in_case_is_a_finding(self):
+        """A file system that ignores case finds the file anyway, so the
+        author never sees the break that everybody else sees."""
+        self.repo.write("docs/architecture.md", "The shape.\n" * 40)
+        self.repo.write("README.md", "# x\n\n[the shape](docs/ARCHITECTURE.md)\n")
+        self.assertIn("HS030", self.repo.codes("hard"))
+
     def test_a_route_in_the_products_own_content_is_not_a_finding(self):
         """A blog post is a page of the site. A link to a route on that site
         is what the post is for."""

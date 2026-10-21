@@ -243,6 +243,7 @@ class Repo(object):
     def __init__(self, root):
         self.root = os.path.abspath(root)
         self._files = None
+        self._listing = None
         self._cache = {}
 
     # -- file listing ------------------------------------------------------
@@ -297,7 +298,31 @@ class Repo(object):
         return os.path.join(self.root, rel)
 
     def exists(self, rel):
-        return os.path.exists(self.path(rel))
+        """Whether the path exists, with the case it is spelled in.
+
+        A file system that does not tell upper case from lower case will
+        happily find "docs/ARCHITECTURE.md" when the file is called
+        "docs/architecture.md". The link is broken on the machine that reads
+        the repository, which is not the machine that wrote it, and a rule
+        that the author's file system can defeat is not a rule.
+        """
+        return self._case_exact(rel)
+
+    def _case_exact(self, rel):
+        if self._listing is None:
+            self._listing = {}
+        parts = [part for part in rel.replace("\\", "/").split("/") if part]
+        directory = self.root
+        for part in parts:
+            if directory not in self._listing:
+                try:
+                    self._listing[directory] = set(os.listdir(directory))
+                except OSError:
+                    self._listing[directory] = set()
+            if part not in self._listing[directory]:
+                return False
+            directory = os.path.join(directory, part)
+        return os.path.exists(directory)
 
     def is_dir(self, rel):
         return os.path.isdir(self.path(rel))
