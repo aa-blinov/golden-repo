@@ -30,6 +30,7 @@ run on a machine that has nothing but Python 3 installed.
 | `docs/house-style.md` | The rules. Normative prose. |
 | `docs/structure.md` | The canonical tree, annotated. |
 | `docs/writing.md` | Voice, README order, the RU/EN policy. |
+| `docs/new-repo.md` | Creating a repository from the scaffolder. The traps. |
 | `docs/migration.md` | The procedure for existing repositories. |
 | `docs/audit.md` | The state of the existing repositories. |
 | `scripts/housecheck.py` | The enforcer. The rules as code. |
