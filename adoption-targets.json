@@ -111,6 +111,7 @@
     "monos-home": "A home server for EORA's services.",
     "wiki-js": "EORA's internal wiki, kept as pages in Git. A Wiki.js instance serves it and writes every edit back.",
     "notes": "The owner's own notes vault. It holds EORA's material, the company's internal notes, and a job application, so it is the owner's private work rather than a project of the collection.",
-    "demo-platform": "EORA's HR policy set: thirteen policy documents in Russian and the generator that renders them to PDF."
+    "demo-platform": "EORA's HR policy set: thirteen policy documents in Russian and the generator that renders them to PDF.",
+    "protokol-site": "The published copy of the Protokol landing page. It exists because GitHub Pages on a private repository needs a paid plan; the source and the standard live in the private repository."
   }
 }
