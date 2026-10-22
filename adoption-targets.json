@@ -112,6 +112,6 @@
     "wiki-js": "EORA's internal wiki, kept as pages in Git. A Wiki.js instance serves it and writes every edit back.",
     "notes": "The owner's own notes vault. It holds EORA's material, the company's internal notes, and a job application, so it is the owner's private work rather than a project of the collection.",
     "demo-platform": "EORA's HR policy set: thirteen policy documents in Russian and the generator that renders them to PDF.",
-    "protokol-site": "The published copy of the Protokol landing page. It exists because GitHub Pages on a private repository needs a paid plan; the source and the standard live in the private repository."
+    "protokol-site": "Retired. It was the published copy of the Protokol landing page, made because GitHub Pages on a private repository needs a paid plan. Protokol is public now and serves the page from its own docs/, so this repository holds nothing but a stale duplicate. Its Pages site is off; the repository itself is waiting to be deleted, which needs a token with the delete_repo scope."
   }
 }
