@@ -64,3 +64,51 @@ class ReferenceTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class _ExplodingSubprocess:
+    """Stand-in for the subprocess module: any call is a failure."""
+
+    def __init__(self):
+        self.calls = []
+
+    def run(self, *args, **kwargs):
+        self.calls.append(args)
+        raise AssertionError("a dry run called subprocess: %r" % (args,))
+
+
+class DryRunTest(unittest.TestCase):
+    def test_a_dry_run_reports_the_bump_and_writes_nothing(self):
+        """The flag existed and was never read, so a 'dry' run opened every
+        pull request it was supposed to describe."""
+        original_pins, original_subprocess = bump.find_pins, bump.subprocess
+        fake = _ExplodingSubprocess()
+        bump.find_pins = lambda owner, name: [
+            (".github/workflows/house-style.yml", "v1.0.11")
+        ]
+        bump.subprocess = fake
+        try:
+            current, number = bump.bump_pull_request(
+                "aa-blinov", "example", "v1.0.12", dry_run=True
+            )
+        finally:
+            bump.find_pins, bump.subprocess = original_pins, original_subprocess
+        self.assertEqual(current, "v1.0.11")
+        self.assertEqual(number, -1, "a dry run has to be distinguishable from work")
+        self.assertEqual(fake.calls, [])
+
+    def test_a_dry_run_skips_a_repository_already_on_the_latest(self):
+        original_pins, original_subprocess = bump.find_pins, bump.subprocess
+        fake = _ExplodingSubprocess()
+        bump.find_pins = lambda owner, name: [
+            (".github/workflows/house-style.yml", "v1.0.12")
+        ]
+        bump.subprocess = fake
+        try:
+            current, number = bump.bump_pull_request(
+                "aa-blinov", "example", "v1.0.12", dry_run=True
+            )
+        finally:
+            bump.find_pins, bump.subprocess = original_pins, original_subprocess
+        self.assertEqual((current, number), ("v1.0.12", None))
+        self.assertEqual(fake.calls, [])

@@ -134,7 +134,7 @@ def find_pins(owner, name):
     return pins
 
 
-def bump_pull_request(owner, name, latest):
+def bump_pull_request(owner, name, latest, dry_run=False):
     """Open, or update, the pull request that moves the pin."""
     pins = find_pins(owner, name)
     if not pins:
@@ -147,6 +147,11 @@ def bump_pull_request(owner, name, latest):
         return None, None
     if latest_version <= current_version:
         return current, None
+    if dry_run:
+        # The flag exists so that a run can be inspected before it writes to
+        # sixty-four repositories. It returned nothing for a while, which is
+        # how a "dry" run opened every pull request it was meant to describe.
+        return current, -1
 
     branch = "standard/bump-to-%s" % latest
     # Delete a branch left over from a previous attempt.
@@ -279,13 +284,17 @@ def main(argv=None):
     failures = 0
     for name in names:
         try:
-            current, number = bump_pull_request(args.owner, name, latest)
+            current, number = bump_pull_request(args.owner, name, latest, args.dry_run)
         except Exception as error:  # noqa: BLE001 — one repository is not fatal
             sys.stderr.write("bump: %s failed: %s\n" % (name, error))
             failures += 1
             continue
         if number is None:
             sys.stderr.write("bump: %s is on %s, nothing to do\n" % (name, current))
+        elif number == -1:
+            sys.stderr.write("bump: %s %s -> %s, would open a pull request\n" % (
+                name, current, latest,
+            ))
         else:
             sys.stderr.write("bump: %s %s -> %s, pull request #%d\n" % (
                 name, current, latest, number,
