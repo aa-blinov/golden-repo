@@ -37,7 +37,8 @@
     "templates-mcp",
     "titles-forecating",
     "vibe-vpn",
-    "wallpaper-generator"
+    "wallpaper-generator",
+    "monos-ui"
   ],
   "tier3": [
     "MediaSquash",
@@ -93,9 +94,7 @@
   "excluded": {
     "eora": "The EORA organisation's own introduction and plan. Not the owner's personal work.",
     "bspb-universal-helper-poc": "An EORA project: the bank's universal assistant.",
-    "projects-exporter": "An EORA project: the Bitrix24 project-management dashboard, mirrored from GitLab.",
     "outline-workspace": "An EORA tool: synchronisation with the EORA wiki.",
-    "crm-exporter": "An EORA tool: a Bitrix24 webhook exporter.",
     "my-notes": "The owner's notes, and they hold EORA work under Работа/EORA by their own convention.",
     "cast-team": "An archived fork.",
     "monos-conflict-lab": "A test sandbox.",
@@ -109,7 +108,6 @@
     "monos-sync-matrix-1781382482939": "A test sandbox.",
     "_template-smoke-test": "The standard's own test bench.",
     "golden-repo": "The standard itself.",
-    "bitrix-flow": "An EORA tool: a Bitrix24 project board, pointed at the eora.bitrix24.ru portal.",
     "monos-home": "A home server for EORA's services.",
     "wiki-js": "EORA's internal wiki, kept as pages in Git. A Wiki.js instance serves it and writes every edit back.",
     "notes": "The owner's own notes vault. It holds EORA's material, the company's internal notes, and a job application, so it is the owner's private work rather than a project of the collection.",
