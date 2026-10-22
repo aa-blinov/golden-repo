@@ -33,13 +33,20 @@ jobs:
     name: House style
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      # Pinned by commit, not by tag: a tag is a moving target that anyone
+      # with write access to the action can repoint. Dependabot updates the
+      # hash, and the comment is what a reader needs to know which version.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          # The checkout credential is not needed after the clone, and leaving
+          # it in the git config is how it ends up inside an uploaded artefact.
+          persist-credentials: false
 
       - uses: aa-blinov/golden-repo/.github/actions/house-style@v1.0.11
         with:
           report: house-style.json
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         if: always()
         with:
           name: house-style-report

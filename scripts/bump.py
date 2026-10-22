@@ -34,7 +34,8 @@ import sys
 # The reference to look for. A repository pins the standard in its workflow
 # files, and the pin is the tag after the @.
 REFERENCE_RE = re.compile(
-    r"uses:\s*([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?)@([^\s#'\"]+)",
+    r"uses:\s*([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:/[A-Za-z0-9_./-]+)?)@([^\s#'\"]+)"
+    r"(?:\s*#\s*(v[0-9.]+))?",
 )
 
 # The standard lives in this repository. A reference to it is a dependency on
@@ -124,7 +125,10 @@ def find_pins(owner, name):
     pins = []
     for path, content in workflow_files(owner, name):
         for match in REFERENCE_RE.finditer(content):
-            dependency, version = match.group(1), match.group(2)
+            dependency = match.group(1)
+            # A reference pinned by commit carries the version in the comment
+            # beside it; a reference pinned by tag carries it in the ref.
+            version = match.group(3) or match.group(2)
             parts = dependency.split("/")
             if len(parts) < 2:
                 continue
@@ -132,6 +136,24 @@ def find_pins(owner, name):
                 continue
             pins.append((path, version))
     return pins
+
+
+def tag_commit(owner, tag):
+    """The commit a tag points at, peeling an annotated tag."""
+    try:
+        data = json.loads(gh(["api", "repos/%s/%s/git/ref/tags/%s" % (
+            owner, STANDARD_NAME, tag)]))
+    except Exception:  # noqa: BLE001 — a missing tag is the caller's problem
+        return None
+    obj = data.get("object") or {}
+    if obj.get("type") == "tag":
+        try:
+            annotated = json.loads(gh(["api", "repos/%s/%s/git/tags/%s" % (
+                owner, STANDARD_NAME, obj.get("sha"))]))
+        except Exception:  # noqa: BLE001
+            return None
+        return (annotated.get("object") or {}).get("sha")
+    return obj.get("sha")
 
 
 def bump_pull_request(owner, name, latest, dry_run=False):
@@ -181,13 +203,17 @@ def bump_pull_request(owner, name, latest, dry_run=False):
     ])
     tree_sha = json.loads(tree).get("sha")
 
+    commit = tag_commit(owner, latest)
     changed = []
     for path, content in workflow_files(owner, name):
         updated = re.sub(
-            r"(uses:\s*%s/%s(?:/[A-Za-z0-9_./-]+)?)@([^\s#'\"]+)" % (
+            r"(uses:\s*%s/%s(?:/[A-Za-z0-9_./-]+)?)@([^\s#'\"]+)(?:\s*#\s*v[0-9.]+)?" % (
                 STANDARD_OWNER, STANDARD_NAME,
             ),
-            lambda m: "%s@%s" % (m.group(1), latest),
+            # Pinned by commit, with the version beside it. A tag is a moving
+            # target: anyone with write access to the standard can repoint it,
+            # and a security scanner is right to say so.
+            lambda m: "%s@%s # %s" % (m.group(1), commit or latest, latest),
             content,
         )
         if updated != content:

@@ -43,14 +43,17 @@ class ReferenceTest(unittest.TestCase):
 
     def test_another_action_is_not_the_standard(self):
         text = "      - uses: actions/checkout@v4\n"
-        for dependency, _ in bump.REFERENCE_RE.findall(text):
+        for dependency, _ref, _version in bump.REFERENCE_RE.findall(text):
             self.assertNotEqual(dependency.split("/")[1], bump.STANDARD_NAME)
 
-    def test_a_pinned_sha_is_still_a_reference(self):
-        text = "      - uses: aa-blinov/golden-repo/.github/actions/house-style@abc123\n"
+    def test_a_reference_pinned_by_commit_keeps_its_version_in_the_comment(self):
+        text = ("      - uses: aa-blinov/golden-repo/.github/actions/house-style"
+                "@abc123def456 # v1.0.12\n")
         matches = bump.REFERENCE_RE.findall(text)
         self.assertEqual(len(matches), 1)
-        self.assertEqual(matches[0][1], "abc123")
+        self.assertEqual(matches[0][1], "abc123def456")
+        self.assertEqual(matches[0][2], "v1.0.12",
+                         "the version has to survive as a pin by commit")
 
     def test_several_references_are_all_found(self):
         text = (
