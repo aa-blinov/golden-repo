@@ -1417,6 +1417,210 @@ def check_remote(repo, remote):
 # Runner
 # --------------------------------------------------------------------------
 
+# --------------------------------------------------------------------------
+# The stack
+# --------------------------------------------------------------------------
+#
+# The standard says what a repository looks like, not what language it is
+# written in. What it can say is which tool the repository has to have wired,
+# and which trap its ecosystem does not catch on its own. These rules report
+# rather than fail: a repository that predates them did not break anything.
+
+LOCKFILES = ("pnpm-lock.yaml", "package-lock.json", "yarn.lock", "bun.lockb")
+
+BUILD_CONFIGS = (
+    "vite.config.ts", "vite.config.js", "vite.config.mjs",
+    "nuxt.config.ts", "nuxt.config.js",
+    "next.config.js", "next.config.mjs", "next.config.ts",
+    "webpack.config.js", "astro.config.mjs", "astro.config.ts",
+)
+
+SECRET_PATTERNS = (
+    (re.compile(r"\bsk-[A-Za-z0-9]{20,}"), "an API key"),
+    (re.compile(r"\bAIza[0-9A-Za-z_-]{35}"), "a Google API key"),
+    (re.compile(r"\bghp_[A-Za-z0-9]{36}"), "a GitHub token"),
+    (re.compile(r"\bxox[baprs]-[A-Za-z0-9-]{10,}"), "a Slack token"),
+    (re.compile(r"\bAKIA[0-9A-Z]{16}"), "an AWS access key"),
+    (re.compile(r"/rest/\d+/[a-z0-9]{12,}/"), "a Bitrix24 webhook"),
+)
+
+PINNED_TOOLS = (
+    "swiftformat", "swiftlint", "golangci-lint", "black", "ruff",
+    "flake8", "isort", "mypy", "prettier", "eslint", "biome",
+)
+
+SCRATCH_DIRS = ("tests/", "test/", "docs/", "fixtures/", "testdata/")
+
+
+def stacks_of(repo):
+    """Which ecosystems the repository carries, by the files that prove it."""
+    files = set(repo.files())
+    found = set()
+    if "go.mod" in files:
+        found.add("go")
+    if "Package.swift" in files:
+        found.add("swift")
+    if "package.json" in files:
+        found.add("node")
+    if "pyproject.toml" in files or "requirements.txt" in files:
+        found.add("python")
+    return found
+
+
+def is_scratch(rel):
+    """Paths where a key-shaped string is usually a fixture, not a secret."""
+    lowered = rel.lower()
+    return any(lowered.startswith(d) for d in SCRATCH_DIRS) or "example" in lowered
+
+
+def version_key(text):
+    parts = re.findall(r"\d+", text)
+    return tuple(int(p) for p in parts[:3])
+
+
+def workflows(repo):
+    for rel in repo.files():
+        if rel.startswith(".github/workflows/") and rel.endswith((".yml", ".yaml")):
+            yield rel
+
+
+def check_stack_node_engines(repo):
+    """A Node repository states the runtime it needs.
+
+    CI installs whatever `setup-node` is told, and the dependency tree asks
+    for a minimum the code never wrote down. One of the repositories here
+    died inside undici because the workflow installed Node 20 and a
+    transitive package wanted 22.19.
+    """
+    if "node" not in stacks_of(repo):
+        return []
+    text = repo.read("package.json")
+    if text is None:
+        return []
+    try:
+        data = json.loads(text)
+    except ValueError:
+        return []
+    engines = data.get("engines") or {}
+    if not engines.get("node"):
+        return [soft("HS210", "package.json",
+                     "no `engines.node`: the runtime the code needs is not "
+                     "written down, so CI picks one and the lockfile decides "
+                     "whether it is enough")]
+    return []
+
+
+def check_stack_node_lockfile(repo):
+    """Two installs of one commit have to resolve the same tree."""
+    if "node" not in stacks_of(repo):
+        return []
+    files = repo.files()
+    if any(name in files for name in LOCKFILES):
+        return []
+    return [soft("HS211", "package.json",
+                 "no lockfile committed: the same commit installs different "
+                 "versions on different days")]
+
+
+def check_stack_python_tls(repo):
+    """A request that cannot fail its certificate check is not a request."""
+    findings = []
+    for rel in repo.files():
+        if not rel.endswith(".py") or is_scratch(rel):
+            continue
+        text = repo.read(rel)
+        if text is None:
+            continue
+        # Anchored to an argument position: the rule's own message contains
+        # the phrase, and a rule that flags its own source is a rule nobody
+        # trusts.
+        if re.search(r"[(,]\s*verify\s*=\s*False", text):
+            findings.append(soft("HS212", rel,
+                                 "`verify=False` turns the certificate check off "
+                                 "for this request"))
+        elif re.search(r"disable_warnings\s*\(", text) and "InsecureRequestWarning" in text:
+            findings.append(soft("HS212", rel,
+                                 "the insecure-request warning is silenced, so a "
+                                 "disabled check leaves no trace"))
+    return findings
+
+
+def check_stack_secrets(repo):
+    """A key in a notebook or a build config ships with the source.
+
+    Notebooks are the file people run once and commit, and a build config is
+    the file that inlines a value into the bundle for everyone who loads the
+    page.
+    """
+    findings = []
+    for rel in repo.files():
+        if is_scratch(rel):
+            continue
+        name = rel.rsplit("/", 1)[-1]
+        if not (rel.endswith(".ipynb") or name in BUILD_CONFIGS):
+            continue
+        text = repo.read(rel)
+        if text is None:
+            continue
+        for pattern, what in SECRET_PATTERNS:
+            if pattern.search(text):
+                findings.append(soft("HS213", rel,
+                                     "a value that looks like %s is committed here"
+                                     % what))
+                break
+    return findings
+
+
+def check_stack_go_version(repo):
+    """The Go the workflow installs is the Go the module asks for.
+
+    `govulncheck` fails a build when the standard library behind it is older
+    than a fix, and the module's own `go` line is the only statement of what
+    the code was written against.
+    """
+    if "go" not in stacks_of(repo):
+        return []
+    gomod = repo.read("go.mod") or ""
+    match = re.search(r"^go\s+(\d+\.\d+(?:\.\d+)?)", gomod, re.M)
+    if not match:
+        return []
+    wanted = match.group(1)
+    findings = []
+    for rel in workflows(repo):
+        text = repo.read(rel)
+        if text is None:
+            continue
+        for got in re.findall(r"go-version:\s*['\"]?(\d+\.\d+(?:\.\d+)?)", text):
+            if version_key(got) < version_key(wanted):
+                findings.append(soft("HS214", rel,
+                                     "CI installs Go %s, and go.mod asks for %s"
+                                     % (got, wanted)))
+    return findings
+
+
+def check_stack_pinned_tools(repo):
+    """A formatter installed without a version rewrites the code on a Tuesday.
+
+    SwiftFormat 0.63 and 0.64 disagree about indentation, and a repository
+    here went red because the runner had the older one while the code was
+    formatted with the newer.
+    """
+    findings = []
+    for rel in workflows(repo):
+        text = repo.read(rel)
+        if text is None:
+            continue
+        for line in text.splitlines():
+            for tool in PINNED_TOOLS:
+                pattern = (r"\b(?:brew install|pip3? install|npm i(?:nstall)? -g)"
+                           r"\s+(?:-\S+\s+)*" + re.escape(tool) + r"(?![\w@=:<>~.-])")
+                if re.search(pattern, line):
+                    findings.append(soft("HS215", rel,
+                                         "`%s` is installed without a version, so a "
+                                         "release changes the build" % tool))
+    return findings
+
+
 ALL_RULES = [
     check_root_files,
     check_required_dirs,
@@ -1437,6 +1641,12 @@ ALL_RULES = [
     check_changelog,
     check_docs_index,
     check_default_branch,
+    check_stack_node_engines,
+    check_stack_node_lockfile,
+    check_stack_python_tls,
+    check_stack_secrets,
+    check_stack_go_version,
+    check_stack_pinned_tools,
 ]
 
 

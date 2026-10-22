@@ -1,6 +1,6 @@
 # Documentation
 
-The house standard, in six documents and a checker.
+The house standard, in seven documents and a checker.
 
 | Document | What it covers |
 | --- | --- |
@@ -8,6 +8,7 @@ The house standard, in six documents and a checker.
 | [`structure.md`](structure.md) | The canonical tree, file by file, and what each file is for. |
 | [`writing.md`](writing.md) | Voice, README section order, the Russian/English policy. Preferences, not rules. |
 | [`new-repo.md`](new-repo.md) | Creating a repository from the scaffolder, and the traps that cost time. |
+| [`stacks.md`](stacks.md) | What each stack has to have wired, and the trap it does not catch. |
 | [`migration.md`](migration.md) | Bringing an existing repository to the standard, safely, and in what order. |
 | [`audit.md`](audit.md) | Where the existing repositories stand today, and which are worth the effort. |
 

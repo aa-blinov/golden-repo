@@ -430,6 +430,91 @@ class CheckerTestCase(unittest.TestCase):
                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         self.assertNotIn("HS100", self.repo.codes("soft"))
 
+    # -- the stack ---------------------------------------------------------
+
+    def test_a_node_repository_states_its_runtime(self):
+        """CI installs whatever it is told, and the dependency tree asks for
+        a minimum nobody wrote down."""
+        self.repo.write("package.json", '{"name": "x"}')
+        self.assertIn("HS210", self.repo.codes("soft"))
+
+    def test_a_declared_runtime_is_not_a_finding(self):
+        self.repo.write("package.json", '{"name": "x", "engines": {"node": ">=22"}}')
+        self.repo.write("pnpm-lock.yaml", "lockfileVersion: 9\n")
+        self.assertNotIn("HS210", self.repo.codes("soft"))
+
+    def test_a_node_repository_without_a_lockfile(self):
+        self.repo.write("package.json", '{"name": "x", "engines": {"node": ">=22"}}')
+        self.assertIn("HS211", self.repo.codes("soft"))
+
+    def test_a_committed_lockfile_is_not_a_finding(self):
+        self.repo.write("package.json", '{"name": "x", "engines": {"node": ">=22"}}')
+        self.repo.write("package-lock.json", "{\"lockfileVersion\": 3}\n")
+        self.assertNotIn("HS211", self.repo.codes("soft"))
+
+    def test_a_request_that_skips_the_certificate_check(self):
+        self.repo.write("app/client.py", "import requests\n"
+                                         "requests.get(url, verify=False)\n" * 3)
+        self.assertIn("HS212", self.repo.codes("soft"))
+
+    def test_a_request_that_checks_the_certificate(self):
+        self.repo.write("app/client.py", "import requests\n"
+                                         "requests.get(url, verify=True)\n" * 3)
+        self.assertNotIn("HS212", self.repo.codes("soft"))
+
+    def test_a_key_committed_in_a_notebook(self):
+        self.repo.write("notebooks/one.ipynb",
+                        '{"cells": [{"source": ["key = \\"AIza' + "A" * 35 + '\\""]}]}')
+        self.assertIn("HS213", self.repo.codes("soft"))
+
+    def test_a_key_shaped_string_in_a_fixture_is_not_a_finding(self):
+        self.repo.write("tests/fixtures/key.ipynb",
+                        '{"cells": [{"source": ["AIza' + "A" * 35 + '"]}]}')
+        self.assertNotIn("HS213", self.repo.codes("soft"))
+
+    def test_the_workflow_installs_the_go_the_module_asks_for(self):
+        self.repo.write("go.mod", "module x\n\ngo 1.27.3\n")
+        self.repo.write(".github/workflows/ci.yml",
+                        "name: ci\n"
+                        "jobs:\n"
+                        "  test:\n"
+                        "    steps:\n"
+                        "      - uses: actions/setup-go@v5\n"
+                        "        with:\n"
+                        '          go-version: "1.27.2"\n')
+        self.assertIn("HS214", self.repo.codes("soft"))
+
+    def test_an_older_go_than_the_module_asks_for_is_a_finding(self):
+        self.repo.write("go.mod", "module x\n\ngo 1.27.3\n")
+        self.repo.write(".github/workflows/ci.yml",
+                        "name: ci\n"
+                        "jobs:\n"
+                        "  test:\n"
+                        "    steps:\n"
+                        "      - uses: actions/setup-go@v5\n"
+                        "        with:\n"
+                        '          go-version: "1.27.3"\n')
+        self.assertNotIn("HS214", self.repo.codes("soft"))
+
+    def test_a_formatter_installed_without_a_version(self):
+        """SwiftFormat 0.63 and 0.64 disagree about indentation."""
+        self.repo.write(".github/workflows/ci.yml",
+                        "name: ci\n"
+                        "jobs:\n"
+                        "  lint:\n"
+                        "    steps:\n"
+                        "      - run: brew install swiftformat\n")
+        self.assertIn("HS215", self.repo.codes("soft"))
+
+    def test_a_formatter_installed_at_a_version_is_not_a_finding(self):
+        self.repo.write(".github/workflows/ci.yml",
+                        "name: ci\n"
+                        "jobs:\n"
+                        "  lint:\n"
+                        "    steps:\n"
+                        "      - run: pip install ruff==0.4.0\n")
+        self.assertNotIn("HS215", self.repo.codes("soft"))
+
     def test_a_link_that_differs_only_in_case_is_a_finding(self):
         """A file system that ignores case finds the file anyway, so the
         author never sees the break that everybody else sees."""
