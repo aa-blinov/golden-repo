@@ -496,6 +496,19 @@ class CheckerTestCase(unittest.TestCase):
                         '          go-version: "1.27.3"\n')
         self.assertNotIn("HS214", self.repo.codes("soft"))
 
+    def test_a_floating_go_minor_is_not_older_than_a_patch(self):
+        """`go-version: 1.26` means the newest 1.26.x, which satisfies 1.26.0."""
+        self.repo.write("go.mod", "module x\n\ngo 1.26.0\n")
+        self.repo.write(".github/workflows/ci.yml",
+                        "name: ci\n"
+                        "jobs:\n"
+                        "  test:\n"
+                        "    steps:\n"
+                        "      - uses: actions/setup-go@v5\n"
+                        "        with:\n"
+                        '          go-version: "1.26"\n')
+        self.assertNotIn("HS214", self.repo.codes("soft"))
+
     def test_a_formatter_installed_without_a_version(self):
         """SwiftFormat 0.63 and 0.64 disagree about indentation."""
         self.repo.write(".github/workflows/ci.yml",

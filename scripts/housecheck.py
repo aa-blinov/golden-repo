@@ -1478,6 +1478,20 @@ def version_key(text):
     return tuple(int(p) for p in parts[:3])
 
 
+def is_older(got, wanted):
+    """Whether a version string names something older than another.
+
+    `setup-go` treats `1.26` as the newest 1.26.x, so a workflow that writes
+    two components is ahead of a `go.mod` that asks for 1.26.0, not behind
+    it. Only a strictly lower minor, or a lower patch when both name one, is
+    older.
+    """
+    have, want = version_key(got), version_key(wanted)
+    if len(have) >= len(want):
+        return have < want
+    return have[:2] < want[:2]
+
+
 def workflows(repo):
     for rel in repo.files():
         if rel.startswith(".github/workflows/") and rel.endswith((".yml", ".yaml")):
@@ -1591,7 +1605,7 @@ def check_stack_go_version(repo):
         if text is None:
             continue
         for got in re.findall(r"go-version:\s*['\"]?(\d+\.\d+(?:\.\d+)?)", text):
-            if version_key(got) < version_key(wanted):
+            if is_older(got, wanted):
                 findings.append(soft("HS214", rel,
                                      "CI installs Go %s, and go.mod asks for %s"
                                      % (got, wanted)))
