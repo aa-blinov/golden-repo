@@ -167,7 +167,9 @@ def bump_pull_request(owner, name, latest, dry_run=False):
     body = []
     for path, version in pins:
         body.append("%s: %s -> %s" % (path, version, latest))
-    message = "Bump the house standard to %s\n\n%s\n" % (latest, "\n".join(body))
+    # Conventional, because a repository that lints its commits lints this
+    # one too, and a bump that fails the lint is a bump nobody merges.
+    message = "chore: bump the house standard to %s\n\n%s\n" % (latest, "\n".join(body))
 
     # Build the commit with the GitHub API, so that no local clone is needed.
     base_sha = gh([
@@ -238,7 +240,7 @@ def bump_pull_request(owner, name, latest, dry_run=False):
     if numbers:
         gh([
             "api", "-X", "PATCH", "repos/%s/%s/pulls/%d" % (owner, name, numbers[0]),
-            "-f", "title=Bump the house standard to %s" % latest,
+            "-f", "title=chore: bump the house standard to %s" % latest,
             "-f", "body=%s" % message,
         ])
         return current, numbers[0]
@@ -246,7 +248,7 @@ def bump_pull_request(owner, name, latest, dry_run=False):
     created = gh([
         "pr", "create", "--repo", "%s/%s" % (owner, name),
         "--head", branch, "--base", base,
-        "--title", "Bump the house standard to %s" % latest,
+        "--title", "chore: bump the house standard to %s" % latest,
         "--body", message,
     ])
     number = None
