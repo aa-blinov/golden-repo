@@ -1423,8 +1423,9 @@ def check_remote(repo, remote):
 #
 # The standard says what a repository looks like, not what language it is
 # written in. What it can say is which tool the repository has to have wired,
-# and which trap its ecosystem does not catch on its own. These rules report
-# rather than fail: a repository that predates them did not break anything.
+# and which trap its ecosystem does not catch on its own. The gap each rule
+# names was real in this collection: a disabled certificate check, a key in a
+# notebook, a workflow older than the module it builds.
 
 LOCKFILES = ("pnpm-lock.yaml", "package-lock.json", "yarn.lock", "bun.lockb")
 
@@ -1517,7 +1518,7 @@ def check_stack_node_engines(repo):
         return []
     engines = data.get("engines") or {}
     if not engines.get("node"):
-        return [soft("HS210", "package.json",
+        return [hard("HS210", "package.json",
                      "no `engines.node`: the runtime the code needs is not "
                      "written down, so CI picks one and the lockfile decides "
                      "whether it is enough")]
@@ -1531,7 +1532,7 @@ def check_stack_node_lockfile(repo):
     files = repo.files()
     if any(name in files for name in LOCKFILES):
         return []
-    return [soft("HS211", "package.json",
+    return [hard("HS211", "package.json",
                  "no lockfile committed: the same commit installs different "
                  "versions on different days")]
 
@@ -1549,11 +1550,11 @@ def check_stack_python_tls(repo):
         # the phrase, and a rule that flags its own source is a rule nobody
         # trusts.
         if re.search(r"[(,]\s*verify\s*=\s*False", text):
-            findings.append(soft("HS212", rel,
+            findings.append(hard("HS212", rel,
                                  "`verify=False` turns the certificate check off "
                                  "for this request"))
         elif re.search(r"disable_warnings\s*\(", text) and "InsecureRequestWarning" in text:
-            findings.append(soft("HS212", rel,
+            findings.append(hard("HS212", rel,
                                  "the insecure-request warning is silenced, so a "
                                  "disabled check leaves no trace"))
     return findings
@@ -1578,7 +1579,7 @@ def check_stack_secrets(repo):
             continue
         for pattern, what in SECRET_PATTERNS:
             if pattern.search(text):
-                findings.append(soft("HS213", rel,
+                findings.append(hard("HS213", rel,
                                      "a value that looks like %s is committed here"
                                      % what))
                 break
@@ -1606,7 +1607,7 @@ def check_stack_go_version(repo):
             continue
         for got in re.findall(r"go-version:\s*['\"]?(\d+\.\d+(?:\.\d+)?)", text):
             if is_older(got, wanted):
-                findings.append(soft("HS214", rel,
+                findings.append(hard("HS214", rel,
                                      "CI installs Go %s, and go.mod asks for %s"
                                      % (got, wanted)))
     return findings
@@ -1629,7 +1630,7 @@ def check_stack_pinned_tools(repo):
                 pattern = (r"\b(?:brew install|pip3? install|npm i(?:nstall)? -g)"
                            r"\s+(?:-\S+\s+)*" + re.escape(tool) + r"(?![\w@=:<>~.-])")
                 if re.search(pattern, line):
-                    findings.append(soft("HS215", rel,
+                    findings.append(hard("HS215", rel,
                                          "`%s` is installed without a version, so a "
                                          "release changes the build" % tool))
     return findings

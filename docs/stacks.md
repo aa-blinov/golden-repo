@@ -9,8 +9,8 @@ trap.
 Each section names three things: what the repository has to have wired, the
 one failure the ecosystem does not catch by itself, and the commands CI has to
 run. The rules behind the checkable half live in `scripts/housecheck.py` as
-`HS210` to `HS215`, and each one is soft: it names a gap, it does not fail a
-build.
+`HS210` to `HS215`, and each one fails the build. Every rule was introduced
+soft, the collection was fixed, and only then did it start blocking.
 
 **What this document is not.** It is not how to write Python or Go. The
 formatter, the linter and the type checker already say that, and a document
