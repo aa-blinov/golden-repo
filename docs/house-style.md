@@ -62,7 +62,7 @@ files and template repositories.
 | `CONTRIBUTING.md` | How to propose a change. |
 | `CODE_OF_CONDUCT.md` | How to behave. |
 | `SECURITY.md` | How to report a vulnerability. |
-| `LICENSE` | MIT, © Alexander Blinov. |
+| `LICENSE` | MIT, © Alexander Blinov. Commercial: proprietary, © the client. |
 | `.editorconfig` | Charset, indentation, final newline. |
 | `.gitignore` | What must never be committed. |
 | `.github/workflows/ci.yml` | Install, test, build. |
@@ -122,6 +122,29 @@ contains a README and no code.
 check is on the license's identity, not on its text, so the standard does not
 dictate the wording.
 
+**Commercial repositories.** A product built for a client, or sold, is not
+open source, and an MIT file in it would be a false statement in the one file
+that is legally binding. Such a repository carries a proprietary license whose
+first line says so: `Proprietary License` or `Proprietary Software License`.
+The words "All rights reserved" on their own do not count: they appear in
+copyright notices of every kind and do not tell a reader what they may do.
+
+Passing:
+
+```text
+Proprietary License
+
+Copyright (c) 2026 Example Holder. All rights reserved.
+
+No part of this software may be used without written permission.
+```
+
+Failing:
+
+```text
+Copyright (c) 2026 Example Holder. All rights reserved.
+```
+
 ### HS004 — The copyright holder is named
 
 **Hard.** `LICENSE` must contain a `Copyright` line with a holder.
@@ -129,7 +152,8 @@ dictate the wording.
 **Why.** A license without a copyright holder is a template that was never
 filled in. The house holder is **Alexander Blinov**. Repositories that say
 `aa-blinov` instead are using the account name rather than the holder, and
-should be corrected to the real name.
+should be corrected to the real name. A commercial repository names the
+client who owns the code, not the house holder.
 
 ### HS005 — CI exists
 
