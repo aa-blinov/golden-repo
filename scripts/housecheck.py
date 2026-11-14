@@ -111,6 +111,13 @@ KNOWN_LICENSES = [
     "ISC License",
     "The Unlicense",
     "Boost Software License",
+    # A commercial repository is not open source, and pretending otherwise
+    # with an MIT file would be a lie in the one file that is legally binding.
+    # The marker has to be explicit: "All rights reserved" alone is a
+    # copyright notice, not a licence.
+    "Proprietary License",
+    "Proprietary Software License",
+    "PROPRIETARY LICENSE",
 ]
 
 # Emoji live in these ranges. Ordinary punctuation, arrows and typographic

@@ -19,6 +19,18 @@ bump workflow in this repository does it instead: `scripts/bump.py` opens the
 pull request that moves the pin, so a rule change is traceable to a point in
 time and arrives as a reviewable diff rather than as a red build.
 
+## 1.0.14 — 2026-11-14
+
+### Changed
+
+- HS003 recognises a proprietary licence. A product built for a client is not
+  open source, and an MIT file in it would be a false statement in the one
+  file that is legally binding. The first line has to say
+  `Proprietary License` or `Proprietary Software License`; "All rights
+  reserved" on its own is still not a licence. HS004 applies as before: the
+  copyright line names the holder, who for a commercial repository is the
+  client.
+
 ## 1.0.0 — 2026-10-20
 
 ### Added

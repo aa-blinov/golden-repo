@@ -15,7 +15,7 @@ those are in [`house-style.md`](house-style.md).
 ├── CODE_OF_CONDUCT.md  # How to behave.
 ├── CONTRIBUTING.md     # How to propose a change.
 ├── DESIGN.md           # Visual system. YAML frontmatter + 8 canonical sections.
-├── LICENSE             # MIT, © Alexander Blinov.
+├── LICENSE             # MIT, © Alexander Blinov. Commercial: proprietary, © the client.
 ├── PRODUCT.md          # Durable product truth. impeccable:product-schema 1.
 ├── README.md           # The front door. H1 = product name, then a pitch.
 ├── SECURITY.md         # How to report a vulnerability.
@@ -122,7 +122,8 @@ nothing.
 
 ### `LICENSE`, `.editorconfig`, `.gitignore`, `.gitattributes`
 
-The terms, and the text-file conventions. MIT, with the holder named.
+The terms, and the text-file conventions. MIT, with the holder named; a
+commercial repository carries a proprietary licence naming the client.
 
 ## The directories
 

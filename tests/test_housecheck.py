@@ -345,6 +345,35 @@ class CheckerTestCase(unittest.TestCase):
         self.assertNotIn("HS004", self.repo.codes("hard"))
         self.assertNotIn("HS003", self.repo.codes("hard"))
 
+    def test_a_proprietary_licence_with_a_holder_passes(self):
+        # A commercial repository is not open source, and the honest licence
+        # for it is a proprietary one. It still has to name its holder.
+        self.repo.write(
+            "LICENSE",
+            "Proprietary License\n\n"
+            "Copyright (c) 2026 Example Holder. All rights reserved.\n\n"
+            "No part of this software may be used without written permission.\n",
+        )
+        self.assertNotIn("HS003", self.repo.codes("hard"))
+        self.assertNotIn("HS004", self.repo.codes("hard"))
+
+    def test_a_proprietary_licence_without_a_holder_is_reported(self):
+        self.repo.write(
+            "LICENSE",
+            "Proprietary License\n\nAll rights reserved.\n",
+        )
+        self.assertNotIn("HS003", self.repo.codes("hard"))
+        self.assertIn("HS004", self.repo.codes("hard"))
+
+    def test_all_rights_reserved_alone_is_not_a_licence(self):
+        # The phrase belongs to copyright notices of many kinds; on its own
+        # it does not say what the reader may do.
+        self.repo.write(
+            "LICENSE",
+            "Copyright (c) 2026 Example Holder. All rights reserved.\n",
+        )
+        self.assertIn("HS003", self.repo.codes("hard"))
+
     # -- README ------------------------------------------------------------
 
     def test_a_readme_without_a_heading_is_reported(self):
